@@ -1,61 +1,2078 @@
-<!DOCTYPE html><html lang="uk" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Easyyy_Math — адмін</title><link rel="icon" href="favicon.png"><link rel="stylesheet" href="style.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)'],['$','$']],displayMath:[['\\[','\\]'],['$$','$$']]},startup:{typeset:false}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script></head><body><header><nav><a href="index.html" class="brand">Easyyy_<span>Math</span> · ADMIN</a><div class="links"><span id="who" class="muted small"></span><button id="logout" class="btn alt" hidden>Вийти</button></div></nav></header><main><div id="login" class="card"><h1>Керування Easyyy_Math 💙</h1><p>Вхід лише для адміністратора.</p><button id="signin" class="btn">Увійти через Google</button><p id="loginMsg" class="muted"></p></div><div id="dashboard" hidden><h1>Адмінпанель</h1><div class="grid"><div class="card"><div class="metric" id="countTopics">0</div>Тем</div><div class="card"><div class="metric" id="countUsers">0</div>Учнів</div><div class="card"><div class="metric" id="countShop">0</div>Товарів</div></div><div class="tabs" id="tabs"><button class="tab active" data-tab="topics">Теми</button><button class="tab" data-tab="students">Учні та відповіді</button><button class="tab" data-tab="materials">Матеріали</button><button class="tab" data-tab="shop">Магазин ⭐</button><button class="tab" data-tab="settings">Налаштування</button></div>
-<section id="topicsTab"><div class="columns"><aside class="card"><h2>Теми</h2><button class="btn" id="newTopic">+ Нова тема</button><input id="searchTopic" placeholder="Пошук теми" style="margin-top:12px"><div id="topicList"></div></aside><div class="card"><h2 id="topicHeading">Нова тема</h2><div class="grid two"><div><label>Предмет</label><select id="subject"><option value="algebra">Алгебра</option><option value="geometry">Геометрія</option></select></div><div><label>Клас</label><select id="grade"></select></div></div><label>Розділ</label><input id="section" placeholder="Наприклад: Логарифми"><label>Назва теми</label><input id="topicTitle"><label>Теорія (MathJax: \( ... \), \[ ... \])</label><textarea id="theory" rows="12"></textarea><label>Формула (LaTeX)</label><textarea id="formula"></textarea><label>Асоціація 💡</label><textarea id="tip"></textarea><label>Типова помилка ⚠️</label><textarea id="mistake"></textarea><label>Посилання на зображення (кожне з нового рядка)</label><textarea id="images"></textarea><h3>Квізи</h3><p class="muted small">Одне питання, чотири варіанти, одна правильна відповідь.</p><div id="quizFields"></div><button class="btn alt" id="addQuiz">+ Питання</button><h3 style="margin-top:25px">Практика</h3><p class="muted small">Декілька допустимих відповідей через ;. Наприклад: 0,5; 1/2; \frac{1}{2}</p><div id="practiceFields"></div><button class="btn alt" id="addPractice">+ Завдання</button><div class="actions"><button class="btn alt" id="preview">Перегляд</button><button class="btn" id="saveTopic">Зберегти тему</button><button class="btn danger" id="deleteTopic" hidden>Видалити</button></div><div id="topicPreview" class="preview" hidden></div></div></div></section>
-<section id="studentsTab" hidden><div class="columns"><aside class="card"><h2>Учні</h2><input id="searchStudent" placeholder="Ім’я або email"><div id="studentList"></div></aside><div class="card" id="studentDetail"><p class="muted">Натисни на учня, щоб відкрити його профіль та історію відповідей.</p></div></div></section>
-<section id="materialsTab" hidden><div class="columns"><aside class="card"><h2>Матеріали</h2><button class="btn" id="newMaterial">+ Матеріал</button><div id="materialList"></div></aside><div class="card"><h2 id="materialHeading">Новий матеріал</h2><label>Назва</label><input id="materialTitle"><label>Опис</label><textarea id="materialDescription"></textarea><label>Посилання на PDF / Google Drive / інший файл</label><input id="materialUrl" type="url"><label>Клас (необов'язково)</label><select id="materialGrade"><option value="">Для всіх</option></select><label>Вартість у зірочках (0 — безкоштовно)</label><input id="materialPrice" type="number" min="0" step="1" value="0"><p class="muted small">Файли розміщуються за посиланням. Для справді платних матеріалів потрібна захищена видача файлів на сервері: пряме посилання не захищає від поширення.</p><div class="actions"><button class="btn" id="saveMaterial">Зберегти</button><button class="btn danger" id="deleteMaterial" hidden>Видалити</button></div></div></div></section>
-<section id="shopTab" hidden><div class="columns"><aside class="card"><h2>Магазин</h2><button class="btn" id="newShop">+ Новий товар</button><div id="shopList"></div></aside><div class="card"><h2 id="shopHeading">Новий товар</h2><label>Назва</label><input id="shopTitle"><label>Опис</label><textarea id="shopDescription"></textarea><label>Тип</label><select id="shopType"><option value="frame">Рамка аватара</option><option value="badge">Значок</option><option value="theme">Тема оформлення</option><option value="material">Навчальний матеріал</option></select><label>Ціна ⭐</label><input id="shopPrice" type="number" min="0" step="1" value="50"><label>Emoji значка / позначка</label><input id="shopEmoji" placeholder="🏅"><label>Колір рамки</label><select id="shopColor"><option value="gold">Золота</option><option value="pink">Рожева</option><option value="mint">М’ятна</option></select><label>Посилання на матеріал (для типу «Навчальний матеріал»)</label><input id="shopUrl" type="url"><div class="actions"><button class="btn" id="saveShop">Зберегти</button><button class="btn danger" id="deleteShop" hidden>Видалити</button></div></div></div></section>
-<section id="settingsTab" hidden><div class="card"><h2>Інформація про викладача</h2><p class="muted">Цей текст побачать учні на сторінці «Твій наставник».</p><textarea id="about" rows="9"></textarea><label>Посилання на запис</label><input id="formUrl" type="url"><label>Соцмережі (назва | посилання; кожен рядок окремо)</label><textarea id="socials"></textarea><label>Кейси (заголовок | опис; кожен рядок окремо)</label><textarea id="cases"></textarea><label>Відгуки (ім’я | відгук; кожен рядок окремо)</label><textarea id="reviews"></textarea><button class="btn" id="saveSettings">Зберегти налаштування</button></div></section></div></main><div id="toast" class="toast" hidden></div>
+
+<!DOCTYPE html>
+<html lang="uk" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Easyyy_Math — Адмінпанель</title>
+<link rel="icon" href="favicon.png">
+
+<script>
+window.MathJax={
+  tex:{
+    inlineMath:[['\\(','\\)'],['$','$']],
+    displayMath:[['\\[','\\]']],
+    processEscapes:true
+  },
+  options:{
+    skipHtmlTags:['script','style','textarea','pre','code']
+  },
+  startup:{typeset:false}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+<style>
+:root{
+ --bg:#06194a;
+ --side:#082567;
+ --panel:#0b286d;
+ --card:#103584;
+ --input:#071d51;
+ --text:#fff;
+ --muted:#b9c6ee;
+ --yellow:#ffde59;
+ --border:#294b9d;
+ --green:#3ddc97;
+ --red:#ff777d;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--text);
+ font-family:system-ui,-apple-system,Segoe UI,sans-serif;
+ line-height:1.5;
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+a{color:var(--yellow)}
+.hidden{display:none!important}
+.muted,.small{color:var(--muted)}
+.small{font-size:12px}
+h1,h2,h3{margin:0 0 12px}
+h1{font-size:27px}
+h2{font-size:22px}
+h3{font-size:17px}
+p{margin:8px 0 14px}
+button,.btn{
+ border:0;
+ background:var(--yellow);
+ color:#082567;
+ padding:10px 15px;
+ border-radius:10px;
+ font-weight:750;
+ text-decoration:none;
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ gap:6px;
+}
+button.secondary,.btn.secondary{
+ background:transparent;
+ border:1px solid var(--border);
+ color:var(--text);
+}
+button.danger{background:#802c42;color:#fff}
+button.green{background:var(--green);color:#063b2a}
+button.smallbtn{padding:7px 10px;font-size:12px}
+input,textarea,select{
+ display:block;
+ width:100%;
+ border:1px solid var(--border);
+ border-radius:10px;
+ background:var(--input);
+ color:#fff;
+ padding:11px 12px;
+ outline:none;
+}
+input:focus,textarea:focus,select:focus{
+ border-color:var(--yellow);
+}
+input[type=checkbox],input[type=radio]{
+ width:auto;
+ accent-color:var(--yellow);
+}
+textarea{min-height:105px;resize:vertical}
+label{
+ display:block;
+ color:var(--muted);
+ font-size:13px;
+ margin:12px 0 6px;
+}
+.card{
+ background:var(--panel);
+ border:1px solid var(--border);
+ border-radius:16px;
+ padding:18px;
+ margin:12px 0;
+}
+.item{
+ background:var(--input);
+ border:1px solid var(--border);
+ border-radius:12px;
+ padding:14px;
+ margin:10px 0;
+}
+.row{
+ display:flex;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:10px;
+}
+.between{justify-content:space-between}
+.two{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:12px;
+}
+.three{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:12px;
+}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+ gap:12px;
+}
+hr{
+ border:0;
+ border-top:1px solid var(--border);
+ margin:22px 0;
+}
+.stat{
+ color:var(--yellow);
+ font-size:29px;
+ font-weight:850;
+}
+.pill{
+ display:inline-block;
+ padding:4px 9px;
+ border-radius:20px;
+ font-size:11px;
+ font-weight:750;
+ background:#214a96;
+ color:#fff;
+}
+.pill.live{background:#126b50;color:#c8ffe8}
+.pill.draft{background:#6b5120;color:#ffe7a5}
+
+/* SIDEBAR */
+.layout{display:flex;min-height:100vh}
+.sidebar{
+ width:250px;
+ flex-shrink:0;
+ background:var(--side);
+ border-right:1px solid var(--border);
+ padding:20px 12px;
+ position:sticky;
+ top:0;
+ height:100vh;
+ overflow-y:auto;
+}
+.logo{
+ font-size:23px;
+ font-weight:900;
+ padding:4px 10px 22px;
+}
+.logo span{color:var(--yellow)}
+.logo small{
+ display:block;
+ font-size:10px;
+ letter-spacing:2px;
+ color:var(--muted);
+}
+.nav-btn{
+ display:flex;
+ width:100%;
+ text-align:left;
+ justify-content:flex-start;
+ background:transparent;
+ color:var(--muted);
+ margin:4px 0;
+ padding:12px 14px;
+ font-weight:650;
+}
+.nav-btn.active,.nav-btn:hover{
+ background:var(--yellow);
+ color:#082567;
+}
+.side-bottom{
+ margin-top:30px;
+ padding:12px 8px;
+ border-top:1px solid var(--border);
+ overflow-wrap:anywhere;
+}
+.workspace{
+ flex:1;
+ min-width:0;
+}
+.topbar{
+ padding:16px 24px;
+ border-bottom:1px solid var(--border);
+ background:var(--side);
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+}
+.content{
+ max-width:1200px;
+ margin:auto;
+ padding:24px;
+}
+#mobileMenu{display:none}
+.page{display:none}
+.page.active{display:block}
+
+/* DASHBOARD */
+.statbox{margin:0}
+.statbox .small{margin-top:5px}
+.quick{
+ text-align:left;
+ min-height:95px;
+ display:flex;
+ flex-direction:column;
+ align-items:flex-start;
+ justify-content:center;
+ gap:5px;
+ background:var(--card);
+ color:#fff;
+ border:1px solid var(--border);
+}
+.quick strong{font-size:17px}
+.quick small{color:var(--muted)}
+.quick:hover{border-color:var(--yellow)}
+.list-card{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:12px;
+}
+.list-card strong{font-size:16px}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+.toolbar{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ flex-wrap:wrap;
+ margin:16px 0;
+}
+.toolbar input{flex:1;min-width:180px}
+.toolbar select{width:auto;min-width:120px}
+.tabs{
+ display:flex;
+ gap:7px;
+ flex-wrap:wrap;
+ margin:14px 0;
+}
+.tabs button.active{
+ background:var(--yellow);
+ color:#082567;
+}
+.preview{
+ background:#fff;
+ color:#17213b;
+ padding:20px;
+ border-radius:14px;
+ margin-top:16px;
+ overflow-wrap:anywhere;
+}
+.preview img{
+ max-width:100%;
+ max-height:400px;
+ object-fit:contain;
+ border-radius:10px;
+}
+.preview .formula{
+ background:#fff0b2;
+ padding:14px;
+ border-radius:10px;
+ margin:12px 0;
+ overflow-x:auto;
+}
+.preview .tip{
+ background:#fff5cc;
+ padding:12px;
+ border-radius:10px;
+ margin:10px 0;
+}
+.preview .mistake{
+ background:#ffe1e1;
+ padding:12px;
+ border-radius:10px;
+ margin:10px 0;
+}
+.option-row{
+ display:flex;
+ gap:8px;
+ align-items:center;
+ margin:7px 0;
+}
+.option-row input[type=radio]{flex-shrink:0}
+.option-row input[type=text]{flex:1}
+.option-row button{flex-shrink:0}
+.sticky-actions{
+ position:sticky;
+ bottom:0;
+ z-index:4;
+ background:var(--side);
+ border:1px solid var(--border);
+ border-radius:14px;
+ padding:12px;
+ margin:18px 0;
+ box-shadow:0 -6px 25px #0005;
+}
+#toast{
+ display:none;
+ position:fixed;
+ right:18px;
+ bottom:18px;
+ background:#fff;
+ color:#082567;
+ padding:13px 18px;
+ border-radius:12px;
+ box-shadow:0 8px 30px #0008;
+ z-index:30;
+ max-width:90vw;
+}
+#loginScreen{
+ max-width:480px;
+ margin:12vh auto;
+ padding:28px;
+}
+#loadingScreen{
+ max-width:480px;
+ margin:15vh auto;
+ text-align:center;
+}
+#deniedScreen{
+ max-width:480px;
+ margin:12vh auto;
+}
+@media(max-width:800px){
+ .sidebar{
+  position:fixed;
+  left:-270px;
+  top:0;
+  z-index:15;
+  transition:left .2s;
+  box-shadow:5px 0 25px #0005;
+ }
+ .sidebar.open{left:0}
+ #mobileMenu{display:inline-flex}
+ .topbar{padding:12px}
+ .content{padding:15px 11px 50px}
+ .two,.three{grid-template-columns:1fr}
+ h1{font-size:23px}
+ .card{padding:14px}
+ .toolbar select{flex:1}
+ .sticky-actions{position:static}
+}
+</style>
+</head>
+
+<body>
+
+<section id="loadingScreen" class="card">
+ <h2>Easyyy_Math</h2>
+ <p class="muted">Підключення до Firebase...</p>
+</section>
+
+<section id="loginScreen" class="card hidden">
+ <h1>Easyyy_Math ADMIN</h1>
+ <p class="muted">
+  Увійди через Google, щоб керувати сайтом.
+ </p>
+ <button id="loginBtn">Увійти через Google</button>
+ <p class="small">
+  Доступ мають лише адміністратори.
+ </p>
+</section>
+
+<section id="deniedScreen" class="card hidden">
+ <h2>Доступ заборонено</h2>
+ <p>Цей Google-акаунт не має прав адміністратора.</p>
+ <button id="deniedLogout">Вийти</button>
+</section>
+
+<div id="adminApp" class="layout hidden">
+
+ <aside class="sidebar" id="sidebar">
+  <div class="logo">
+   Easyyy_<span>Math</span>
+   <small>ADMIN PANEL</small>
+  </div>
+
+  <button class="nav-btn active" data-page="dashboard">
+   🏠 Головна
+  </button>
+  <button class="nav-btn" data-page="topics">
+   📚 Навчальні теми
+  </button>
+  <button class="nav-btn" data-page="students">
+   👩‍🎓 Учні
+  </button>
+  <button class="nav-btn" data-page="shop">
+   ⭐ Магазин
+  </button>
+  <button class="nav-btn" data-page="mentor">
+   👤 Твій наставник
+  </button>
+  <button class="nav-btn" data-page="settings">
+   ⚙️ Налаштування
+  </button>
+
+  <div class="side-bottom">
+   <div id="adminEmail" class="small"></div>
+   <div class="row" style="margin-top:12px">
+    <a class="btn secondary" href="index.html" target="_blank">
+     Переглянути сайт
+    </a>
+    <button class="secondary" id="logoutBtn">Вийти</button>
+   </div>
+  </div>
+ </aside>
+
+ <div class="workspace">
+  <div class="topbar">
+   <div class="row">
+    <button class="secondary" id="mobileMenu">☰</button>
+    <strong id="topTitle">Панель керування</strong>
+   </div>
+   <span class="pill">ADMIN</span>
+  </div>
+
+  <main class="content">
+
+   <!-- DASHBOARD -->
+   <section id="dashboardPage" class="page active">
+    <h1>Панель керування 💙</h1>
+    <p class="muted">
+     Керуй усіма матеріалами Easyyy_Math в одному місці.
+    </p>
+
+    <div class="three">
+     <div class="card statbox">
+      <div class="stat" id="dashTopics">0</div>
+      <div class="small">Навчальних тем</div>
+     </div>
+     <div class="card statbox">
+      <div class="stat" id="dashStudents">—</div>
+      <div class="small">Зареєстрованих учнів</div>
+     </div>
+     <div class="card statbox">
+      <div class="stat" id="dashShop">0</div>
+      <div class="small">Товарів у магазині</div>
+     </div>
+    </div>
+
+    <h2>Швидкі дії</h2>
+    <div class="grid">
+     <button class="quick" id="quickTopic">
+      <strong>＋ Нова тема</strong>
+      <small>Теорія, квіз, практика</small>
+     </button>
+     <button class="quick" data-go="students">
+      <strong>👩‍🎓 Учні</strong>
+      <small>Переглянути результати</small>
+     </button>
+     <button class="quick" data-go="shop">
+      <strong>⭐ Магазин</strong>
+      <small>Додати товар</small>
+     </button>
+     <button class="quick" data-go="mentor">
+      <strong>👤 Наставник</strong>
+      <small>Інформація та відгуки</small>
+     </button>
+    </div>
+
+    <div class="card">
+     <h3>Останні навчальні теми</h3>
+     <div id="recentTopics"></div>
+    </div>
+   </section>
+
+   <!-- TOPICS -->
+   <section id="topicsPage" class="page">
+    <div id="topicsOverview">
+     <div class="row between">
+      <div>
+       <h1>📚 Навчальні теми</h1>
+       <p class="muted">Керування уроками для 5–11 класів.</p>
+      </div>
+      <button id="newTopicBtn">＋ Нова тема</button>
+     </div>
+
+     <div class="toolbar">
+      <input id="topicSearch" placeholder="Пошук теми або розділу...">
+      <select id="filterGrade">
+       <option value="">Усі класи</option>
+       <option value="5">5 клас</option>
+       <option value="6">6 клас</option>
+       <option value="7">7 клас</option>
+       <option value="8">8 клас</option>
+       <option value="9">9 клас</option>
+       <option value="10">10 клас</option>
+       <option value="11">11 клас</option>
+      </select>
+      <select id="filterSubject">
+       <option value="">Усі предмети</option>
+       <option value="algebra">Алгебра</option>
+       <option value="geometry">Геометрія</option>
+      </select>
+      <select id="filterStatus">
+       <option value="">Усі статуси</option>
+       <option value="published">Опубліковані</option>
+       <option value="draft">Чернетки</option>
+      </select>
+     </div>
+
+     <div id="topicList"></div>
+    </div>
+
+    <div id="topicEditor" class="hidden">
+     <button class="secondary" id="backTopics">
+      ← До списку тем
+     </button>
+
+     <h1 id="editorHeading" style="margin-top:18px">
+      Нова тема
+     </h1>
+
+     <div class="card">
+      <h3>1. Основна інформація</h3>
+
+      <div class="two">
+       <div>
+        <label>Предмет</label>
+        <select id="eSubject">
+         <option value="algebra">Алгебра</option>
+         <option value="geometry">Геометрія</option>
+        </select>
+       </div>
+       <div>
+        <label>Клас</label>
+        <select id="eGrade">
+         <option>5</option><option>6</option>
+         <option>7</option><option>8</option>
+         <option>9</option><option>10</option>
+         <option>11</option>
+        </select>
+       </div>
+      </div>
+
+      <label>Розділ</label>
+      <input id="eSection" placeholder="Наприклад: Початкові геометричні поняття">
+
+      <label>Назва теми</label>
+      <input id="eTitle" placeholder="Наприклад: Суміжні та вертикальні кути">
+
+      <label class="row">
+       <input type="checkbox" id="ePublished" checked>
+       Опублікувати тему на сайті
+      </label>
+      <p class="small">
+       Якщо вимкнути публікацію, тема залишиться чернеткою.
+      </p>
+     </div>
+
+     <div class="card">
+      <h3>2. Теорія</h3>
+
+      <label>Пояснення теми</label>
+      <textarea id="eTheory" rows="10"
+       placeholder="Пиши теорію. **Жирний текст** — виділення. Для формул використовуй \( ... \)."></textarea>
+
+      <p class="small">
+       Приклад: **Середина відрізка** — точка, яка ділить його на дві рівні частини.
+      </p>
+
+      <label>Основна формула (LaTeX)</label>
+      <textarea id="eFormula" rows="3"
+       placeholder="AC = CB = \frac{AB}{2}"></textarea>
+
+      <div class="row">
+       <button type="button" class="secondary smallbtn"
+        data-insert="\frac{a}{b}">Дріб</button>
+       <button type="button" class="secondary smallbtn"
+        data-insert="\sqrt{x}">Корінь</button>
+       <button type="button" class="secondary smallbtn"
+        data-insert="x^2">Степінь</button>
+       <button type="button" class="secondary smallbtn"
+        data-insert="\angle ABC">Кут</button>
+       <button type="button" class="secondary smallbtn"
+        data-insert="\triangle ABC">Трикутник</button>
+      </div>
+
+      <label>Асоціація 💡</label>
+      <textarea id="eTip"
+       placeholder="Як легко запам'ятати правило?"></textarea>
+
+      <label>Типова помилка ⚠️</label>
+      <textarea id="eMistake"
+       placeholder="На що учні найчастіше не звертають уваги?"></textarea>
+     </div>
+
+     <div class="card">
+      <div class="row between">
+       <h3>3. Малюнки та схеми</h3>
+       <button id="addImageBtn">＋ Зображення</button>
+      </div>
+      <p class="small">
+       Встав пряме HTTPS-посилання на JPG, PNG, WebP або SVG.
+       Завантаження файлів із комп'ютера додамо після налаштування Firebase Storage.
+      </p>
+      <div id="imagesList"></div>
+     </div>
+
+     <div class="card">
+      <div class="row between">
+       <h3>4. Квіз</h3>
+       <button id="addQuizBtn">＋ Питання</button>
+      </div>
+      <p class="small">
+       Одне питання — одна правильна відповідь.
+       Познач правильний варіант кружечком.
+      </p>
+      <div id="quizList"></div>
+     </div>
+
+     <div class="card">
+      <div class="row between">
+       <h3>5. Практика</h3>
+       <button id="addPracticeBtn">＋ Завдання</button>
+      </div>
+      <p class="small">
+       Для кількох допустимих відповідей розділяй їх крапкою з комою.
+      </p>
+      <div id="practiceList"></div>
+     </div>
+
+     <div class="sticky-actions row">
+      <button class="green" id="saveTopicBtn">💾 Зберегти</button>
+      <button class="secondary" id="previewTopicBtn">👁 Перегляд</button>
+      <button class="danger hidden" id="deleteTopicBtn">Видалити</button>
+     </div>
+
+     <div id="topicPreview"></div>
+    </div>
+   </section>
+
+   <!-- STUDENTS -->
+   <section id="studentsPage" class="page">
+    <h1>👩‍🎓 Учні</h1>
+    <p class="muted">
+     Зареєстровані користувачі та їхні результати.
+    </p>
+
+    <div class="two">
+     <div class="card">
+      <div class="stat" id="studentCount">0</div>
+      <div class="small">Зареєстрованих</div>
+     </div>
+     <div class="card">
+      <div class="stat" id="activeCount">0</div>
+      <div class="small">Із навчальним прогресом</div>
+     </div>
+    </div>
+
+    <input id="studentSearch" placeholder="Пошук за ім'ям або email">
+    <div id="studentList"></div>
+    <div id="studentDetail"></div>
+   </section>
+
+   <!-- SHOP -->
+   <section id="shopPage" class="page">
+    <div id="shopOverview">
+     <div class="row between">
+      <div>
+       <h1>⭐ Магазин</h1>
+       <p class="muted">Товари та нагороди для учнів.</p>
+      </div>
+      <button id="newProductBtn">＋ Товар</button>
+     </div>
+     <div id="shopList"></div>
+    </div>
+
+    <div id="shopEditor" class="hidden">
+     <button class="secondary" id="backShop">← До магазину</button>
+     <h2 id="productHeading" style="margin-top:18px">Новий товар</h2>
+
+     <div class="card">
+      <label>Назва товару</label>
+      <input id="pTitle" placeholder="Наприклад: Гайд із геометрії">
+
+      <div class="two">
+       <div>
+        <label>Категорія</label>
+        <select id="pType">
+         <option value="material">Навчальний матеріал</option>
+         <option value="game">Гра</option>
+         <option value="frame">Рамка</option>
+         <option value="badge">Значок</option>
+         <option value="theme">Тема профілю</option>
+        </select>
+       </div>
+       <div>
+        <label>Ціна у зірочках</label>
+        <input id="pPrice" type="number" min="0" step="1" value="50">
+       </div>
+      </div>
+
+      <label>Емодзі товару</label>
+      <input id="pEmoji" placeholder="📚" value="📚">
+
+      <label>Опис</label>
+      <textarea id="pDescription"></textarea>
+
+      <label>Клас (необов'язково)</label>
+      <input id="pGrade" placeholder="Наприклад: 7 клас">
+
+      <label>Посилання на матеріал (необов'язково)</label>
+      <input id="pUrl" placeholder="https://...">
+
+      <p class="small">
+       Посилання зберігається в базі даних. Не додавай сюди
+       приватні платні файли, доки не буде захищено доступ до покупок.
+      </p>
+
+      <label class="row">
+       <input id="pPublished" type="checkbox" checked>
+       Опублікувати товар
+      </label>
+     </div>
+
+     <div class="row">
+      <button class="green" id="saveProductBtn">Зберегти товар</button>
+      <button class="danger hidden" id="deleteProductBtn">Видалити</button>
+     </div>
+    </div>
+   </section>
+
+   <!-- MENTOR -->
+   <section id="mentorPage" class="page">
+    <h1>👤 Твій наставник</h1>
+    <p class="muted">
+     Інформація, яка відображається в розділі про тебе.
+    </p>
+
+    <div class="card">
+     <h3>Про наставника</h3>
+     <textarea id="sAbout" rows="7"></textarea>
+    </div>
+
+    <div class="card">
+     <div class="row between">
+      <h3>Соціальні мережі</h3>
+      <button id="addSocialBtn">＋ Посилання</button>
+     </div>
+     <div id="socialList"></div>
+    </div>
+
+    <div class="card">
+     <div class="row between">
+      <h3>Результати учнів</h3>
+      <button id="addCaseBtn">＋ Кейс</button>
+     </div>
+     <p class="small">
+      Публікуй приклади робіт і персональні дані лише за згодою.
+     </p>
+     <div id="casesList"></div>
+    </div>
+
+    <div class="card">
+     <div class="row between">
+      <h3>Відгуки</h3>
+      <button id="addReviewBtn">＋ Відгук</button>
+     </div>
+     <div id="reviewsList"></div>
+    </div>
+
+    <button class="green" id="saveMentorBtn">💾 Зберегти зміни</button>
+   </section>
+
+   <!-- SETTINGS -->
+   <section id="settingsPage" class="page">
+    <h1>⚙️ Налаштування сайту</h1>
+
+    <div class="card">
+     <h3>Запис на заняття</h3>
+     <label>Посилання на форму запису</label>
+     <input id="sForm" placeholder="https://...">
+     <p class="small">
+      Залиш порожнім, щоб сайт показував посилання на Telegram.
+     </p>
+    </div>
+
+    <div class="card">
+     <h3>Підключення</h3>
+     <p>Firebase: <strong id="firebaseStatus">Перевірка...</strong></p>
+     <p>Google-вхід: <strong id="authStatus">Перевірка...</strong></p>
+     <p class="small">
+      Правила безпеки Firestore налаштовуються окремо
+      в Firebase Console.
+     </p>
+    </div>
+
+    <button class="green" id="saveSiteBtn">
+     💾 Зберегти налаштування
+    </button>
+   </section>
+
+  </main>
+ </div>
+</div>
+
+<div id="toast" role="status"></div>
+
 <script type="module">
 import {firebaseConfig,ADMINS} from './firebase-config.js';
-import {esc,rich,latex,typeset,sub,subName,progressStats,getEarned,getBalance} from './shared.js';
-import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import {getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-import {getFirestore,collection,doc,getDocs,getDoc,setDoc,addDoc,updateDoc,deleteDoc,serverTimestamp,query,where,orderBy,limit} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-const fb=initializeApp(firebaseConfig),auth=getAuth(fb),db=getFirestore(fb),$=id=>document.getElementById(id);
-let topics=[],users=[],shop=[],materials=[],selectedTopic=null,selectedStudent=null,selectedShop=null,selectedMaterial=null,allowed=false;
-function msg(s){$('toast').textContent=s;$('toast').hidden=false;clearTimeout(msg.timer);msg.timer=setTimeout(()=>$('toast').hidden=true,4000)}
-function error(e){console.error(e);msg('Помилка: '+(e.message||e))}
-function ensure(){if(!allowed)throw Error('Немає доступу адміністратора')}
-for(let i=5;i<=11;i++){ $('grade').add(new Option(i,i));$('materialGrade').add(new Option(i,i))}
-$('grade').value='7';
-$('signin').onclick=async()=>{try{await signInWithPopup(auth,new GoogleAuthProvider())}catch(e){error(e)}};
-$('logout').onclick=()=>signOut(auth);
-onAuthStateChanged(auth,async u=>{$('who').textContent=u?.email||'';$('logout').hidden=!u;allowed=!!u&&ADMINS.includes(u.email);$('login').hidden=allowed;$('dashboard').hidden=!allowed;if(u&&!allowed)$('loginMsg').textContent='Цей акаунт не є адміністратором.';if(allowed)await refresh()});
-async function refresh(){await Promise.allSettled([loadTopics(),loadUsers(),loadShop(),loadMaterials(),loadSettings()])}
-$('tabs').onclick=e=>{let b=e.target.closest('[data-tab]');if(!b)return;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));['topics','students','materials','shop','settings'].forEach(n=>$(n+'Tab').hidden=n!==b.dataset.tab)};
-function updateCounters(){$('countTopics').textContent=topics.length;$('countUsers').textContent=users.length;$('countShop').textContent=shop.length}
-async function loadTopics(){try{topics=(await getDocs(collection(db,'topics'))).docs.map(d=>({id:d.id,...d.data()}));renderTopicList();updateCounters()}catch(e){error(e)}}
-function renderTopicList(){let q=$('searchTopic').value.toLowerCase();$('topicList').innerHTML=topics.filter(t=>`${t.title} ${t.section}`.toLowerCase().includes(q)).map(t=>`<button class="answer ${selectedTopic===t.id?'selected':''}" data-topic="${esc(t.id)}"><b>${esc(t.title)}</b><br><span class="small">${esc(t.grade)} кл. · ${subName(t.subject)}</span></button>`).join('')||'<p class="muted">Немає тем</p>';$('topicList').querySelectorAll('[data-topic]').forEach(b=>b.onclick=()=>editTopic(b.dataset.topic))}
-$('searchTopic').oninput=renderTopicList;
-function addQuiz(q={}){let e=document.createElement('div');e.className='item quiz-field';e.innerHTML=`<label>Питання</label><textarea class="q-question"></textarea>${[0,1,2,3].map(i=>`<label>Варіант ${'АБВГ'[i]}</label><input class="q-option" data-i="${i}">`).join('')}<label>Правильна відповідь</label><select class="q-correct">${[0,1,2,3].map(i=>`<option value="${i}">${'АБВГ'[i]}</option>`).join('')}</select><button class="btn danger remove" style="margin-top:10px">Видалити питання</button>`;e.querySelector('.q-question').value=q.question||q.q||'';e.querySelectorAll('.q-option').forEach((x,i)=>x.value=q.options?.[i]||'');e.querySelector('.q-correct').value=String(q.correct??0);e.querySelector('.remove').onclick=()=>e.remove();$('quizFields').append(e)}
-function addPractice(p={}){let e=document.createElement('div');e.className='item practice-field';e.innerHTML=`<label>Завдання</label><textarea class="p-task"></textarea><label>Правильні відповіді через ;</label><input class="p-answer" placeholder="0,5; 1/2; \\frac{1}{2}"><label>Пояснення</label><textarea class="p-explanation"></textarea><button class="btn danger remove">Видалити завдання</button>`;e.querySelector('.p-task').value=p.task||p.question||'';e.querySelector('.p-answer').value=p.answer||'';e.querySelector('.p-explanation').value=p.explanation||'';e.querySelector('.remove').onclick=()=>e.remove();$('practiceFields').append(e)}
-$('addQuiz').onclick=()=>addQuiz();$('addPractice').onclick=()=>addPractice();
-function clearTopic(){selectedTopic=null;$('topicHeading').textContent='Нова тема';$('subject').value='geometry';$('grade').value='7';['section','topicTitle','theory','formula','tip','mistake','images'].forEach(id=>$(id).value='');$('quizFields').innerHTML='';$('practiceFields').innerHTML='';$('deleteTopic').hidden=true;$('topicPreview').hidden=true;renderTopicList()}
-$('newTopic').onclick=clearTopic;
-function editTopic(id){let t=topics.find(x=>x.id===id);if(!t)return;clearTopic();selectedTopic=id;$('topicHeading').textContent='Редагування: '+t.title;$('subject').value=sub(t.subject);$('grade').value=t.grade;for(let k of ['section','theory','formula','tip','mistake'])$(k).value=t[k]||'';$('topicTitle').value=t.title||'';$('images').value=(t.images||[]).map(x=>typeof x==='string'?x:x.url||'').join('\n');(t.quiz||[]).forEach(addQuiz);(t.practice||[]).forEach(addPractice);$('deleteTopic').hidden=false;renderTopicList()}
-function topicData(){return {subject:$('subject').value,grade:Number($('grade').value),section:$('section').value.trim(),title:$('topicTitle').value.trim(),theory:$('theory').value,formula:$('formula').value,tip:$('tip').value,mistake:$('mistake').value,images:$('images').value.split('\n').map(x=>x.trim()).filter(Boolean),quiz:[...document.querySelectorAll('.quiz-field')].map(e=>({question:e.querySelector('.q-question').value.trim(),options:[...e.querySelectorAll('.q-option')].map(x=>x.value.trim()),correct:Number(e.querySelector('.q-correct').value)})),practice:[...document.querySelectorAll('.practice-field')].map(e=>({task:e.querySelector('.p-task').value.trim(),answer:e.querySelector('.p-answer').value.trim(),explanation:e.querySelector('.p-explanation').value.trim()}))}}
-$('saveTopic').onclick=async()=>{try{ensure();let d=topicData();if(!d.title||!d.section)throw Error('Вкажи назву теми та розділ');if(d.quiz.some(q=>!q.question||q.options.some(x=>!x)))throw Error('Заповни всі питання та варіанти квізу');if(d.practice.some(p=>!p.task||!p.answer))throw Error('Заповни умову та правильні відповіді практики');if(selectedTopic)await updateDoc(doc(db,'topics',selectedTopic),{...d,updatedAt:serverTimestamp()});else selectedTopic=(await addDoc(collection(db,'topics'),{...d,createdAt:serverTimestamp(),updatedAt:serverTimestamp()})).id;await loadTopics();editTopic(selectedTopic);msg('Тему збережено')}catch(e){error(e)}};
-$('deleteTopic').onclick=async()=>{if(!selectedTopic||!confirm('Видалити тему назавжди?'))return;try{ensure();await deleteDoc(doc(db,'topics',selectedTopic));clearTopic();await loadTopics();msg('Тему видалено')}catch(e){error(e)}};
-$('preview').onclick=async()=>{let t=topicData(),e=$('topicPreview');e.hidden=false;e.innerHTML=`<h2>${esc(t.title)}</h2><div>${rich(t.theory)}</div>${t.formula?`<div class="math">${latex(t.formula)}</div>`:''}<div class="soft">💡 ${rich(t.tip)}</div><div class="soft">⚠️ ${rich(t.mistake)}</div>${t.quiz.map((q,i)=>`<p><b>${i+1}. ${rich(q.question)}</b></p>${q.options.map((o,j)=>`<p class="${j===q.correct?'correct':''}">${'АБВГ'[j]}. ${rich(o)}</p>`).join('')}`).join('')}${t.practice.map((p,i)=>`<p>${i+1}. ${rich(p.task)} — <b>${rich(p.answer)}</b></p>`).join('')}`;await typeset(e)};
-async function loadUsers(){try{users=(await getDocs(collection(db,'users'))).docs.map(d=>({id:d.id,...d.data()}));renderUsers();updateCounters()}catch(e){error(e)}}
-function renderUsers(){let q=$('searchStudent').value.toLowerCase();$('studentList').innerHTML=users.filter(u=>`${u.name||u.displayName||''} ${u.email||''}`.toLowerCase().includes(q)).map(u=>`<button class="answer" data-user="${esc(u.id)}"><b>${esc(u.name||u.displayName||'Учень')}</b><br><span class="small muted">${esc(u.email||'')}</span></button>`).join('');$('studentList').querySelectorAll('[data-user]').forEach(b=>b.onclick=()=>openStudent(b.dataset.user))}
-$('searchStudent').oninput=renderUsers;
-async function openStudent(id){selectedStudent=id;let u=users.find(x=>x.id===id);if(!u)return;let el=$('studentDetail');el.innerHTML='<p>Завантаження історії відповідей...</p>';try{let attempts=(await getDocs(query(collection(db,'attempts'),where('uid','==',id),limit(500)))).docs.map(d=>({id:d.id,...d.data()}));attempts.sort((a,b)=>(b.at?.seconds||0)-(a.at?.seconds||0));let stats=progressStats(u.progress||{});let bought=(u.inventory||[]).map(id=>shop.find(s=>s.id===id)?.title||id);el.innerHTML=`<h2>${esc(u.name||u.displayName||'Учень')}</h2><p class="muted">${esc(u.email||'')} · UID: ${esc(id)}</p><div class="grid"><div class="soft"><div class="metric">${getBalance(u)} ⭐</div>Баланс</div><div class="soft"><div class="metric">${getEarned(u)}</div>Зароблено</div><div class="soft"><div class="metric">${Number(u.spentStars||0)}</div>Витрачено</div></div><h3>Прогрес</h3><p>Правильних квізів: ${stats.quiz} · Практика: ${stats.practice}</p><h3>Покупки</h3><p>${bought.length?bought.map(esc).join(', '):'Немає'}</p><h3>Історія відповідей (${attempts.length}${attempts.length===500?'+':''})</h3><p class="small muted">Показано до 500 останніх записів. Старі відповіді до встановлення цієї версії не відновлюються.</p>${attempts.length?attempts.map(a=>`<div class="item"><span class="${a.correct?'correct':'wrong'}">${a.correct?'✓ Правильно':'✕ Неправильно'}</span> · ${esc(a.type==='quiz'?'Квіз':'Практика')} · ${a.at?.toDate?.().toLocaleString('uk-UA')||'Дата невідома'}<p><b>${rich(a.question||'')}</b></p><p>Відповідь учня: <b>${rich(a.answer||'')}</b></p><p class="small muted">${esc(topics.find(t=>t.id===a.topicId)?.title||a.topicId||'')}</p></div>`).join(''):'<p>Поки немає записаних спроб.</p>'}`}catch(e){el.innerHTML='<p class="wrong">Не вдалося завантажити історію. Перевір Firestore Rules та індекс для attempts.</p>';error(e)}}
-function genericList(id,arr,fn){$(id).innerHTML=arr.map(x=>`<button class="answer" data-id="${esc(x.id)}">${esc(x.title||'Без назви')}</button>`).join('');$(id).querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>fn(b.dataset.id))}
-async function loadMaterials(){try{materials=(await getDocs(collection(db,'materials'))).docs.map(d=>({id:d.id,...d.data()}));genericList('materialList',materials,editMaterial)}catch(e){error(e)}}
-function clearMaterial(){selectedMaterial=null;$('materialHeading').textContent='Новий матеріал';['materialTitle','materialDescription','materialUrl','materialGrade'].forEach(id=>$(id).value='');$('materialPrice').value='0';$('deleteMaterial').hidden=true}
-$('newMaterial').onclick=clearMaterial;
-function editMaterial(id){let x=materials.find(v=>v.id===id);if(!x)return;selectedMaterial=id;$('materialHeading').textContent='Редагування матеріалу';for(let [k,id2] of [['title','materialTitle'],['description','materialDescription'],['url','materialUrl'],['grade','materialGrade'],['price','materialPrice']])$(id2).value=x[k]??'';$('deleteMaterial').hidden=false}
-$('saveMaterial').onclick=async()=>{try{ensure();let d={title:$('materialTitle').value.trim(),description:$('materialDescription').value,url:$('materialUrl').value.trim(),grade:$('materialGrade').value,price:Number($('materialPrice').value)};if(!d.title||!/^https?:\/\//.test(d.url)||!Number.isInteger(d.price)||d.price<0)throw Error('Вкажи назву, коректне посилання та цілу невід’ємну ціну');if(selectedMaterial)await updateDoc(doc(db,'materials',selectedMaterial),d);else selectedMaterial=(await addDoc(collection(db,'materials'),d)).id;await loadMaterials();editMaterial(selectedMaterial);msg('Матеріал збережено')}catch(e){error(e)}};
-$('deleteMaterial').onclick=async()=>{if(!selectedMaterial||!confirm('Видалити матеріал?'))return;try{ensure();await deleteDoc(doc(db,'materials',selectedMaterial));clearMaterial();await loadMaterials()}catch(e){error(e)}};
-async function loadShop(){try{shop=(await getDocs(collection(db,'shop'))).docs.map(d=>({id:d.id,...d.data()}));genericList('shopList',shop,editShop);updateCounters()}catch(e){error(e)}}
-function clearShop(){selectedShop=null;$('shopHeading').textContent='Новий товар';['shopTitle','shopDescription','shopEmoji','shopUrl'].forEach(id=>$(id).value='');$('shopPrice').value='50';$('shopType').value='frame';$('shopColor').value='gold';$('deleteShop').hidden=true}
-$('newShop').onclick=clearShop;
-function editShop(id){let x=shop.find(v=>v.id===id);if(!x)return;selectedShop=id;$('shopHeading').textContent='Редагування товару';for(let [k,id2] of [['title','shopTitle'],['description','shopDescription'],['emoji','shopEmoji'],['url','shopUrl'],['price','shopPrice'],['type','shopType'],['color','shopColor']])$(id2).value=x[k]??'';$('deleteShop').hidden=false}
-$('saveShop').onclick=async()=>{try{ensure();let d={title:$('shopTitle').value.trim(),description:$('shopDescription').value,type:$('shopType').value,price:Number($('shopPrice').value),emoji:$('shopEmoji').value.trim(),color:$('shopColor').value,url:$('shopUrl').value.trim()};if(!d.title||!Number.isInteger(d.price)||d.price<0)throw Error('Назва і ціла невід’ємна ціна обов’язкові');if(selectedShop)await updateDoc(doc(db,'shop',selectedShop),d);else selectedShop=(await addDoc(collection(db,'shop'),d)).id;await loadShop();editShop(selectedShop);msg('Товар збережено')}catch(e){error(e)}};
-$('deleteShop').onclick=async()=>{if(!selectedShop||!confirm('Видалити товар?'))return;try{ensure();await deleteDoc(doc(db,'shop',selectedShop));clearShop();await loadShop()}catch(e){error(e)}};
-const serialize=(a,fields)=>a.map(x=>fields.map(f=>x[f]||'').join(' | ')).join('\n');
-const parse=(v,fields)=>v.split('\n').filter(x=>x.trim()).map(line=>{let a=line.split('|').map(s=>s.trim()),o={};fields.forEach((f,i)=>o[f]=i===fields.length-1?a.slice(i).join(' | '):a[i]||'');return o});
-async function loadSettings(){try{let s=(await getDoc(doc(db,'settings','site'))).data()||{};$('about').value=s.about||'';$('formUrl').value=s.formUrl||'';$('socials').value=serialize(s.socials||[],['name','url']);$('cases').value=serialize(s.cases||[],['title','description']);$('reviews').value=serialize(s.reviews||[],['name','text'])}catch(e){error(e)}}
-$('saveSettings').onclick=async()=>{try{ensure();await setDoc(doc(db,'settings','site'),{about:$('about').value,formUrl:$('formUrl').value,socials:parse($('socials').value,['name','url']),cases:parse($('cases').value,['title','description']),reviews:parse($('reviews').value,['name','text'])},{merge:true});msg('Налаштування збережено')}catch(e){error(e)}};
-clearTopic();clearMaterial();clearShop();
-</script></body></html>
+
+const BASE='https://www.gstatic.com/firebasejs/10.12.2/';
+const [App,Auth,Store]=await Promise.all([
+ import(BASE+'firebase-app.js'),
+ import(BASE+'firebase-auth.js'),
+ import(BASE+'firebase-firestore.js')
+]);
+
+const firebaseApp=App.initializeApp(firebaseConfig);
+const auth=Auth.getAuth(firebaseApp);
+const db=Store.getFirestore(firebaseApp);
+
+const $=id=>document.getElementById(id);
+const $$=selector=>[...document.querySelectorAll(selector)];
+
+let currentUser=null;
+let topics=[];
+let students=[];
+let products=[];
+let settings={
+ about:'',
+ formUrl:'',
+ socials:[],
+ cases:[],
+ reviews:[]
+};
+let editingTopic=null;
+let editingProduct=null;
+let dirty=false;
+let activePage='dashboard';
+
+const subjectNames={
+ algebra:'Алгебра',
+ geometry:'Геометрія'
+};
+
+function escapeHTML(value=''){
+ return String(value??'').replace(/[&<>"']/g,c=>({
+  '&':'&amp;',
+  '<':'&lt;',
+  '>':'&gt;',
+  '"':'&quot;',
+  "'":'&#39;'
+ }[c]));
+}
+
+function safeURL(value){
+ try{
+  const url=new URL(value,location.href);
+  return ['https:','http:'].includes(url.protocol)?url.href:'#';
+ }catch{
+  return '#';
+ }
+}
+
+function toast(message){
+ const el=$('toast');
+ el.textContent=message;
+ el.style.display='block';
+ clearTimeout(toast.timer);
+ toast.timer=setTimeout(()=>el.style.display='none',3500);
+}
+
+function formatDate(value){
+ if(!value)return 'Немає даних';
+ const date=value?.toDate?.()||new Date(value);
+ return Number.isNaN(date.getTime())
+  ?'Немає даних'
+  :date.toLocaleString('uk-UA');
+}
+
+function markDirty(){dirty=true}
+
+function confirmLeave(){
+ if(!dirty)return true;
+ return confirm('Є незбережені зміни. Вийти без збереження?');
+}
+
+function showAuth(screen){
+ ['loadingScreen','loginScreen','deniedScreen','adminApp']
+ .forEach(id=>$(id).classList.toggle('hidden',id!==screen));
+}
+
+function showPage(page,force=false){
+ if(!force&&!confirmLeave())return;
+ dirty=false;
+ activePage=page;
+
+ $$('.page').forEach(el=>{
+  el.classList.toggle('active',el.id===page+'Page');
+ });
+
+ $$('.nav-btn').forEach(btn=>{
+  btn.classList.toggle('active',btn.dataset.page===page);
+ });
+
+ $('sidebar').classList.remove('open');
+
+ const titles={
+  dashboard:'Панель керування',
+  topics:'Навчальні теми',
+  students:'Учні',
+  shop:'Магазин',
+  mentor:'Твій наставник',
+  settings:'Налаштування'
+ };
+ $('topTitle').textContent=titles[page]||'Easyyy_Math';
+
+ if(page==='topics'){
+  $('topicsOverview').classList.remove('hidden');
+  $('topicEditor').classList.add('hidden');
+  renderTopics();
+ }
+ if(page==='shop'){
+  $('shopOverview').classList.remove('hidden');
+  $('shopEditor').classList.add('hidden');
+  renderShop();
+ }
+ if(page==='students')loadStudents();
+ if(page==='mentor')fillMentor();
+ if(page==='settings')fillSiteSettings();
+
+ window.scrollTo(0,0);
+}
+
+$$('[data-page]').forEach(btn=>{
+ btn.onclick=()=>showPage(btn.dataset.page);
+});
+$$('[data-go]').forEach(btn=>{
+ btn.onclick=()=>showPage(btn.dataset.go);
+});
+
+$('mobileMenu').onclick=()=>{
+ $('sidebar').classList.toggle('open');
+};
+
+/* FIRESTORE */
+async function loadTopics(){
+ const snap=await Store.getDocs(Store.collection(db,'topics'));
+ topics=snap.docs.map(d=>({id:d.id,...d.data()}));
+ renderTopics();
+ renderDashboard();
+}
+
+async function loadProducts(){
+ const collections=['shop','materials'];
+ const results=await Promise.allSettled(
+  collections.map(name=>
+   Store.getDocs(Store.collection(db,name))
+  )
+ );
+ products=[];
+
+ results.forEach((result,index)=>{
+  if(result.status==='fulfilled'){
+   result.value.docs.forEach(d=>{
+    products.push({
+     id:d.id,
+     collection:collections[index],
+     ...d.data()
+    });
+   });
+  }else{
+   console.error('Помилка магазину:',result.reason);
+   toast('Не вдалося прочитати '+collections[index]);
+  }
+ });
+
+ renderShop();
+ renderDashboard();
+}
+
+async function loadSettings(){
+ const snap=await Store.getDoc(
+  Store.doc(db,'settings','site')
+ );
+ if(snap.exists()){
+  settings={...settings,...snap.data()};
+ }
+}
+
+async function loadStudents(){
+ $('studentList').innerHTML='<div class="card">Завантаження...</div>';
+
+ try{
+  const snap=await Store.getDocs(Store.collection(db,'users'));
+  students=snap.docs.map(d=>({uid:d.id,...d.data()}));
+  renderStudents();
+  renderDashboard();
+ }catch(e){
+  $('studentList').innerHTML=
+   '<div class="card">Помилка: '+escapeHTML(e.message)+'</div>';
+  console.error(e);
+ }
+}
+
+/* DASHBOARD */
+function renderDashboard(){
+ $('dashTopics').textContent=topics.length;
+ $('dashStudents').textContent=students.length||'0';
+ $('dashShop').textContent=products.length;
+
+ const recent=[...topics].sort((a,b)=>
+  (b.updatedAt||0)-(a.updatedAt||0)
+ ).slice(0,5);
+
+ $('recentTopics').innerHTML=recent.length
+  ?recent.map(t=>`
+   <div class="item row between">
+    <div>
+     <strong>${escapeHTML(t.title)}</strong>
+     <div class="small">
+      ${escapeHTML(subjectNames[t.subject]||t.subject)}
+      · ${Number(t.grade)||''} клас
+     </div>
+    </div>
+    <button class="secondary smallbtn" data-recent="${escapeHTML(t.id)}">
+     Редагувати
+    </button>
+   </div>
+  `).join('')
+  :'<p class="muted">Тем поки немає.</p>';
+
+ $$('[data-recent]').forEach(btn=>{
+  btn.onclick=()=>{
+   showPage('topics',true);
+   openTopic(btn.dataset.recent);
+  };
+ });
+}
+
+$('quickTopic').onclick=()=>{
+ showPage('topics',true);
+ openTopic(null);
+};
+
+/* TOPIC LIST */
+function renderTopics(){
+ const search=$('topicSearch').value.trim().toLowerCase();
+ const grade=$('filterGrade').value;
+ const subject=$('filterSubject').value;
+ const status=$('filterStatus').value;
+
+ const filtered=topics.filter(t=>{
+  const matchText=(
+   (t.title||'')+' '+(t.section||'')
+  ).toLowerCase().includes(search);
+
+  const published=t.published!==false;
+
+  return matchText &&
+   (!grade||Number(t.grade)===Number(grade)) &&
+   (!subject||t.subject===subject) &&
+   (!status||
+    (status==='published'?published:!published));
+ });
+
+ filtered.sort((a,b)=>
+  Number(a.grade)-Number(b.grade) ||
+  String(a.section||'').localeCompare(String(b.section||''),'uk')
+ );
+
+ $('topicList').innerHTML=filtered.length
+  ?filtered.map(t=>`
+   <div class="card list-card">
+    <div>
+     <strong>${escapeHTML(t.title||'Без назви')}</strong>
+     <div class="small">
+      ${escapeHTML(subjectNames[t.subject]||t.subject)}
+      · ${Number(t.grade)||''} клас
+      · ${escapeHTML(t.section||'Без розділу')}
+     </div>
+     <div class="small">
+      ${(t.quiz||[]).length} питань ·
+      ${(t.practice||[]).length} завдань
+     </div>
+     <span class="pill ${t.published===false?'draft':'live'}">
+      ${t.published===false?'Чернетка':'Опубліковано'}
+     </span>
+    </div>
+    <div class="actions">
+     <button data-edit-topic="${escapeHTML(t.id)}">
+      Редагувати
+     </button>
+    </div>
+   </div>
+  `).join('')
+  :'<div class="card">Тем не знайдено.</div>';
+
+ $$('[data-edit-topic]').forEach(btn=>{
+  btn.onclick=()=>openTopic(btn.dataset.editTopic);
+ });
+}
+
+['topicSearch','filterGrade','filterSubject','filterStatus']
+.forEach(id=>$(id).addEventListener('input',renderTopics));
+
+$('newTopicBtn').onclick=()=>openTopic(null);
+
+function openTopic(id){
+ if(!confirmLeave())return;
+
+ editingTopic=id;
+ dirty=false;
+
+ const t=id?topics.find(x=>x.id===id):{
+  subject:'geometry',
+  grade:7,
+  section:'',
+  title:'',
+  theory:'',
+  formula:'',
+  tip:'',
+  mistake:'',
+  images:[],
+  quiz:[],
+  practice:[],
+  published:true
+ };
+
+ if(!t)return;
+
+ $('topicsOverview').classList.add('hidden');
+ $('topicEditor').classList.remove('hidden');
+ $('editorHeading').textContent=id?'Редагування теми':'Нова тема';
+
+ $('eSubject').value=t.subject||'geometry';
+ $('eGrade').value=String(t.grade||7);
+ $('eSection').value=t.section||'';
+ $('eTitle').value=t.title||'';
+ $('eTheory').value=t.theory||'';
+ $('eFormula').value=t.formula||'';
+ $('eTip').value=t.tip||'';
+ $('eMistake').value=t.mistake||'';
+ $('ePublished').checked=t.published!==false;
+
+ $('imagesList').innerHTML='';
+ $('quizList').innerHTML='';
+ $('practiceList').innerHTML='';
+ $('topicPreview').innerHTML='';
+
+ (t.images||[]).forEach(addImage);
+ (t.quiz||[]).forEach(addQuiz);
+ (t.practice||[]).forEach(addPractice);
+
+ $('deleteTopicBtn').classList.toggle('hidden',!id);
+ window.scrollTo(0,0);
+}
+
+$('backTopics').onclick=()=>{
+ if(!confirmLeave())return;
+ dirty=false;
+ $('topicEditor').classList.add('hidden');
+ $('topicsOverview').classList.remove('hidden');
+ renderTopics();
+};
+
+/* IMAGE EDITOR */
+function addImage(item={}){
+ const el=document.createElement('div');
+ el.className='item image-item';
+
+ el.innerHTML=`
+  <div class="row between">
+   <strong>Зображення</strong>
+   <button class="danger smallbtn remove" type="button">
+    Видалити
+   </button>
+  </div>
+  <label>Посилання на зображення</label>
+  <input class="image-src" placeholder="https://..."
+   value="${escapeHTML(item.src||'')}">
+  <label>Підпис</label>
+  <input class="image-cap" placeholder="Наприклад: Відрізок AB"
+   value="${escapeHTML(item.cap||'')}">
+ `;
+
+ el.querySelector('.remove').onclick=()=>{
+  el.remove();
+  markDirty();
+ };
+
+ $('imagesList').append(el);
+ markDirty();
+}
+
+$('addImageBtn').onclick=()=>addImage();
+
+/* QUIZ EDITOR */
+function addQuiz(item={}){
+ const el=document.createElement('div');
+ el.className='item quiz-item';
+
+ el.innerHTML=`
+  <div class="row between">
+   <strong>Питання квізу</strong>
+   <button class="danger smallbtn remove" type="button">
+    Видалити
+   </button>
+  </div>
+
+  <label>Текст питання</label>
+  <textarea class="quiz-q" rows="3"
+   placeholder="Наприклад: Чому дорівнює сума кутів трикутника?">${escapeHTML(item.q||'')}</textarea>
+
+  <label>Варіанти відповідей</label>
+  <div class="quiz-options"></div>
+
+  <button class="secondary smallbtn add-option" type="button">
+   ＋ Варіант
+  </button>
+
+  <p class="small">
+   Кружечок біля варіанта позначає правильну відповідь.
+  </p>
+ `;
+
+ el.querySelector('.remove').onclick=()=>{
+  el.remove();
+  markDirty();
+ };
+
+ const options=Array.isArray(item.o)&&item.o.length
+  ?item.o:['','','',''];
+
+ options.forEach((value,index)=>
+  addQuizOption(el,value,index===Number(item.a??0))
+ );
+
+ el.querySelector('.add-option').onclick=()=>{
+  addQuizOption(el,'',false);
+  markDirty();
+ };
+
+ $('quizList').append(el);
+ markDirty();
+}
+
+function addQuizOption(parent,value='',correct=false){
+ const row=document.createElement('div');
+ row.className='option-row';
+
+ const group=parent.dataset.group||
+  ('quiz-'+Math.random().toString(36).slice(2));
+
+ parent.dataset.group=group;
+
+ row.innerHTML=`
+  <input type="radio" name="${group}" class="option-correct"
+   ${correct?'checked':''} title="Правильна відповідь">
+  <input type="text" class="option-text"
+   placeholder="Варіант відповіді"
+   value="${escapeHTML(value)}">
+  <button type="button" class="secondary smallbtn remove-option">
+   ×
+  </button>
+ `;
+
+ row.querySelector('.remove-option').onclick=()=>{
+  if(parent.querySelectorAll('.option-row').length<=2){
+   toast('Потрібно щонайменше два варіанти.');
+   return;
+  }
+  const wasCorrect=row.querySelector('.option-correct').checked;
+  row.remove();
+  if(wasCorrect){
+   parent.querySelector('.option-correct').checked=true;
+  }
+  markDirty();
+ };
+
+ parent.querySelector('.quiz-options').append(row);
+}
+
+$('addQuizBtn').onclick=()=>addQuiz();
+
+/* PRACTICE EDITOR */
+function addPractice(item={}){
+ const el=document.createElement('div');
+ el.className='item practice-item';
+
+ el.innerHTML=`
+  <div class="row between">
+   <strong>Практичне завдання</strong>
+   <button class="danger smallbtn remove" type="button">
+    Видалити
+   </button>
+  </div>
+
+  <label>Умова</label>
+  <textarea class="practice-q" rows="3"
+   placeholder="AB = 18 см. C — середина AB. Знайди AC.">${escapeHTML(item.q||'')}</textarea>
+
+  <label>Правильна відповідь</label>
+  <input class="practice-a" placeholder="9 см"
+   value="${escapeHTML(item.a||'')}">
+
+  <label>Коротке пояснення</label>
+  <textarea class="practice-explanation" rows="3"
+   placeholder="AC = AB : 2 = 18 : 2 = 9 см.">${escapeHTML(item.explanation||'')}</textarea>
+ `;
+
+ el.querySelector('.remove').onclick=()=>{
+  el.remove();
+  markDirty();
+ };
+
+ $('practiceList').append(el);
+ markDirty();
+}
+
+$('addPracticeBtn').onclick=()=>addPractice();
+
+$$('[data-insert]').forEach(btn=>{
+ btn.onclick=()=>{
+  const area=$('eFormula');
+  const start=area.selectionStart;
+  const end=area.selectionEnd;
+  const text=btn.dataset.insert;
+
+  area.setRangeText(text,start,end,'end');
+  area.focus();
+  markDirty();
+ };
+});
+
+$('topicEditor').addEventListener('input',markDirty);
+$('topicEditor').addEventListener('change',markDirty);
+
+/* COLLECT TOPIC */
+function collectTopic(){
+ const images=$$('.image-item').map(el=>({
+  src:el.querySelector('.image-src').value.trim(),
+  cap:el.querySelector('.image-cap').value.trim()
+ })).filter(x=>x.src);
+
+ const quiz=$$('.quiz-item').map(el=>{
+  const rows=[...el.querySelectorAll('.option-row')];
+  const options=rows.map(row=>
+   row.querySelector('.option-text').value.trim()
+  );
+
+  const correct=rows.findIndex(row=>
+   row.querySelector('.option-correct').checked
+  );
+
+  return {
+   q:el.querySelector('.quiz-q').value.trim(),
+   o:options,
+   a:correct
+  };
+ });
+
+ const practice=$$('.practice-item').map(el=>({
+  q:el.querySelector('.practice-q').value.trim(),
+  a:el.querySelector('.practice-a').value.trim(),
+  explanation:el.querySelector('.practice-explanation').value.trim()
+ }));
+
+ return {
+  subject:$('eSubject').value,
+  grade:Number($('eGrade').value),
+  section:$('eSection').value.trim(),
+  title:$('eTitle').value.trim(),
+  theory:$('eTheory').value,
+  formula:$('eFormula').value.trim(),
+  tip:$('eTip').value.trim(),
+  mistake:$('eMistake').value.trim(),
+  published:$('ePublished').checked,
+  images,quiz,practice,
+  updatedAt:Date.now()
+ };
+}
+
+function validateTopic(data){
+ if(!data.title)return 'Вкажи назву теми.';
+ if(!data.section)return 'Вкажи розділ.';
+
+ for(const image of data.images){
+  if(!image.src.startsWith('https://')){
+   return 'Для зображень використовуй HTTPS-посилання.';
+  }
+ }
+
+ for(let i=0;i<data.quiz.length;i++){
+  const q=data.quiz[i];
+
+  if(!q.q)return 'Заповни питання квізу №'+(i+1);
+  if(q.o.length<2||q.o.some(x=>!x)){
+   return 'Заповни всі варіанти питання №'+(i+1);
+  }
+  if(q.a<0||q.a>=q.o.length){
+   return 'Познач правильну відповідь у питанні №'+(i+1);
+  }
+ }
+
+ for(let i=0;i<data.practice.length;i++){
+  if(!data.practice[i].q||!data.practice[i].a){
+   return 'Заповни умову й відповідь практики №'+(i+1);
+  }
+ }
+
+ return '';
+}
+
+/* SAVE TOPIC */
+$('saveTopicBtn').onclick=async()=>{
+ const data=collectTopic();
+ const error=validateTopic(data);
+
+ if(error){
+  toast(error);
+  return;
+ }
+
+ const btn=$('saveTopicBtn');
+ btn.disabled=true;
+
+ try{
+  const ref=editingTopic
+   ?Store.doc(db,'topics',editingTopic)
+   :Store.doc(Store.collection(db,'topics'));
+
+  await Store.setDoc(ref,data,{merge:true});
+  dirty=false;
+
+  toast('Тему успішно збережено!');
+  await loadTopics();
+
+  $('topicEditor').classList.add('hidden');
+  $('topicsOverview').classList.remove('hidden');
+  renderTopics();
+  window.scrollTo(0,0);
+ }catch(e){
+  console.error(e);
+  toast('Помилка збереження: '+e.message);
+ }finally{
+  btn.disabled=false;
+ }
+};
+
+$('deleteTopicBtn').onclick=async()=>{
+ if(!editingTopic)return;
+ if(!confirm('Видалити тему назавжди?'))return;
+
+ try{
+  await Store.deleteDoc(
+   Store.doc(db,'topics',editingTopic)
+  );
+
+  dirty=false;
+  await loadTopics();
+
+  $('topicEditor').classList.add('hidden');
+  $('topicsOverview').classList.remove('hidden');
+
+  toast('Тему видалено.');
+ }catch(e){
+  toast('Помилка: '+e.message);
+ }
+};
+
+/* MATHJAX PREVIEW */
+function rich(text){
+ return escapeHTML(text)
+  .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+  .replace(/\n/g,'<br>');
+}
+
+function formulaMarkup(value){
+ const raw=String(value||'').trim();
+ if(!raw)return '';
+
+ const alreadyWrapped=/\\\(|\\\[|(^|[^\\])\$/.test(raw);
+ return alreadyWrapped?rich(raw):'\\['+rich(raw)+'\\]';
+}
+
+async function typeset(element){
+ try{
+  await window.MathJax?.startup?.promise;
+  if(!element.isConnected)return;
+  window.MathJax.typesetClear([element]);
+  await window.MathJax.typesetPromise([element]);
+ }catch(e){
+  console.error('MathJax:',e);
+ }
+}
+
+$('previewTopicBtn').onclick=()=>{
+ const t=collectTopic();
+ const error=validateTopic(t);
+
+ if(error){
+  toast(error);
+  return;
+ }
+
+ $('topicPreview').innerHTML=`
+  <div class="preview">
+   <h2>${escapeHTML(t.title)}</h2>
+   <p class="small">
+    ${escapeHTML(subjectNames[t.subject])} · ${t.grade} клас
+   </p>
+
+   <h3>Теорія</h3>
+   <p>${rich(t.theory)}</p>
+
+   ${t.formula
+    ?`<div class="formula">${formulaMarkup(t.formula)}</div>`
+    :''}
+
+   ${t.tip
+    ?`<div class="tip">💡 ${rich(t.tip)}</div>`
+    :''}
+
+   ${t.mistake
+    ?`<div class="mistake">⚠️ ${rich(t.mistake)}</div>`
+    :''}
+
+   ${t.images.map(i=>`
+    <figure>
+     <img src="${escapeHTML(safeURL(i.src))}"
+      alt="${escapeHTML(i.cap)}">
+     <figcaption>${escapeHTML(i.cap)}</figcaption>
+    </figure>
+   `).join('')}
+
+   <hr>
+   <h3>Квіз</h3>
+
+   ${t.quiz.map((q,i)=>`
+    <div class="item" style="background:#f1f4fa;color:#17213b">
+     <strong>${i+1}. ${rich(q.q)}</strong>
+     ${q.o.map((o,j)=>`
+      <p>${j===q.a?'✓':'○'} ${rich(o)}</p>
+     `).join('')}
+    </div>
+   `).join('')}
+
+   <hr>
+   <h3>Практика</h3>
+
+   ${t.practice.map((p,i)=>`
+    <div class="item" style="background:#f1f4fa;color:#17213b">
+     <strong>${i+1}. ${rich(p.q)}</strong>
+     <p>Відповідь: ${rich(p.a)}</p>
+     <p>${rich(p.explanation)}</p>
+    </div>
+   `).join('')}
+  </div>
+ `;
+
+ typeset($('topicPreview'));
+ $('topicPreview').scrollIntoView({behavior:'smooth'});
+};
+
+/* STUDENTS */
+function progressStats(student){
+ const p=student.progress||{};
+ const keys=Object.keys(p).filter(k=>p[k]);
+
+ return {
+  quiz:keys.filter(k=>/:q\d+$/.test(k)).length,
+  practice:keys.filter(k=>/:p\d+$/.test(k)).length,
+  done:keys.filter(k=>/:done$/.test(k)).length,
+  stars:keys.reduce((sum,k)=>
+   sum+(/:q\d+$/.test(k)?10:/:p\d+$/.test(k)?5:0),0)
+ };
+}
+
+function renderStudents(){
+ const search=$('studentSearch').value.toLowerCase();
+
+ const filtered=students.filter(s=>
+  ((s.name||'')+' '+(s.email||''))
+  .toLowerCase().includes(search)
+ );
+
+ $('studentCount').textContent=students.length;
+ $('activeCount').textContent=students.filter(s=>
+  Object.values(s.progress||{}).some(Boolean)
+ ).length;
+
+ $('studentList').innerHTML=filtered.length
+  ?filtered.map(s=>{
+   const st=progressStats(s);
+
+   return `
+    <div class="card list-card">
+     <div>
+      <strong>${escapeHTML(s.name||'Учень')}</strong>
+      <div class="small">${escapeHTML(s.email||'')}</div>
+      <div class="small">
+       ${st.quiz} правильних ·
+       ${st.practice} практичних ·
+       ⭐ ${st.stars}
+      </div>
+     </div>
+     <button data-student="${escapeHTML(s.uid)}">
+      Профіль
+     </button>
+    </div>`;
+  }).join('')
+  :'<div class="card">Учнів не знайдено.</div>';
+
+ $$('[data-student]').forEach(btn=>{
+  btn.onclick=()=>showStudent(btn.dataset.student);
+ });
+}
+
+$('studentSearch').oninput=renderStudents;
+
+function showStudent(uid){
+ const s=students.find(x=>x.uid===uid);
+ if(!s)return;
+
+ const st=progressStats(s);
+ const progress=s.progress||{};
+
+ const completed=Object.keys(progress)
+  .filter(k=>/:done$/.test(k)&&progress[k])
+  .map(k=>{
+   const id=k.replace(/:done$/,'');
+   const t=topics.find(x=>x.id===id);
+   return t
+    ?`${t.grade} клас · ${t.title}`
+    :`Тема ${id}`;
+  });
+
+ $('studentDetail').innerHTML=`
+  <div class="card">
+   <div class="row between">
+    <h2>${escapeHTML(s.name||'Учень')}</h2>
+    <button class="secondary" id="closeStudent">Закрити</button>
+   </div>
+
+   <p>${escapeHTML(s.email||'')}</p>
+
+   <div class="three">
+    <div class="item">
+     <div class="stat">${st.quiz}</div>
+     <div class="small">Правильні відповіді</div>
+    </div>
+    <div class="item">
+     <div class="stat">${st.practice}</div>
+     <div class="small">Практичні завдання</div>
+    </div>
+    <div class="item">
+     <div class="stat">${st.stars}</div>
+     <div class="small">Зароблені зірочки</div>
+    </div>
+   </div>
+
+   <p class="small">
+    Остання активність: ${formatDate(s.last)}
+   </p>
+
+   <h3>Завершені квізи</h3>
+   ${completed.length
+    ?'<ul>'+completed.map(t=>`<li>${escapeHTML(t)}</li>`).join('')+'</ul>'
+    :'<p class="muted">Поки немає завершених квізів.</p>'}
+  </div>
+ `;
+
+ $('closeStudent').onclick=()=>{
+  $('studentDetail').innerHTML='';
+ };
+
+ $('studentDetail').scrollIntoView({behavior:'smooth'});
+}
+
+/* SHOP */
+function renderShop(){
+ $('shopList').innerHTML=products.length
+  ?products.map(p=>`
+   <div class="card list-card">
+    <div>
+     <strong>
+      ${escapeHTML(p.emoji||'🎁')}
+      ${escapeHTML(p.title||'Товар')}
+     </strong>
+     <div class="small">
+      ${escapeHTML(p.type||'material')}
+      · ⭐ ${Number(p.price)||0}
+     </div>
+     <span class="pill ${p.published===false?'draft':'live'}">
+      ${p.published===false?'Чернетка':'Опубліковано'}
+     </span>
+    </div>
+    <button data-product="${escapeHTML(p.collection+':'+p.id)}">
+     Редагувати
+    </button>
+   </div>
+  `).join('')
+  :'<div class="card">Товарів поки немає.</div>';
+
+ $$('[data-product]').forEach(btn=>{
+  btn.onclick=()=>openProduct(btn.dataset.product);
+ });
+}
+
+function openProduct(key){
+ if(!confirmLeave())return;
+ dirty=false;
+ editingProduct=key;
+
+ const [collection,id]=key?key.split(':'):[null,null];
+ const p=key
+  ?products.find(x=>x.collection===collection&&x.id===id)
+  :{};
+
+ if(!p)return;
+
+ $('shopOverview').classList.add('hidden');
+ $('shopEditor').classList.remove('hidden');
+ $('productHeading').textContent=key?'Редагування товару':'Новий товар';
+
+ $('pTitle').value=p.title||'';
+ $('pType').value=p.type||'material';
+ $('pPrice').value=p.price??50;
+ $('pEmoji').value=p.emoji||'📚';
+ $('pDescription').value=p.description||'';
+ $('pGrade').value=p.grade||'';
+ $('pUrl').value=p.url||'';
+ $('pPublished').checked=p.published!==false;
+
+ $('deleteProductBtn').classList.toggle('hidden',!key);
+ window.scrollTo(0,0);
+}
+
+$('newProductBtn').onclick=()=>openProduct(null);
+
+$('backShop').onclick=()=>{
+ if(!confirmLeave())return;
+ dirty=false;
+ $('shopEditor').classList.add('hidden');
+ $('shopOverview').classList.remove('hidden');
+};
+
+$('shopEditor').addEventListener('input',markDirty);
+$('shopEditor').addEventListener('change',markDirty);
+
+$('saveProductBtn').onclick=async()=>{
+ const data={
+  title:$('pTitle').value.trim(),
+  type:$('pType').value,
+  price:Number($('pPrice').value),
+  emoji:$('pEmoji').value.trim(),
+  description:$('pDescription').value.trim(),
+  grade:$('pGrade').value.trim(),
+  url:$('pUrl').value.trim(),
+  published:$('pPublished').checked,
+  updatedAt:Date.now()
+ };
+
+ if(!data.title){
+  toast('Вкажи назву товару.');
+  return;
+ }
+ if(!Number.isSafeInteger(data.price)||data.price<0){
+  toast('Ціна має бути невід’ємним цілим числом.');
+  return;
+ }
+ if(data.url&&safeURL(data.url)==='#'){
+  toast('Перевір посилання на матеріал.');
+  return;
+ }
+
+ const btn=$('saveProductBtn');
+ btn.disabled=true;
+
+ try{
+  const [collection,id]=editingProduct
+   ?editingProduct.split(':')
+   :['shop',null];
+
+  const ref=id
+   ?Store.doc(db,collection,id)
+   :Store.doc(Store.collection(db,collection));
+
+  await Store.setDoc(ref,data,{merge:true});
+
+  dirty=false;
+  await loadProducts();
+
+  $('shopEditor').classList.add('hidden');
+  $('shopOverview').classList.remove('hidden');
+  toast('Товар збережено.');
+ }catch(e){
+  console.error(e);
+  toast('Помилка: '+e.message);
+ }finally{
+  btn.disabled=false;
+ }
+};
+
+$('deleteProductBtn').onclick=async()=>{
+ if(!editingProduct)return;
+ if(!confirm('Видалити цей товар?'))return;
+
+ const [collection,id]=editingProduct.split(':');
+
+ try{
+  await Store.deleteDoc(Store.doc(db,collection,id));
+  dirty=false;
+  await loadProducts();
+
+  $('shopEditor').classList.add('hidden');
+  $('shopOverview').classList.remove('hidden');
+  toast('Товар видалено.');
+ }catch(e){
+  toast('Помилка: '+e.message);
+ }
+};
+
+/* MENTOR */
+function addRepeat(container,kind,item={}){
+ const el=document.createElement('div');
+ el.className='item '+kind+'-item';
+
+ const remove=`
+  <button type="button" class="danger smallbtn remove">
+   Видалити
+  </button>`;
+
+ if(kind==='social'){
+  el.innerHTML=`
+   <div class="row between"><strong>Соцмережа</strong>${remove}</div>
+   <label>Назва</label>
+   <input class="social-name" value="${escapeHTML(item.name||'')}"
+    placeholder="Telegram">
+   <label>Посилання</label>
+   <input class="social-url" value="${escapeHTML(item.url||'')}"
+    placeholder="https://...">
+  `;
+ }
+
+ if(kind==='case'){
+  el.innerHTML=`
+   <div class="row between"><strong>Кейс учня</strong>${remove}</div>
+   <label>Заголовок</label>
+   <input class="case-title" value="${escapeHTML(item.title||'')}">
+   <div class="two">
+    <div>
+     <label>Клас</label>
+     <input class="case-grade" value="${escapeHTML(item.grade||'')}">
+    </div>
+    <div>
+     <label>Предмет</label>
+     <input class="case-subject" value="${escapeHTML(item.subject||'')}">
+    </div>
+   </div>
+   <label>Опис роботи</label>
+   <textarea class="case-description">${escapeHTML(item.description||'')}</textarea>
+   <label>Результат</label>
+   <textarea class="case-result">${escapeHTML(item.result||'')}</textarea>
+   <label>Посилання на зображення</label>
+   <input class="case-image" value="${escapeHTML(item.image||'')}">
+  `;
+ }
+
+ if(kind==='review'){
+  el.innerHTML=`
+   <div class="row between"><strong>Відгук</strong>${remove}</div>
+   <label>Автор</label>
+   <input class="review-name" value="${escapeHTML(item.name||'')}">
+   <label>Текст відгуку</label>
+   <textarea class="review-text">${escapeHTML(item.text||'')}</textarea>
+   <label>Додаткова інформація</label>
+   <input class="review-detail" value="${escapeHTML(item.detail||'')}">
+  `;
+ }
+
+ el.querySelector('.remove').onclick=()=>{
+  el.remove();
+  markDirty();
+ };
+
+ $(container).append(el);
+ markDirty();
+}
+
+function fillMentor(){
+ $('sAbout').value=settings.about||'';
+ ['socialList','casesList','reviewsList']
+ .forEach(id=>$(id).innerHTML='');
+
+ (settings.socials||[]).forEach(x=>addRepeat('socialList','social',x));
+ (settings.cases||[]).forEach(x=>addRepeat('casesList','case',x));
+ (settings.reviews||[]).forEach(x=>addRepeat('reviewsList','review',x));
+
+ dirty=false;
+}
+
+$('addSocialBtn').onclick=()=>addRepeat('socialList','social');
+$('addCaseBtn').onclick=()=>addRepeat('casesList','case');
+$('addReviewBtn').onclick=()=>addRepeat('reviewsList','review');
+
+$('mentorPage').addEventListener('input',markDirty);
+
+$('saveMentorBtn').onclick=async()=>{
+ const socials=$$('.social-item').map(el=>({
+  name:el.querySelector('.social-name').value.trim(),
+  url:el.querySelector('.social-url').value.trim()
+ })).filter(x=>x.name&&x.url);
+
+ const cases=$$('.case-item').map(el=>({
+  title:el.querySelector('.case-title').value.trim(),
+  grade:el.querySelector('.case-grade').value.trim(),
+  subject:el.querySelector('.case-subject').value.trim(),
+  description:el.querySelector('.case-description').value.trim(),
+  result:el.querySelector('.case-result').value.trim(),
+  image:el.querySelector('.case-image').value.trim()
+ })).filter(x=>x.title||x.description||x.result);
+
+ const reviews=$$('.review-item').map(el=>({
+  name:el.querySelector('.review-name').value.trim(),
+  text:el.querySelector('.review-text').value.trim(),
+  detail:el.querySelector('.review-detail').value.trim()
+ })).filter(x=>x.name&&x.text);
+
+ if(socials.some(x=>safeURL(x.url)==='#')||
+    cases.some(x=>x.image&&safeURL(x.image)==='#')){
+  toast('Перевір посилання.');
+  return;
+ }
+
+ const data={
+  about:$('sAbout').value,
+  socials,cases,reviews
+ };
+
+ try{
+  await Store.setDoc(
+   Store.doc(db,'settings','site'),
+   data,{merge:true}
+  );
+  settings={...settings,...data};
+  dirty=false;
+  toast('Інформацію збережено!');
+ }catch(e){
+  toast('Помилка: '+e.message);
+ }
+};
+
+/* SITE SETTINGS */
+function fillSiteSettings(){
+ $('sForm').value=settings.formUrl||'';
+ $('firebaseStatus').textContent='Підключено';
+ $('authStatus').textContent=currentUser?'Авторизовано':'Не авторизовано';
+}
+
+$('settingsPage').addEventListener('input',markDirty);
+
+$('saveSiteBtn').onclick=async()=>{
+ const formUrl=$('sForm').value.trim();
+
+ if(formUrl&&safeURL(formUrl)==='#'){
+  toast('Перевір посилання на форму.');
+  return;
+ }
+
+ try{
+  await Store.setDoc(
+   Store.doc(db,'settings','site'),
+   {formUrl},{merge:true}
+  );
+
+  settings.formUrl=formUrl;
+  dirty=false;
+  toast('Налаштування збережено!');
+ }catch(e){
+  toast('Помилка: '+e.message);
+ }
+};
+
+/* AUTH */
+async function startAdmin(user){
+ currentUser=user;
+ $('adminEmail').textContent=user.email||'';
+ showAuth('adminApp');
+
+ try{
+  await Promise.all([
+   loadTopics(),
+   loadProducts(),
+   loadSettings()
+  ]);
+  showPage('dashboard',true);
+  toast('Адмінпанель готова!');
+ }catch(e){
+  console.error(e);
+  toast('Помилка завантаження: '+e.message);
+ }
+}
+
+Auth.onAuthStateChanged(auth,async user=>{
+ currentUser=user;
+
+ if(!user){
+  showAuth('loginScreen');
+  return;
+ }
+
+ const allowed=Array.isArray(ADMINS)&&
+  ADMINS.map(x=>String(x).toLowerCase())
+  .includes(String(user.email||'').toLowerCase());
+
+ if(!allowed){
+  showAuth('deniedScreen');
+  return;
+ }
+
+ showAuth('loadingScreen');
+ await startAdmin(user);
+});
+
+$('loginBtn').onclick=async()=>{
+ try{
+  await Auth.signInWithPopup(
+   auth,new Auth.GoogleAuthProvider()
+  );
+ }catch(e){
+  toast('Помилка входу: '+e.message);
+ }
+};
+
+$('logoutBtn').onclick=async()=>{
+ if(!confirmLeave())return;
+ dirty=false;
+ await Auth.signOut(auth);
+};
+
+$('deniedLogout').onclick=()=>Auth.signOut(auth);
+
+window.addEventListener('beforeunload',event=>{
+ if(dirty){
+  event.preventDefault();
+  event.returnValue='';
+ }
+});
+</script>
+</body>
+</html>
