@@ -31,8 +31,10 @@ const esc = value => String(value ?? "").replace(
 
 function safeLink(value) {
   try {
-    const url = new URL(value);
-    return url.protocol === "https:" ? url.href : "#";
+    const url = new URL(value, location.href);
+    return ["https:", "http:"].includes(url.protocol)
+      ? url.href
+      : "#";
   } catch {
     return "#";
   }
@@ -76,6 +78,11 @@ function productType(item) {
   return item.type || "material";
 }
 
+function imageOf(item) {
+  if (!item) return "#";
+  return safeLink(item.imageUrl || "");
+}
+
 function frameStyle(item) {
   if (!item) return "3px solid #4565ae";
 
@@ -94,28 +101,104 @@ function frameStyle(item) {
 function avatar(name, photo, frameId, size = 64) {
   const frame = product(frameId);
   const photoUrl = safeLink(photo);
+  const frameUrl = imageOf(frame);
 
   const content = photoUrl !== "#"
-    ? `<img src="${esc(photoUrl)}" alt=""
-        style="width:100%;height:100%;
-        object-fit:cover;border-radius:50%">`
+    ? `<img
+        src="${esc(photoUrl)}"
+        alt=""
+        style="
+          width:100%;
+          height:100%;
+          object-fit:cover;
+          border-radius:50%;
+        "
+      >`
     : `<span style="font-size:${size / 2}px">👤</span>`;
+
+  const hasPngFrame =
+    frame &&
+    productType(frame) === "frame" &&
+    frameUrl !== "#";
 
   return `
     <span style="
       display:inline-flex;
       align-items:center;
       justify-content:center;
+      position:relative;
       vertical-align:middle;
       width:${size}px;
       height:${size}px;
       flex:none;
-      border-radius:50%;
-      border:${frameStyle(frame)};
       background:#082567;
-      overflow:hidden;
+      border-radius:50%;
+      overflow:visible;
     ">
-      ${content}
+      <span style="
+        position:absolute;
+        inset:9%;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        border-radius:50%;
+        overflow:hidden;
+        border:${hasPngFrame ? "none" : frameStyle(frame)};
+        background:#082567;
+      ">
+        ${content}
+      </span>
+
+      ${
+        hasPngFrame
+          ? `<img
+              src="${esc(frameUrl)}"
+              alt="Рамка аватара"
+              style="
+                position:absolute;
+                inset:0;
+                width:100%;
+                height:100%;
+                object-fit:contain;
+                pointer-events:none;
+                z-index:2;
+              "
+            >`
+          : ""
+      }
+    </span>
+  `;
+}
+
+function badgeHtml(badgeId, size = 27) {
+  const badge = product(badgeId);
+
+  if (!badge || productType(badge) !== "badge") {
+    return "";
+  }
+
+  const url = imageOf(badge);
+
+  if (url !== "#") {
+    return `
+      <img
+        src="${esc(url)}"
+        alt="${esc(badge.title || "Значок")}"
+        title="${esc(badge.title || "Значок")}"
+        style="
+          width:${size}px;
+          height:${size}px;
+          object-fit:contain;
+          vertical-align:middle;
+          margin-left:5px;
+        "
+      >
+    `;
+  }
+
+  return `
+    <span title="${esc(badge.title || "Значок")}">
+      ${esc(badge.emoji || "🏅")}
     </span>
   `;
 }
@@ -194,8 +277,9 @@ function itemCard(item) {
   );
 
   const type = productType(item);
-
   const active = profile.equipped?.[type] === item.id;
+
+  const imageUrl = imageOf(item);
 
   let action = "";
 
@@ -234,11 +318,55 @@ function itemCard(item) {
     action = `<span class="pill">Придбано ✓</span>`;
   }
 
-  return `
-    <div class="card shop-card">
+  const visual = (
+    ["frame", "badge"].includes(type) &&
+    imageUrl !== "#"
+  )
+    ? `
+      <div style="
+        width:110px;
+        height:110px;
+        margin:0 auto 12px;
+        position:relative;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      ">
+        ${
+          type === "frame"
+            ? `<span style="
+                 position:absolute;
+                 inset:15%;
+                 border-radius:50%;
+                 background:#ffde59;
+                 display:grid;
+                 place-items:center;
+                 font-size:32px;
+               ">👤</span>`
+            : ""
+        }
+
+        <img
+          src="${esc(imageUrl)}"
+          alt="${esc(item.title || "Товар")}"
+          style="
+            position:relative;
+            width:100%;
+            height:100%;
+            object-fit:contain;
+          "
+        >
+      </div>
+    `
+    : `
       <div class="shop-icon">
         ${esc(item.emoji || "🎁")}
       </div>
+    `;
+
+  return `
+    <div class="card shop-card">
+      ${visual}
 
       <h3>${esc(item.title || "Товар")}</h3>
 
@@ -317,7 +445,8 @@ function storePage() {
       ${
         requests.length
           ? requests.map(request => {
-              const name = product(request.productId)?.title || "Товар";
+              const name =
+                product(request.productId)?.title || "Товар";
 
               const status = {
                 pending: "⏳ Очікує",
@@ -410,7 +539,6 @@ async function equip(id) {
   if (busy || !me || !owned(id)) return;
 
   const item = product(id);
-
   if (!item) return;
 
   const type = productType(item);
@@ -433,7 +561,31 @@ async function equip(id) {
 
     profile.equipped = equipped;
 
-    await publishProfile();
+    // Оновлюємо лише дозволені поля наявного
+    // публічного профілю. Новий профіль тут
+    // автоматично не створюємо.
+    try {
+      const publicRef = F.doc(
+        db,
+        "publicProfiles",
+        me.uid
+      );
+
+      const publicSnap = await F.getDoc(publicRef);
+
+      if (publicSnap.exists()) {
+        await F.updateDoc(publicRef, {
+          frame: equipped.frame || "",
+          badge: equipped.badge || ""
+        });
+      }
+    } catch (error) {
+      console.warn(
+        "Публічний профіль не оновлено:",
+        error
+      );
+    }
+
     await refresh();
   } catch (error) {
     alert("Не вдалося встановити: " + error.message);
@@ -442,59 +594,48 @@ async function equip(id) {
   }
 }
 
-async function publishProfile() {
-  if (!me) return;
-
-  const data = {
-    displayName: me.displayName || "Учень",
-    photoURL: safeLink(me.photoURL) !== "#"
-      ? me.photoURL
-      : "",
-    frame: profile.equipped?.frame || "",
-    badge: profile.equipped?.badge || "",
-    score: earnedPoints(profile.progress)
-  };
-
-  await F.setDoc(
-    F.doc(db, "publicProfiles", me.uid),
-    data
-  );
-}
-
 function decorateAccount() {
   const target = $("#app");
-
   if (!target || !me) return;
 
   const card = target.querySelector(".card");
   if (!card) return;
 
-  const badge = product(profile.equipped?.badge);
+  // Прибираємо попередню прикрасу,
+  // щоб вона не дублювалася.
+  card.querySelector("#easyyy-avatar-decoration")?.remove();
 
   card.insertAdjacentHTML("afterbegin", `
-    <div style="
-      display:flex;
-      align-items:center;
-      gap:12px;
-      margin-bottom:12px;
-    ">
+    <div
+      id="easyyy-avatar-decoration"
+      style="
+        display:flex;
+        align-items:center;
+        gap:12px;
+        margin-bottom:12px;
+      "
+    >
       ${avatar(
         me.displayName,
         me.photoURL,
         profile.equipped?.frame,
-        76
+        82
       )}
 
       <div>
-        <b>${esc(me.displayName || "Учень")}</b>
+        <div style="
+          display:flex;
+          align-items:center;
+          gap:5px;
+          flex-wrap:wrap;
+        ">
+          <b>${esc(me.displayName || "Учень")}</b>
 
-        ${
-          badge
-            ? `<span title="${esc(badge.title)}">
-                ${esc(badge.emoji || "🏅")}
-               </span>`
-            : ""
-        }
+          ${badgeHtml(
+            profile.equipped?.badge,
+            29
+          )}
+        </div>
 
         <p>
           <a href="#shop">
@@ -515,12 +656,16 @@ function decorateAccount() {
 }
 
 function leaderboard() {
+  const target = $("#app");
+  if (!target) return;
+
   const sorted = [...rankings].sort(
-    (a, b) => (Number(b.score) || 0) -
-              (Number(a.score) || 0)
+    (a, b) =>
+      (Number(b.score) || 0) -
+      (Number(a.score) || 0)
   );
 
-  $("#app").innerHTML = `
+  target.innerHTML = `
     <h1>🏆 Рейтинг Easyyy_Math</h1>
 
     <p>
@@ -529,38 +674,39 @@ function leaderboard() {
     </p>
 
     ${
-      sorted.map((entry, index) => {
-        const badge = product(entry.badge);
+      sorted.map((entry, index) => `
+        <div class="card" style="
+          display:flex;
+          gap:12px;
+          align-items:center;
+        ">
+          <strong>${index + 1}.</strong>
 
-        return `
-          <div class="card" style="
-            display:flex;
-            gap:12px;
-            align-items:center;
-          ">
-            <strong>${index + 1}.</strong>
+          ${avatar(
+            entry.displayName,
+            entry.photoURL,
+            entry.frame,
+            60
+          )}
 
-            ${avatar(
-              entry.displayName,
-              entry.photoURL,
-              entry.frame,
-              54
-            )}
-
-            <div>
+          <div>
+            <div style="
+              display:flex;
+              align-items:center;
+              gap:5px;
+              flex-wrap:wrap;
+            ">
               <b>${esc(entry.displayName || "Учень")}</b>
 
-              ${badge ? esc(badge.emoji || "🏅") : ""}
-
-              <br>
-
-              <small>
-                ⭐ ${Number(entry.score) || 0}
-              </small>
+              ${badgeHtml(entry.badge, 25)}
             </div>
+
+            <small>
+              ⭐ ${Number(entry.score) || 0}
+            </small>
           </div>
-        `;
-      }).join("") ||
+        </div>
+      `).join("") ||
       '<div class="card">У рейтингу поки немає учнів.</div>'
     }
   `;
