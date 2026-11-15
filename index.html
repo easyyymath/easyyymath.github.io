@@ -1,45 +1,1484 @@
-<!DOCTYPE html><html lang="uk" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Easyyy_Math — математика просто. Теорія, квізи, практика, зірочки та магазин для 5–11 класів."><title>Easyyy_Math — твій математичний простір</title><link rel="icon" href="favicon.png"><link rel="stylesheet" href="style.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)'],['$','$']],displayMath:[['\\[','\\]'],['$$','$$']]},startup:{typeset:false}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script></head><body><header><nav><a class="brand" href="#home">Easyyy_<span>Math</span></a><div class="links"><a href="#catalog">Теми</a><a href="#materials">Матеріали</a><a href="#shop">Магазин ⭐</a><a href="#account">Мій кабінет</a><a href="#about">Твій наставник</a><a href="#book">Запис</a><button class="btn alt" id="theme">☀️</button><button class="btn" id="authBtn">Увійти</button></div></nav></header><main id="app"></main><footer>Easyyy_Math 💙 · Математику не зубрять — її розуміють</footer><div class="toast" id="toast" hidden></div>
+
+<!DOCTYPE html>
+<html lang="uk" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Easyyy_Math</title>
+<meta name="description" content="Easyyy_Math — математика просто та зрозуміло. Теорія, квізи й практика для 5–11 класів.">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<meta property="og:title" content="Easyyy_Math">
+<meta property="og:image" content="banner.jpg">
+
+<script>
+window.MathJax={
+ tex:{
+  inlineMath:[['\\(','\\)'],['$','$']],
+  displayMath:[['\\[','\\]']],
+  processEscapes:true
+ },
+ options:{skipHtmlTags:['script','style','textarea','pre','code']},
+ startup:{typeset:false}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+<style>
+:root{
+ --bg:#06194a;
+ --bg2:#0a2670;
+ --card:#0e2f86;
+ --t:#fff;
+ --m:#b9c6ee;
+ --y:#ffd23f;
+ --r:#ff6b70;
+ --g:#3ddc97;
+ --bd:#2a4aa8;
+}
+[data-theme=light]{
+ --bg:#f3f6fd;
+ --bg2:#fff;
+ --card:#fff;
+ --t:#0b1f4d;
+ --m:#5a6b99;
+ --bd:#d5ddf0;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--t);
+ font-family:system-ui,-apple-system,Segoe UI,sans-serif;
+ line-height:1.5;
+ overflow-x:hidden;
+ background-image:
+ radial-gradient(circle at 15% -5%,#2358d8 0,transparent 42%),
+ radial-gradient(circle at 100% 35%,#0f3aa0 0,transparent 35%);
+ background-attachment:fixed;
+}
+[data-theme=light] body{
+ background-image:radial-gradient(circle at 15% -5%,#dbe6ff 0,transparent 45%);
+}
+a{color:inherit}
+button,input{font:inherit}
+header{
+ position:sticky;
+ top:0;
+ z-index:5;
+ background:var(--bg2);
+ border-bottom:1px solid var(--bd);
+ display:flex;
+ align-items:center;
+ gap:10px;
+ padding:8px 14px;
+ flex-wrap:wrap;
+}
+.brand{
+ display:flex;
+ align-items:center;
+ gap:8px;
+ font-weight:800;
+ text-decoration:none;
+ margin-right:5px;
+}
+.brand img{width:38px;height:38px;object-fit:contain}
+nav{display:flex;gap:4px;flex:1;flex-wrap:wrap}
+nav a{
+ padding:6px 12px;
+ border-radius:16px;
+ text-decoration:none;
+ font-size:14px;
+}
+nav a:hover,nav a.on{background:var(--y);color:#0b1f4d}
+#mn{display:none;order:5}
+.b{
+ background:var(--y);
+ color:#0b1f4d;
+ border:0;
+ border-radius:12px;
+ padding:10px 16px;
+ font-weight:700;
+ font-size:14px;
+ cursor:pointer;
+ text-decoration:none;
+ display:inline-block;
+}
+.b.o{
+ background:none;
+ color:var(--t);
+ border:2px solid var(--bd);
+}
+.b:disabled{opacity:.5;cursor:not-allowed}
+main{
+ max-width:900px;
+ margin:0 auto;
+ padding:16px 14px 50px;
+}
+.hero{
+ width:100vw;
+ margin:-16px 0 0 calc(50% - 50vw);
+}
+.hero img{
+ width:100%;
+ max-height:70vh;
+ object-fit:cover;
+ object-position:center;
+ display:block;
+}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:12px;
+}
+.big{
+ background:var(--card);
+ border:2px solid var(--y);
+ border-radius:18px;
+ padding:22px;
+ text-decoration:none;
+ font-size:22px;
+ font-weight:800;
+ text-align:center;
+ box-shadow:0 8px 24px #0005;
+ transition:.15s;
+}
+.big small{
+ display:block;
+ font-weight:400;
+ font-size:13px;
+ color:var(--m);
+}
+.card{
+ background:var(--card);
+ border:1px solid var(--bd);
+ border-radius:14px;
+ padding:14px;
+ margin:10px 0;
+}
+.card small{color:var(--m)}
+.tabs{
+ display:flex;
+ gap:6px;
+ flex-wrap:wrap;
+ margin:10px 0;
+}
+.tabs a,.tabs button{
+ padding:7px 14px;
+ border-radius:16px;
+ border:2px solid var(--bd);
+ background:none;
+ color:var(--t);
+ text-decoration:none;
+ font:inherit;
+ cursor:pointer;
+}
+.tabs .on{
+ background:var(--y);
+ color:#0b1f4d;
+ border-color:var(--y);
+}
+.f{
+ background:var(--y);
+ color:#0b1f4d;
+ padding:10px 14px;
+ border-radius:10px;
+ font-weight:700;
+ margin:8px 0;
+ overflow-wrap:anywhere;
+}
+.tip{
+ background:#fff3bd;
+ color:#4a3b00;
+ border-left:5px solid var(--y);
+ padding:10px 12px;
+ border-radius:8px;
+ margin:8px 0;
+}
+.err{
+ background:#ffe0e1;
+ color:#6b0f13;
+ border-left:5px solid var(--r);
+ padding:10px 12px;
+ border-radius:8px;
+ margin:8px 0;
+}
+.q button{
+ display:block;
+ width:100%;
+ text-align:left;
+ margin:5px 0;
+ padding:10px 12px;
+ border:2px solid var(--bd);
+ border-radius:10px;
+ background:none;
+ color:var(--t);
+ font:inherit;
+ cursor:pointer;
+}
+.q button.ok{
+ background:var(--g);
+ color:#032;
+ border-color:var(--g);
+}
+.q button.bad{
+ background:var(--r);
+ color:#300;
+ border-color:var(--r);
+}
+input{
+ width:100%;
+ padding:11px;
+ border:2px solid var(--bd);
+ border-radius:10px;
+ background:var(--bg2);
+ color:var(--t);
+}
+input[type=checkbox]{width:auto}
+iframe{
+ width:100%;
+ height:700px;
+ border:0;
+ border-radius:14px;
+ background:#fff;
+}
+footer{
+ text-align:center;
+ color:var(--m);
+ font-size:13px;
+ padding:20px;
+}
+figure{margin:12px 0}
+figure img{
+ max-width:100%;
+ border-radius:12px;
+ background:#fff;
+ display:block;
+}
+figcaption{
+ color:var(--m);
+ font-size:13px;
+ margin-top:4px;
+}
+.pill{
+ background:var(--y);
+ color:#0b1f4d;
+ border-radius:14px;
+ padding:5px 11px;
+ font-weight:700;
+ font-size:13px;
+}
+.pill:empty{display:none}
+.MathJax{
+ max-width:100%;
+ overflow-x:auto;
+ overflow-y:hidden;
+}
+.stat-grid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+}
+.stat{text-align:center;padding:15px 8px}
+.stat strong{
+ display:block;
+ color:var(--y);
+ font-size:27px;
+}
+.stat span{font-size:12px;color:var(--m)}
+.progress-line{
+ height:9px;
+ background:var(--bg);
+ border-radius:20px;
+ overflow:hidden;
+ margin:8px 0;
+}
+.progress-line span{
+ display:block;
+ height:100%;
+ background:var(--y);
+ border-radius:20px;
+}
+.topic-status{font-size:12px;color:var(--m)}
+.empty{
+ padding:18px;
+ text-align:center;
+ color:var(--m);
+}
+a.card:hover,.big:hover{
+ transform:translateY(-3px);
+ border-color:var(--y);
+}
+
+/* МАГАЗИН */
+.shop-grid{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:12px;
+}
+.shop-card{
+ display:flex;
+ flex-direction:column;
+ gap:8px;
+ padding:18px;
+ transition:.2s;
+}
+.shop-card:hover{
+ transform:translateY(-3px);
+ border-color:var(--y);
+}
+.shop-card h3{margin:0}
+.shop-card p{flex:1;color:var(--m)}
+.shop-price{
+ font-size:23px;
+ font-weight:800;
+ color:var(--y);
+}
+.shop-card .b{text-align:center}
+.shop-section{margin:25px 0}
+.shop-icon{font-size:36px}
+.shop-balance{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ flex-wrap:wrap;
+ gap:12px;
+}
+.shop-balance strong{
+ color:var(--y);
+ font-size:26px;
+}
+.answer-row{
+ display:flex;
+ gap:8px;
+ flex-wrap:wrap;
+ margin-top:12px;
+}
+.answer-row input{flex:1;min-width:150px}
+.feedback{font-weight:650}
+.feedback.good{color:var(--g)}
+.feedback.bad{color:var(--r)}
+
+@media(max-width:700px){
+ .brand{margin-right:auto}
+ #mn{display:inline-block}
+ nav{
+  display:none;
+  flex:none;
+  width:100%;
+  order:9;
+  flex-direction:column;
+  gap:2px;
+ }
+ nav.open{display:flex}
+ nav a{padding:12px 14px;font-size:16px}
+ #au{padding:8px 10px;font-size:12px}
+ .shop-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+ .hero img{height:190px}
+ .grid{grid-template-columns:1fr}
+ .stat-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:440px){
+ .shop-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+<header>
+ <a class="brand" href="#home">
+  <img id="lg" src="logo-white.png" alt="">
+  Easyyy_Math
+ </a>
+
+ <button class="b o" id="mn" aria-label="Меню">☰</button>
+
+ <nav id="nv">
+  <a href="#home">Головна</a>
+  <a href="#account">Мій кабінет</a>
+  <a href="#shop">Магазин ⭐</a>
+  <a href="#about">Про мене</a>
+ </nav>
+
+ <span class="pill" id="pt"></span>
+ <button class="b o" id="th" aria-label="Змінити тему">🌓</button>
+ <button class="b" id="au">Увійти через Google</button>
+</header>
+
+<main id="app"></main>
+
+<footer>
+ © Easyyy_Math · математику не зубрять — її розуміють
+</footer>
+
 <script type="module">
 import {firebaseConfig} from './firebase-config.js';
-import {esc,rich,latex,typeset,sub,subName,safeUrl,checkAnswer,progressStats,getEarned,getBalance} from './shared.js';
-import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import {getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-import {getFirestore,collection,doc,getDocs,getDoc,setDoc,addDoc,runTransaction,serverTimestamp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-const fb=initializeApp(firebaseConfig),auth=getAuth(fb),db=getFirestore(fb),$=id=>document.getElementById(id),app=$('app');
-let topics=[],shop=[],materials=[],settings={about:'Привіт! Я Саша — твій math-наставник 🧠',socials:[{name:'Telegram',url:'https://t.me/easyyy_math'}]},user=null,profile={},progress={},tab='theory',activeTopic=null,sessionAnswers={},attempts={},drafts={},authReady=false;
-function msg(s){$('toast').textContent=s;$('toast').hidden=false;clearTimeout(msg.timer);msg.timer=setTimeout(()=>$('toast').hidden=true,3800)}
-function page(s){app.innerHTML=s;typeset(app)}
-function blank(t,s){return `<div class="card"><h2>${esc(t)}</h2><p class="muted">${esc(s)}</p><a class="btn" href="#catalog">До тем</a></div>`}
-function link(t){return '#topic/'+encodeURIComponent(t.id)}
-function currentStars(){return getBalance({...profile,progress})}
-function itemCard(x,kind){let price=Number(x.price||0),owned=(profile.inventory||[]).includes(x.id),free=price===0;return `<div class="card"><div style="font-size:32px">${esc(x.emoji||({frame:'🖼️',badge:'🏅',theme:'🎨',material:'📄'}[x.type]||'📄'))}</div><h3>${esc(x.title)}</h3><p>${rich(x.description||'')}</p><p><b>${price} ⭐</b></p>${kind==='shop'?`<button class="btn buy" data-id="${esc(x.id)}" ${owned?'disabled':''}>${owned?'✓ Придбано':free?'Отримати':'Придбати'}</button>`:price===0||owned?`<a class="btn" href="${esc(safeUrl(x.url)||'#')}" target="_blank" rel="noopener noreferrer">Відкрити</a>`:`<p class="small muted">Доступ після придбання (для захищеної видачі потрібен сервер)</p>`}</div>`}
-function home(){page(`<div class="hero"><span class="chip">Easyyy_Math · 5–11 класи</span><h1>Математика без зубріння 💙</h1><p>Зрозумілі пояснення, формули, квізи, практика та зірочки за правильні відповіді. Збирай нагороди й прикрашай свій профіль!</p><div class="actions"><a class="btn" href="#catalog">Почати навчання</a><a class="btn alt" href="#about">Твій наставник</a></div></div><div class="grid"><a class="card" href="#catalog"><h2>📚 Теми</h2><p>Алгебра та геометрія за класами</p></a><a class="card" href="#shop"><h2>⭐ Магазин</h2><p>Рамки, значки та інші нагороди</p></a><a class="card" href="#account"><h2>🏆 Мій прогрес</h2><p>Зірочки, досягнення й колекція</p></a></div><h2>Нові теми</h2><div class="grid">${topics.slice(-3).reverse().map(t=>`<a class="card" href="${link(t)}"><span class="chip">${t.grade} клас</span><h3>${esc(t.title)}</h3><p>${esc(t.section||'')}</p></a>`).join('')||'<p>Теми скоро з’являться.</p>'}</div>`)}
-function catalog(){page(`<h1>Обери клас 📚</h1><div class="grid">${[5,6,7,8,9,10,11].map(g=>`<a class="card" href="#grade/${g}"><h2>${g} клас</h2><p>${topics.filter(t=>+t.grade===g).length} тем</p></a>`).join('')}</div>`)}
-function grade(g){page(`<p><a href="#catalog">← Усі класи</a></p><h1>${g} клас</h1><div class="grid two">${['algebra','geometry'].map(s=>`<a class="card" href="#subject/${g}/${s}"><h2>${subName(s)}</h2><p>${topics.filter(t=>+t.grade===g&&sub(t.subject)===s).length} тем</p></a>`).join('')}</div>`)}
-function subject(g,s){let list=topics.filter(t=>+t.grade===g&&sub(t.subject)===s),sections=[...new Set(list.map(t=>t.section||'Інше'))];page(`<p><a href="#grade/${g}">← ${g} клас</a></p><h1>${subName(s)} · ${g} клас</h1>${sections.map(section=>`<h2>${esc(section)}</h2><div class="grid two">${list.filter(t=>(t.section||'Інше')===section).map(t=>`<a class="card" href="${link(t)}"><h3>${esc(t.title)}</h3><p>📖 Теорія · 🧠 Квіз · ✏️ Практика</p></a>`).join('')}</div>`).join('')||blank('Поки немає тем','Матеріали готуються.')}`)}
-function topic(id){let t=topics.find(x=>x.id===id);if(!t){page(blank('Тему не знайдено','Спробуй обрати іншу.'));return}if(activeTopic!==id){activeTopic=id;tab='theory';sessionAnswers={};attempts={};drafts={}}let q=t.quiz||[],p=t.practice||[],done=q.filter((_,i)=>progress[id+':q'+i]).length+p.filter((_,i)=>progress[id+':p'+i]).length,total=q.length+p.length;page(`<p><a href="#subject/${t.grade}/${sub(t.subject)}">← ${subName(t.subject)} · ${t.grade} клас</a></p><span class="chip">${esc(t.section||'')}</span><h1>${esc(t.title)}</h1><div class="columns" style="grid-template-columns:minmax(0,1fr) 230px"><div><div class="tabs">${[['theory','📖 Теорія'],['quiz','🧠 Квіз'],['practice','✏️ Практика']].map(([k,v])=>`<button class="tab ${tab===k?'active':''}" data-tab="${k}">${v}</button>`).join('')}</div><div id="lesson"></div></div><aside class="card"><h3>Прогрес</h3><div class="metric">${total?Math.round(done/total*100):0}%</div><div class="meter"><div style="width:${total?done/total*100:0}%"></div></div><p>${done} / ${total} завдань</p><p>Баланс: ${currentStars()} ⭐</p>${!user?'<p class="small muted">Увійди, щоб зберігати прогрес.</p>':''}</aside></div>`);app.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;topic(id)});lesson(t)}
-function lesson(t){let el=$('lesson');if(!el)return;let id=t.id;
-if(tab==='theory'){el.innerHTML=`<div class="card"><h2>Теорія</h2><div>${rich(t.theory||'')}</div>${t.formula?`<div class="math">${latex(t.formula)}</div>`:''}${t.tip?`<div class="soft">💡 ${rich(t.tip)}</div>`:''}${t.mistake?`<div class="soft">⚠️ ${rich(t.mistake)}</div>`:''}${(t.images||[]).map(v=>{let url=safeUrl(typeof v==='string'?v:v.url);return url?`<p><img class="lesson-img" src="${esc(url)}" alt="Схема"></p>`:''}).join('')}<button class="btn" id="nextQuiz">Перейти до квізу →</button></div>`;$('nextQuiz').onclick=()=>{tab='quiz';topic(id)}}
-if(tab==='quiz'){el.innerHTML=(t.quiz||[]).length?(t.quiz||[]).map((q,i)=>{let key=id+':q'+i,chosen=sessionAnswers[key],solved=!!progress[key],locked=solved||chosen!==undefined;return `<div class="card"><h3>${i+1}. ${rich(q.question||q.q||'')}</h3>${(q.options||[]).map((o,j)=>`<button class="answer ${locked&&j===+q.correct?'correct':''} ${chosen===j&&j!==+q.correct?'wrong':''}" data-q="${i}" data-o="${j}" ${locked?'disabled':''}>${'АБВГ'[j]||j+1}) ${rich(o)}</button>`).join('')}<p class="${solved?'correct':'wrong'}">${solved?'✓ Правильно':chosen!==undefined?'Неправильно. Можеш повторити тему й спробувати знову.':''}</p></div>`}).join(''):blank('Квіз готується','Питання ще не додано.');el.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>quizAnswer(t,+b.dataset.q,+b.dataset.o))}
-if(tab==='practice'){el.innerHTML=(t.practice||[]).length?(t.practice||[]).map((p,i)=>{let key=id+':p'+i,done=!!progress[key],tries=attempts[key]||0;return `<div class="card"><h3>${i+1}. ${rich(p.task||p.question||'')}</h3><label>Введи відповідь</label><input id="answer${i}" data-input="${i}" value="${esc(drafts[key]||'')}" placeholder="Наприклад: 1/2 або 0,5" ${done?'disabled':''}><div class="actions"><button class="btn" data-check="${i}" ${done?'disabled':''}>${done?'✓ Виконано':'Перевірити · +5 ⭐'}</button>${tries>=2||done?`<button class="btn alt" data-hint="${i}">Пояснення</button>`:''}</div><p id="feedback${i}" class="${done?'correct':'wrong'}">${done?'✓ Правильно!':''}</p><div class="soft" id="solution${i}" hidden><b>Відповідь:</b> ${rich(p.answer||'')}<p>${rich(p.explanation||'')}</p></div></div>`}).join(''):blank('Практика готується','Завдань поки немає.');el.querySelectorAll('[data-input]').forEach(b=>b.oninput=()=>drafts[id+':p'+b.dataset.input]=b.value);el.querySelectorAll('[data-check]').forEach(b=>b.onclick=()=>practiceAnswer(t,+b.dataset.check));el.querySelectorAll('[data-hint]').forEach(b=>b.onclick=()=>{$('solution'+b.dataset.hint).hidden=!$('solution'+b.dataset.hint).hidden;typeset(el)})}typeset(el)}
-async function recordAttempt(t,type,index,answer,correct){if(!user)return;try{await addDoc(collection(db,'attempts'),{uid:user.uid,topicId:t.id,type,index,question:type==='quiz'?(t.quiz[index].question||t.quiz[index].q||''):(t.practice[index].task||t.practice[index].question||''),answer:String(answer),correct,at:serverTimestamp()})}catch(e){console.error(e);msg('Не вдалося зберегти історію спроб')}}
-async function award(key,points){if(progress[key])return;progress[key]=true;if(!user){msg('Правильно! Увійди, щоб зберегти зірочки.');return}try{const ref=doc(db,'users',user.uid);let fresh=await runTransaction(db,async tx=>{let snap=await tx.get(ref),d=snap.data()||{},p=d.progress||{};if(p[key])return d;let earned=getEarned(d);let next={...d,progress:{...p,[key]:true},earnedStars:earned+points,name:user.displayName||'Учень',email:user.email||''};tx.set(ref,next,{merge:true});return next});profile=fresh;progress=fresh.progress||progress}catch(e){console.error(e);msg('Помилка синхронізації зірочок')}}
-async function quizAnswer(t,i,j){let key=t.id+':q'+i,q=t.quiz[i];if(sessionAnswers[key]!==undefined||progress[key])return;sessionAnswers[key]=j;let correct=j===Number(q.correct);if(correct)await award(key,10);await recordAttempt(t,'quiz',i,q.options?.[j]||j,correct);topic(t.id)}
-async function practiceAnswer(t,i){let p=t.practice[i],key=t.id+':p'+i;if(progress[key])return;let input=$('answer'+i),answer=input?.value.trim();if(!answer){msg('Введи відповідь');return}drafts[key]=answer;let correct=checkAnswer(answer,p.answer);await recordAttempt(t,'practice',i,answer,correct);if(correct){await award(key,5);msg('Правильно! +5 ⭐');topic(t.id)}else{attempts[key]=(attempts[key]||0)+1;let feedback=$('feedback'+i);if(feedback)feedback.textContent='Поки неправильно. Спробуй ще раз 💙';if(attempts[key]>=2)lesson(t)}}
-function materialsPage(){page(`<h1>Навчальні матеріали 📄</h1><p class="muted">Шпаргалки, конспекти та корисні файли.</p><div class="grid">${materials.map(m=>itemCard(m,'material')).join('')||'<p>Матеріали ще готуються.</p>'}</div>`)}
-function shopPage(){page(`<h1>Магазин зірочок ⭐</h1><p>Твій баланс: <b>${currentStars()} ⭐</b></p><p class="muted">Заробляй зірочки за правильні відповіді та обмінюй на нагороди.</p><div class="grid">${shop.map(s=>itemCard(s,'shop')).join('')||'<p>Товари скоро з’являться.</p>'}</div>`);app.querySelectorAll('.buy').forEach(b=>b.onclick=()=>buy(b.dataset.id))}
-async function buy(id){let x=shop.find(s=>s.id===id);if(!x||!user){msg('Увійди через Google, щоб купувати');return}let price=Number(x.price);if(!Number.isInteger(price)||price<0){msg('Некоректна ціна');return}try{let ref=doc(db,'users',user.uid);let fresh=await runTransaction(db,async tx=>{let s=await tx.get(ref),d=s.data()||{},inventory=d.inventory||[];if(inventory.includes(id))throw Error('Уже придбано');if(getBalance(d)<price)throw Error('Недостатньо зірочок');let next={...d,inventory:[...inventory,id],spentStars:Number(d.spentStars||0)+price};tx.set(ref,next,{merge:true});return next});profile=fresh;progress=fresh.progress||progress;msg('Придбано! 🎉');shopPage()}catch(e){msg(e.message||'Не вдалося придбати')}}
-async function equip(id){if(!user)return;let x=shop.find(s=>s.id===id);if(!x||!(profile.inventory||[]).includes(id))return;let field=x.type==='frame'?'equippedFrame':x.type==='badge'?'equippedBadge':x.type==='theme'?'equippedTheme':null;if(!field)return;try{await setDoc(doc(db,'users',user.uid),{[field]:id},{merge:true});profile[field]=id;if(field==='equippedTheme')applySkin();msg('Прикрасу встановлено');account()}catch(e){msg('Не вдалося встановити')}}
-function applySkin(){let chosen=shop.find(x=>x.id===profile.equippedTheme);document.documentElement.dataset.skin=chosen?.color||''}
-function account(){if(!user){page(`<div class="card"><h1>Мій кабінет</h1><p>Увійди через Google, щоб бачити прогрес і зірочки.</p><button id="loginNow" class="btn">Увійти</button></div>`);$('loginNow').onclick=login;return}let stats=progressStats(progress),frame=shop.find(x=>x.id===profile.equippedFrame),badge=shop.find(x=>x.id===profile.equippedBadge),owned=shop.filter(x=>(profile.inventory||[]).includes(x.id));page(`<h1>Мій кабінет 🏆</h1><div class="card"><div class="avatar ${esc(frame?.color||'')}">${esc(badge?.emoji||'🎓')}</div><h2>${esc(user.displayName||'Учень')}</h2><p>${esc(user.email||'')}</p><p>Зірочки: <b>${currentStars()} ⭐</b></p></div><div class="grid"><div class="card"><div class="metric">${stats.quiz}</div>Правильних відповідей у квізах</div><div class="card"><div class="metric">${stats.practice}</div>Виконаних практичних</div><div class="card"><div class="metric">${getEarned({...profile,progress})}</div>Усього зароблено ⭐</div></div><h2>Моя колекція</h2><div class="grid">${owned.map(x=>`<div class="card"><h3>${esc(x.emoji||'🎁')} ${esc(x.title)}</h3><p>${rich(x.description||'')}</p>${x.type==='material'&&safeUrl(x.url)?`<a class="btn" href="${esc(safeUrl(x.url))}" target="_blank" rel="noopener noreferrer">Відкрити матеріал</a>`:['frame','badge','theme'].includes(x.type)?`<button class="btn alt equip" data-id="${esc(x.id)}">Встановити</button>`:''}</div>`).join('')||'<p>Ще немає покупок.</p>'}</div><h2>Мої теми</h2><div class="grid two">${topics.filter(t=>Object.keys(progress).some(k=>k.startsWith(t.id+':')&&progress[k])).map(t=>`<a class="card" href="${link(t)}"><h3>${esc(t.title)}</h3><p>${t.grade} клас</p></a>`).join('')||'<p>Почни з першої теми!</p>'}</div>`);app.querySelectorAll('.equip').forEach(b=>b.onclick=()=>equip(b.dataset.id))}
-function about(){page(`<h1>Твій наставник 💙</h1><div class="card"><h2>Привіт! Я Саша 👋</h2><p>${rich(settings.about||'')}</p><div class="actions">${(settings.socials||[]).map(s=>safeUrl(s.url)?`<a class="btn alt" href="${esc(safeUrl(s.url))}" target="_blank" rel="noopener noreferrer">${esc(s.name)}</a>`:'').join('')}</div></div>${(settings.cases||[]).length?'<h2>Історії успіху</h2><div class="grid two">'+settings.cases.map(c=>`<div class="card"><h3>${esc(c.title||c.name||'')}</h3><p>${rich(c.description||c.text||'')}</p></div>`).join('')+'</div>':''}${(settings.reviews||[]).length?'<h2>Відгуки</h2><div class="grid two">'+settings.reviews.map(r=>`<div class="card"><p>${rich(r.text||'')}</p><b>${esc(r.name||r.author||'')}</b></div>`).join('')+'</div>':''}<a class="btn" href="#book">Запис на заняття</a>`)}
-function book(){page(`<h1>Запис на заняття 💙</h1><div class="card"><p>Заняття з математики для 5–11 класів, підготовка до НМТ.</p><div class="actions">${safeUrl(settings.formUrl)?`<a class="btn" href="${esc(safeUrl(settings.formUrl))}" target="_blank" rel="noopener noreferrer">Заповнити анкету</a>`:''}<a class="btn alt" href="https://t.me/easyyy_math" target="_blank" rel="noopener noreferrer">Telegram</a></div></div>`)}
-function route(){let raw=location.hash.slice(1)||'home',parts=raw.split('/'),name=parts[0];if(name==='home')home();else if(name==='catalog')catalog();else if(name==='grade')grade(+parts[1]);else if(name==='subject')subject(+parts[1],parts[2]);else if(name==='topic')topic(decodeURIComponent(parts.slice(1).join('/')));else if(name==='materials')materialsPage();else if(name==='shop')shopPage();else if(name==='account')account();else if(name==='about')about();else if(name==='book')book();else home()}
-window.addEventListener('hashchange',()=>{route();window.scrollTo(0,0)});
-async function login(){try{await signInWithPopup(auth,new GoogleAuthProvider())}catch(e){if(e.code!=='auth/popup-closed-by-user')msg('Помилка входу: '+e.message)}}
-$('authBtn').onclick=()=>user?signOut(auth):login();
-let theme=localStorage.getItem('easyyy_theme')||'dark';document.documentElement.dataset.theme=theme;$('theme').textContent=theme==='dark'?'☀️':'🌙';$('theme').onclick=()=>{theme=theme==='dark'?'light':'dark';document.documentElement.dataset.theme=theme;localStorage.setItem('easyyy_theme',theme);$('theme').textContent=theme==='dark'?'☀️':'🌙'};
-onAuthStateChanged(auth,async u=>{user=u;profile={};progress={};$('authBtn').textContent=u?'Вийти':'Увійти';if(u){try{let ref=doc(db,'users',u.uid),snap=await getDoc(ref);profile=snap.data()||{};progress=profile.progress||{};await setDoc(ref,{name:u.displayName||'Учень',email:u.email||'',last:serverTimestamp()},{merge:true})}catch(e){console.error(e);msg('Не вдалося завантажити профіль')}}authReady=true;applySkin();route()});
-async function load(){try{let [a,b,c,d]=await Promise.all([getDocs(collection(db,'topics')),getDocs(collection(db,'shop')),getDocs(collection(db,'materials')),getDoc(doc(db,'settings','site'))]);topics=a.docs.map(x=>({id:x.id,...x.data()})).filter(x=>x.published!==false).sort((x,y)=>+x.grade-+y.grade||String(x.section||'').localeCompare(String(y.section||''),'uk'));shop=b.docs.map(x=>({id:x.id,...x.data()}));materials=c.docs.map(x=>({id:x.id,...x.data()}));if(d.exists())settings={...settings,...d.data()};applySkin();route()}catch(e){console.error(e);msg('Не вдалося завантажити дані Firebase');route()}}
-load();
-</script></body></html>
+
+const LIVE=!!firebaseConfig?.apiKey &&
+ !firebaseConfig.apiKey.startsWith('YOUR');
+
+let topics=[
+ {
+  id:'g1',
+  subject:'geometry',
+  grade:7,
+  section:'Трикутники',
+  title:'Сума кутів трикутника',
+  theory:'Сума кутів будь-якого трикутника дорівнює 180°.',
+  formula:'\\angle A+\\angle B+\\angle C=180^\\circ',
+  tip:'Три кути складаються в розгорнутий кут.',
+  mistake:'У чотирикутнику сума кутів 360°, а не 180°.',
+  quiz:[
+   {
+    q:'Кути 50° і 60°. Чому дорівнює третій кут?',
+    o:['60°','70°','80°'],
+    a:1
+   }
+  ],
+  practice:[
+   {
+    q:'У трикутнику два кути по 45°. Знайди третій.',
+    a:'90°',
+    explanation:'180° − 45° − 45° = 90°.'
+   }
+  ]
+ },
+ {
+  id:'a1',
+  subject:'algebra',
+  grade:7,
+  section:'Вирази',
+  title:'Формула різниці квадратів',
+  theory:'Різниця квадратів розкладається на добуток суми й різниці.',
+  formula:'a^2-b^2=(a-b)(a+b)',
+  tip:'Квадрат мінус квадрат — дужка на дужку.',
+  mistake:'(a − b)² ≠ a² − b².',
+  quiz:[
+   {
+    q:'x² − 9 = ?',
+    o:['(x − 3)²','(x − 3)(x + 3)','(x − 9)(x + 1)'],
+    a:1
+   }
+  ],
+  practice:[
+   {
+    q:'Розклади 25 − y².',
+    a:'(5 − y)(5 + y)'
+   }
+  ]
+ }
+];
+
+let S={
+ about:'Привіт! Я Саша — твій матнаставник. Допомагаю зрозуміти математику, а не зубрити її.',
+ formUrl:'',
+ socials:[
+  {name:'Telegram',url:'https://t.me/easyyy_math'}
+ ]
+};
+
+let shopItems=[];
+let materialItems=[];
+let user=null;
+let prog={};
+let db,fs,auth,au;
+let authReady=false;
+
+const $=s=>document.querySelector(s);
+const app=$('#app');
+
+const NAMES={
+ algebra:'Алгебра',
+ geometry:'Геометрія'
+};
+const GRADES=[5,6,7,8,9,10,11];
+
+function esc(s){
+ return String(s==null?'':s).replace(/[&<>"']/g,c=>({
+  '&':'&amp;',
+  '<':'&lt;',
+  '>':'&gt;',
+  '"':'&quot;',
+  "'":'&#39;'
+ }[c]));
+}
+
+function safeLink(url){
+ try{
+  const u=new URL(url,location.href);
+  return ['http:','https:'].includes(u.protocol)?u.href:'#';
+ }catch{
+  return '#';
+ }
+}
+
+function rich(s){
+ return esc(s)
+  .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+  .replace(/\n/g,'<br>');
+}
+
+function formulaMarkup(value){
+ const source=String(value??'').trim();
+ if(!source)return '';
+ const content=rich(source);
+ const wrapped=/\\\(|\\\[|(^|[^\\])\$/.test(source);
+ return wrapped?content:`\\[${content}\\]`;
+}
+
+function typesetMath(root=app){
+ const mj=window.MathJax;
+ if(!mj?.startup?.promise)return;
+ mj.startup.promise.then(()=>{
+  if(!root?.isConnected)return;
+  mj.typesetClear([root]);
+  return mj.typesetPromise([root]);
+ }).catch(console.error);
+}
+
+if(LIVE){
+ try{
+  const base='https://www.gstatic.com/firebasejs/10.12.2/';
+
+  const [A,Au,F]=await Promise.all([
+   import(base+'firebase-app.js'),
+   import(base+'firebase-auth.js'),
+   import(base+'firebase-firestore.js')
+  ]);
+
+  const firebaseApp=A.initializeApp(firebaseConfig);
+
+  auth=Au.getAuth(firebaseApp);
+  au=Au;
+  db=F.getFirestore(firebaseApp);
+  fs=F;
+
+  try{
+   const t=await fs.getDocs(fs.collection(db,'topics'));
+   if(!t.empty){
+    topics=t.docs.map(d=>({id:d.id,...d.data()}))
+     .filter(t=>t.published!==false);
+   }
+
+   const s=await fs.getDoc(fs.doc(db,'settings','site'));
+   if(s.exists())S={...S,...s.data()};
+  }catch(e){
+   console.error('Помилка завантаження тем:',e);
+  }
+
+  // Магазин завантажується окремо.
+  // Помилка правил магазину не зупиняє весь сайт.
+  try{
+   const sh=await fs.getDocs(fs.collection(db,'shop'));
+   shopItems=sh.docs.map(d=>({id:d.id,...d.data()}));
+  }catch(e){
+   console.error('Помилка магазину:',e);
+  }
+
+  try{
+   const mt=await fs.getDocs(fs.collection(db,'materials'));
+   materialItems=mt.docs.map(d=>({id:d.id,...d.data()}));
+  }catch(e){
+   console.error('Помилка матеріалів:',e);
+  }
+
+  au.onAuthStateChanged(auth,async u=>{
+   user=u;
+   prog={};
+
+   if(u){
+    try{
+     const d=await fs.getDoc(fs.doc(db,'users',u.uid));
+     prog=(d.data()||{}).progress||{};
+
+     await fs.setDoc(fs.doc(db,'users',u.uid),{
+      name:u.displayName||'Учень',
+      email:u.email||'',
+      last:Date.now()
+     },{merge:true});
+    }catch(e){
+     console.error('Помилка прогресу:',e);
+    }
+   }
+
+   authReady=true;
+   updateAuthButton();
+   updatePoints();
+   route();
+  });
+
+ }catch(e){
+  console.error('Помилка Firebase:',e);
+  authReady=true;
+ }
+}else{
+ authReady=true;
+}
+
+function updateAuthButton(){
+ $('#au').textContent=user
+  ?'Вийти ('+(user.displayName||'').split(' ')[0]+')'
+  :'Увійти через Google';
+}
+
+$('#au').onclick=async()=>{
+ if(!LIVE||!auth){
+  alert('Потрібно підключити Firebase.');
+  return;
+ }
+
+ try{
+  if(user){
+   await au.signOut(auth);
+  }else{
+   await au.signInWithPopup(
+    auth,
+    new au.GoogleAuthProvider()
+   );
+  }
+ }catch(e){
+  alert('Не вдалося виконати вхід: '+e.message);
+ }
+};
+
+function theme(t){
+ document.documentElement.dataset.theme=t;
+ $('#lg').src=t==='dark'
+  ?'logo-white.png'
+  :'logo-black.png';
+
+ try{localStorage.setItem('th',t)}catch(e){}
+}
+
+$('#th').onclick=()=>{
+ theme(
+  document.documentElement.dataset.theme==='dark'
+  ?'light':'dark'
+ );
+};
+
+theme((()=>{
+ try{return localStorage.getItem('th')}catch(e){return null}
+})()||'dark');
+
+const points=()=>Object.keys(prog).reduce((sum,k)=>
+ sum+(/:q\d+$/.test(k)?10:/:p\d+$/.test(k)?5:0),0);
+
+function updatePoints(){
+ $('#pt').textContent=user?'⭐ '+points():'';
+}
+
+async function saveProgress(key){
+ if(prog[key])return;
+
+ prog[key]=1;
+ updatePoints();
+
+ if(user&&LIVE&&db){
+  try{
+   await fs.setDoc(fs.doc(db,'users',user.uid),{
+    progress:prog,
+    last:Date.now()
+   },{merge:true});
+  }catch(e){
+   console.error('Помилка збереження:',e);
+  }
+ }
+}
+
+// ГОЛОВНА
+
+function home(){
+ app.innerHTML=`
+  <div class="hero">
+   <img src="banner.jpg"
+    alt="Easyyy_Math — Саша, математичний наставник">
+  </div>
+
+  <div class="cta">
+   <a class="b" href="#book">Записатися на заняття</a>
+   <a class="b o" href="#about">Про мене</a>
+  </div>
+
+  <h2>Обирай предмет</h2>
+
+  <div class="grid">
+   <a class="big" href="#subj/algebra">
+    📐 Алгебра
+    <small>Теорія · квізи · практика</small>
+   </a>
+
+   <a class="big" href="#subj/geometry">
+    🔺 Геометрія
+    <small>Теорія · квізи · практика</small>
+   </a>
+  </div>
+
+  <div class="card">
+   <h3>🎓 Навчайся у своєму темпі</h3>
+   <p>
+    Обирай клас, вивчай теорію, перевіряй себе
+    в квізах і закріплюй знання на практиці.
+   </p>
+
+   ${user
+    ?'<a class="b" href="#account">Перейти до мого кабінету</a>'
+    :'<p class="topic-status">Увійди через Google, щоб зберігати власний прогрес.</p>'
+   }
+  </div>
+
+  <div class="card">
+   <h3>⭐ Заробляй зірочки!</h3>
+   <p>
+    Навчайся, виконуй завдання та накопичуй зірочки.
+    У магазині з'являтимуться гайди, ігри,
+    рамки й інші нагороди.
+   </p>
+   <a class="b" href="#shop">Перейти в магазин</a>
+  </div>`;
+}
+
+// ПРЕДМЕТИ
+
+function subjectPage(subject,grade){
+ const list=topics.filter(t=>t.subject===subject);
+ const selected=grade?Number(grade):null;
+
+ app.innerHTML=`
+  <h2>${NAMES[subject]||'Предмет'}</h2>
+  <p class="topic-status">Обери клас, щоб переглянути теми.</p>
+
+  <div class="tabs">
+   ${GRADES.map(g=>`
+    <a class="${selected===g?'on':''}"
+       href="#subj/${subject}/${g}">
+     ${g} клас
+    </a>
+   `).join('')}
+  </div>
+
+  <div id="subjectTopics"></div>`;
+
+ if(!selected)return;
+
+ const filtered=list.filter(t=>Number(t.grade)===selected);
+ const sections=[...new Set(
+  filtered.map(t=>t.section||'Інші теми')
+ )];
+
+ const target=$('#subjectTopics');
+
+ if(!filtered.length){
+  target.innerHTML=`
+   <div class="card empty">
+    У цьому класі поки немає доданих тем.
+    Скоро вони з'являться 💛
+   </div>`;
+  return;
+ }
+
+ target.innerHTML=sections.map(section=>`
+  <h3>${esc(section)}</h3>
+
+  ${filtered.filter(t=>
+   (t.section||'Інші теми')===section
+  ).map(t=>{
+   const done=!!prog[t.id+':done'];
+
+   return `
+    <a class="card"
+       style="display:block;text-decoration:none"
+       href="#topic/${encodeURIComponent(t.id)}">
+     <b>${esc(t.title)}</b><br>
+     <small>
+      ${done?'✓ Квіз пройдено · ':''}
+      Теорія · Квіз · Практика
+     </small>
+    </a>`;
+  }).join('')}
+ `).join('');
+}
+
+// НАВЧАЛЬНІ ТЕМИ
+
+function topicPage(id,tab='theory'){
+ const t=topics.find(x=>x.id===id);
+ if(!t){home();return}
+
+ const tabs=[
+  ['theory','Теорія'],
+  ['quiz','Квіз'],
+  ['practice','Практика']
+ ];
+
+ let body='';
+
+ if(tab==='theory'){
+  body=`
+   <div class="card">
+    <p>${rich(t.theory||'')}</p>
+
+    ${(t.images||[]).map(m=>`
+     <figure>
+      <img src="${esc(safeLink(m.src))}"
+           alt="${esc(m.cap||'Ілюстрація до теми')}">
+      ${m.cap
+       ?`<figcaption>${esc(m.cap)}</figcaption>`
+       :''}
+     </figure>
+    `).join('')}
+
+    ${t.formula
+     ?`<div class="f">${formulaMarkup(t.formula)}</div>`
+     :''}
+
+    ${t.tip
+     ?`<div class="tip">💡 ${rich(t.tip)}</div>`
+     :''}
+
+    ${t.mistake
+     ?`<div class="err">⚠️ ${rich(t.mistake)}</div>`
+     :''}
+   </div>
+
+   <a class="b"
+      href="#topic/${encodeURIComponent(id)}/quiz">
+    Перевірити себе → квіз
+   </a>`;
+ }
+
+ if(tab==='quiz'){
+  const quiz=t.quiz||[];
+
+  body=quiz.length?quiz.map((q,i)=>`
+   <div class="card q" data-i="${i}">
+    <b>${i+1}. ${rich(q.q||q.question||'')}</b>
+
+    ${(q.o||q.options||[]).map((o,j)=>`
+     <button type="button" data-j="${j}">
+      ${rich(o)}
+     </button>
+    `).join('')}
+   </div>
+  `).join(''):
+  '<div class="card empty">Квіз ще не додано.</div>';
+ }
+
+ if(tab==='practice'){
+  const practice=t.practice||[];
+
+  body=practice.length?practice.map((p,i)=>{
+   const done=!!prog[id+':p'+i];
+
+   return `
+    <div class="card">
+     <b>${i+1}. ${rich(p.q||p.question||p.task||'')}</b>
+
+     <div class="answer-row">
+      <input
+       data-answer="${i}"
+       placeholder="Введи свою відповідь"
+       aria-label="Відповідь на завдання ${i+1}"
+       ${done?'disabled':''}>
+
+      <button class="b"
+       data-check="${i}"
+       ${done?'disabled':''}>
+       ${done?'✓ Виконано':'Перевірити'}
+      </button>
+     </div>
+
+     <p class="feedback ${done?'good':''}"
+        data-feedback="${i}">
+      ${done?'✓ Завдання виконано':''}
+     </p>
+
+     <details data-help="${i}">
+      <summary>Показати пояснення</summary>
+      ${p.explanation
+       ?`<p>${rich(p.explanation)}</p>`
+       :''}
+      <div class="f">
+       ${rich(p.a||p.answer||'')}
+      </div>
+     </details>
+    </div>`;
+  }).join(''):
+  '<div class="card empty">Практику ще не додано.</div>';
+ }
+
+ app.innerHTML=`
+  <a href="#subj/${t.subject}/${t.grade}">
+   ← ${NAMES[t.subject]}, ${t.grade} клас
+  </a>
+
+  <h2>${esc(t.title)}</h2>
+
+  <div class="tabs">
+   ${tabs.map(([key,name])=>`
+    <a class="${key===tab?'on':''}"
+       href="#topic/${encodeURIComponent(id)}/${key}">
+     ${name}
+    </a>
+   `).join('')}
+  </div>
+
+  ${body}`;
+
+ if(tab==='quiz')setupQuiz(t,id);
+ if(tab==='practice')setupPractice(t,id);
+}
+
+// КВІЗИ
+
+function setupQuiz(t,id){
+ const quiz=t.quiz||[];
+ const boxes=[...app.querySelectorAll('.q')];
+
+ let right=0;
+ let answered=0;
+ let finished=false;
+
+ boxes.forEach(box=>{
+  const i=Number(box.dataset.i);
+  const q=quiz[i];
+
+  box.querySelectorAll('button').forEach(button=>{
+   button.onclick=()=>{
+    if(button.disabled||finished)return;
+
+    const chosen=Number(button.dataset.j);
+    const correct=Number(q.a??q.correct??0);
+
+    box.querySelectorAll('button').forEach((b,j)=>{
+     b.disabled=true;
+     if(j===correct)b.classList.add('ok');
+    });
+
+    if(chosen===correct){
+     right++;
+     saveProgress(id+':q'+i);
+    }else{
+     button.classList.add('bad');
+    }
+
+    answered++;
+
+    if(answered===quiz.length&&!finished){
+     finished=true;
+     saveProgress(id+':done');
+
+     app.insertAdjacentHTML('beforeend',`
+      <div class="card">
+       <h3>Результат: ${right} / ${quiz.length}</h3>
+
+       <p>
+        ${right===quiz.length
+         ?'Чудова робота! Усі відповіді правильні 🎉'
+         :'Гарна спроба! Переглянь помилки та повтори тему.'}
+       </p>
+
+       ${user
+        ?'<small>Прогрес збережено в кабінеті.</small>'
+        :'<small>Увійди через Google, щоб зберігати прогрес.</small>'
+       }
+      </div>`);
+    }
+   };
+  });
+ });
+}
+
+// ПЕРЕВІРКА ПРАКТИКИ
+
+function normalizeAnswer(value){
+ return String(value??'')
+  .trim()
+  .toLowerCase()
+  .replace(/−/g,'-')
+  .replace(/,/g,'.')
+  .replace(/\s+/g,'')
+  .replace(/°$/,'');
+}
+
+function checkAnswer(value,expected){
+ const a=normalizeAnswer(value);
+
+ if(!a)return false;
+
+ return String(expected??'').split(';').some(option=>{
+  const b=normalizeAnswer(option);
+
+  if(a===b)return true;
+
+  const x=Number(a);
+  const y=Number(b);
+
+  return a!==''&&b!==''&&
+   Number.isFinite(x)&&Number.isFinite(y)&&
+   Math.abs(x-y)<1e-9;
+ });
+}
+
+function setupPractice(t,id){
+ app.querySelectorAll('[data-check]').forEach(button=>{
+  button.onclick=async()=>{
+   const i=Number(button.dataset.check);
+   const p=t.practice[i];
+
+   const input=app.querySelector(
+    `[data-answer="${i}"]`
+   );
+
+   const feedback=app.querySelector(
+    `[data-feedback="${i}"]`
+   );
+
+   const value=input.value.trim();
+   const expected=p.a||p.answer||'';
+
+   if(!value){
+    feedback.textContent='Спочатку введи відповідь.';
+    return;
+   }
+
+   if(!expected){
+    feedback.textContent='Правильну відповідь ще не додано.';
+    return;
+   }
+
+   if(checkAnswer(value,expected)){
+    feedback.textContent='Правильно! +5 ⭐';
+    feedback.className='feedback good';
+
+    input.disabled=true;
+    button.disabled=true;
+    button.textContent='✓ Виконано';
+
+    if(!prog[id+':p'+i]){
+     await saveProgress(id+':p'+i);
+    }
+   }else{
+    feedback.textContent='Поки неправильно. Спробуй ще раз 💙';
+    feedback.className='feedback bad';
+   }
+  };
+ });
+}
+
+// МАГАЗИН
+
+function shopPage(){
+ const goods=[
+  ...materialItems.map(item=>({
+   ...item,
+   type:'material'
+  })),
+  ...shopItems
+ ];
+
+ const categories=[
+  {type:'material',name:'📚 Навчальні матеріали'},
+  {type:'game',name:'🎮 Ігри'},
+  {type:'frame',name:'🖼️ Рамки аватара'},
+  {type:'badge',name:'🏅 Значки'},
+  {type:'theme',name:'🎨 Оформлення профілю'}
+ ];
+
+ function productCard(item){
+  const price=Math.max(0,Number(item.price)||0);
+
+  return `
+   <div class="card shop-card">
+    <div class="shop-icon">
+     ${esc(item.emoji||'🎁')}
+    </div>
+
+    <h3>${esc(item.title||'Товар')}</h3>
+
+    <p>${rich(item.description||'')}</p>
+
+    ${item.grade
+     ?`<small>${esc(item.grade)} клас</small>`
+     :''}
+
+    <div class="shop-price">
+     ⭐ ${price}
+    </div>
+
+    <button class="b" disabled>
+     Незабаром
+    </button>
+   </div>`;
+ }
+
+ const sections=categories.map(category=>{
+  const items=goods.filter(
+   item=>item.type===category.type
+  );
+
+  if(!items.length)return '';
+
+  return `
+   <section class="shop-section">
+    <h2>${category.name}</h2>
+
+    <div class="shop-grid">
+     ${items.map(productCard).join('')}
+    </div>
+   </section>`;
+ }).join('');
+
+ const other=goods.filter(item=>
+  !categories.some(c=>c.type===item.type)
+ );
+
+ app.innerHTML=`
+  <h1>⭐ Магазин Easyyy_Math</h1>
+
+  <p>
+   Навчайся, заробляй зірочки та відкривай
+   цікаві нагороди!
+  </p>
+
+  <div class="card shop-balance">
+   <div>
+    <h3>Твій баланс</h3>
+    <small>Зірочки за навчальні досягнення</small>
+   </div>
+
+   <strong>
+    ${user?points()+' ⭐':'Увійди через Google'}
+   </strong>
+  </div>
+
+  ${sections}
+
+  ${other.length?`
+   <section class="shop-section">
+    <h2>✨ Інші товари</h2>
+
+    <div class="shop-grid">
+     ${other.map(productCard).join('')}
+    </div>
+   </section>
+  `:''}
+
+  ${!goods.length?`
+   <div class="card empty">
+    <h3>Магазин скоро відкриється 💛</h3>
+    <p>
+     Тут з'являться матеріали, ігри,
+     рамки та інші нагороди.
+    </p>
+   </div>
+  `:''}
+
+  <div class="card">
+   <h3>💡 Як заробляти зірочки?</h3>
+   <p>Правильна відповідь у квізі — 10 ⭐</p>
+   <p>Виконане практичне завдання — 5 ⭐</p>
+   <small>
+    Покупки стануть доступними після
+    підключення захищеної системи оплати зірочками.
+   </small>
+  </div>`;
+}
+
+// ОСОБИСТИЙ КАБІНЕТ
+
+function accountPage(){
+ if(!user){
+  app.innerHTML=`
+   <h2>👤 Мій кабінет</h2>
+
+   <div class="card">
+    <p>
+     Увійди через Google, щоб переглядати
+     власний прогрес і зберігати результати.
+    </p>
+
+    <button class="b" id="accountLogin">
+     Увійти через Google
+    </button>
+   </div>`;
+
+  $('#accountLogin').onclick=()=>$('#au').click();
+  return;
+ }
+
+ const completed=topics.filter(t=>prog[t.id+':done']);
+
+ const quizAnswers=Object.keys(prog)
+  .filter(k=>/:q\d+$/.test(k)).length;
+
+ const practiceDone=Object.keys(prog)
+  .filter(k=>/:p\d+$/.test(k)).length;
+
+ const totalTopics=topics.length;
+
+ const percent=totalTopics
+  ?Math.round(completed.length/totalTopics*100)
+  :0;
+
+ app.innerHTML=`
+  <h2>👤 Мій кабінет</h2>
+
+  <div class="card">
+   <h3>Привіт, ${esc(user.displayName||'учню')}! 💛</h3>
+   <p class="topic-status">${esc(user.email||'')}</p>
+   <p>Тут зберігається твій навчальний прогрес.</p>
+  </div>
+
+  <div class="stat-grid">
+   <div class="card stat">
+    <strong>${quizAnswers}</strong>
+    <span>Правильних відповідей</span>
+   </div>
+
+   <div class="card stat">
+    <strong>${practiceDone}</strong>
+    <span>Виконаних завдань</span>
+   </div>
+
+   <div class="card stat">
+    <strong>${completed.length}</strong>
+    <span>Пройдених квізів</span>
+   </div>
+  </div>
+
+  <div class="card">
+   <div style="display:flex;justify-content:space-between;gap:10px">
+    <b>Загальний прогрес</b>
+    <b>${percent}%</b>
+   </div>
+
+   <div class="progress-line">
+    <span style="width:${percent}%"></span>
+   </div>
+
+   <small>
+    Пройдено тем: ${completed.length} із ${totalTopics}
+   </small>
+  </div>
+
+  <div class="card">
+   <h3>⭐ Мої зірочки: ${points()}</h3>
+   <p>
+    За правильну відповідь у квізі — 10 зірочок,
+    за виконане практичне завдання — 5.
+   </p>
+
+   <a class="b" href="#shop">Відкрити магазин</a>
+  </div>
+
+  <h3>📚 Мої результати за темами</h3>
+
+  <div id="myTopics"></div>
+ `;
+
+ const target=$('#myTopics');
+
+ if(!topics.length){
+  target.innerHTML=`
+   <div class="card empty">
+    Навчальні теми поки не додані.
+   </div>`;
+  return;
+ }
+
+ target.innerHTML=topics.map(t=>{
+  const quizCount=(t.quiz||[]).length;
+  const practiceCount=(t.practice||[]).length;
+
+  const correct=(t.quiz||[])
+   .filter((q,i)=>!!prog[t.id+':q'+i]).length;
+
+  const practice=(t.practice||[])
+   .filter((p,i)=>!!prog[t.id+':p'+i]).length;
+
+  const done=!!prog[t.id+':done'];
+
+  return `
+   <div class="card">
+    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+     <b>${esc(t.title)}</b>
+
+     <span class="topic-status">
+      ${done?'✓ Квіз завершено':'У процесі'}
+     </span>
+    </div>
+
+    <small>
+     ${t.grade} клас ·
+     ${NAMES[t.subject]||esc(t.subject)}
+    </small>
+
+    <p class="topic-status">
+     Правильних відповідей: ${correct}/${quizCount}<br>
+     Практичних завдань: ${practice}/${practiceCount}
+    </p>
+
+    <a class="b o"
+       href="#topic/${encodeURIComponent(t.id)}">
+     Перейти до теми
+    </a>
+   </div>`;
+ }).join('');
+}
+
+// ПРО МЕНЕ
+
+function aboutPage(){
+ const socials=(S.socials||[]).map(s=>`
+  <a class="b o"
+     target="_blank"
+     rel="noopener noreferrer"
+     href="${esc(safeLink(s.url))}">
+   ${esc(s.name)}
+  </a>
+ `).join('');
+
+ const cases=(S.cases||[]).map(c=>`
+  <div class="card">
+   <h3>${esc(c.title||'Результат учня')}</h3>
+
+   ${(c.grade||c.subject)
+    ?`<small>${esc([c.grade,c.subject].filter(Boolean).join(' · '))}</small>`
+    :''}
+
+   ${c.image&&safeLink(c.image)!=='#'
+    ?`<figure>
+       <img src="${esc(safeLink(c.image))}"
+            alt="Приклад роботи учня"
+            loading="lazy">
+      </figure>`
+    :''}
+
+   ${c.description
+    ?`<p>${rich(c.description)}</p>`
+    :''}
+
+   ${c.result
+    ?`<div class="tip">
+       <b>Результат:</b> ${rich(c.result)}
+      </div>`
+    :''}
+  </div>
+ `).join('');
+
+ const reviews=(S.reviews||[]).map(r=>`
+  <div class="card">
+   <p>«${rich(r.text||'')}»</p>
+   <b>${esc(r.name||'Відгук')}</b>
+   ${r.detail
+    ?`<br><small>${esc(r.detail)}</small>`
+    :''}
+  </div>
+ `).join('');
+
+ app.innerHTML=`
+  <h2>Про мене</h2>
+
+  <div class="card">
+   <p>${rich(S.about||'')}</p>
+   <div class="cta">${socials}</div>
+  </div>
+
+  ${cases?'<h2>Результати учнів</h2>'+cases:''}
+
+  ${reviews?'<h2>Відгуки</h2>'+reviews:''}
+
+  <a class="b" href="#book">
+   Записатися на заняття
+  </a>`;
+}
+
+// ЗАПИС НА ЗАНЯТТЯ
+
+function bookPage(){
+ const link=safeLink(S.formUrl||'');
+
+ app.innerHTML=`
+  <h2>Запис на заняття</h2>
+
+  ${S.formUrl&&link!=='#'
+   ?`<iframe src="${esc(link)}"
+        title="Форма запису"></iframe>
+
+      <p>
+       <a href="${esc(link)}"
+          target="_blank"
+          rel="noopener">
+        Відкрити форму окремо
+       </a>
+      </p>`
+
+   :`<div class="card">
+      <p>Форму ще не підключено.</p>
+      <p>Напиши мені в Telegram:</p>
+
+      <a class="b"
+         href="https://t.me/easyyy_math"
+         target="_blank"
+         rel="noopener">
+       Перейти в Telegram
+      </a>
+     </div>`
+  }`;
+}
+
+// НАВІГАЦІЯ
+
+function route(){
+ const parts=location.hash.slice(1).split('/');
+ const routeName=parts[0]||'home';
+
+ const a=parts[1]
+  ?decodeURIComponent(parts[1])
+  :'';
+
+ const b=parts[2]
+  ?decodeURIComponent(parts[2])
+  :'';
+
+ $('#nv').classList.remove('open');
+
+ document.querySelectorAll('#nv a').forEach(link=>{
+  link.classList.toggle(
+   'on',
+   link.getAttribute('href')==='#'+routeName
+  );
+ });
+
+ const routes={
+  home:home,
+  subj:()=>subjectPage(a,b),
+  topic:()=>topicPage(a,b||'theory'),
+  account:accountPage,
+  shop:shopPage,
+  materials:()=>{location.hash='#shop';},
+  about:aboutPage,
+  book:bookPage
+ };
+
+ (routes[routeName]||home)();
+
+ window.scrollTo(0,0);
+ typesetMath(app);
+}
+
+$('#mn').onclick=()=>{
+ $('#nv').classList.toggle('open');
+};
+
+addEventListener('hashchange',route);
+window.addEventListener('load',()=>typesetMath(app));
+
+route();
+</script>
+</body>
+</html>
