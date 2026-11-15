@@ -1,9 +1,7 @@
-// Встав сюди дані зі свого Firebase-проєкту (Project settings → Your apps → Web app)
 export const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCzvr1HoHh-v0Eyx_Vi8u5RF7Y1E48PGTE",
+  authDomain: "easyyy-math.firebaseapp.com",
+  projectId: "easyyy-math",
+  appId: "1:977214227394:web:36bbe60178bca4bd3e8c5b"
 };
-// Gmail-адреси, яким дозволена адмін-панель (мають збігатися з правилами Firestore)
 export const ADMINS = ["sadnesswey@gmail.com"];
