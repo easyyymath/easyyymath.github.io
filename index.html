@@ -4,12 +4,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Easyyy_Math</title>
-<meta name="description" content="Easyyy_Math — математика просто та зрозуміло. Теорія, квізи й практика для 5–11 класів.">
+<meta name="theme-color" content="#082567">
+
+<title>Easyyy_Math — математика просто та зрозуміло</title>
+
+<meta name="description"
+content="Easyyy_Math — навчальна платформа з математики для 5–11 класів. Теорія, квізи, практика, зірочки та нагороди.">
+
 <link rel="icon" href="favicon.png">
 <link rel="apple-touch-icon" href="favicon.png">
+
 <meta property="og:title" content="Easyyy_Math">
-<meta property="og:image" content="banner.jpg">
+<meta property="og:description"
+content="Математика, яку ти нарешті зрозумієш!">
 
 <script>
 window.MathJax = {
@@ -19,449 +26,1089 @@ window.MathJax = {
     processEscapes: true
   },
   options: {
-    skipHtmlTags: ['script','style','textarea','pre','code']
+    skipHtmlTags: [
+      'script','style','textarea','pre','code'
+    ]
   },
   startup: {typeset:false}
 };
 </script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+<script defer
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
 
 <style>
 :root {
   --bg:#06194a;
   --bg2:#0a2670;
   --card:#0e2f86;
-  --t:#fff;
+  --t:#ffffff;
   --m:#b9c6ee;
   --y:#ffde59;
   --r:#ff6b70;
   --g:#3ddc97;
   --bd:#2a4aa8;
 }
-[data-theme=light] {
+
+[data-theme="light"] {
   --bg:#f3f6fd;
-  --bg2:#fff;
-  --card:#fff;
+  --bg2:#ffffff;
+  --card:#ffffff;
   --t:#0b1f4d;
   --m:#5a6b99;
   --bd:#d5ddf0;
 }
-* {box-sizing:border-box}
+
+* {
+  box-sizing:border-box;
+}
+
+html {
+  scroll-behavior:smooth;
+}
+
 body {
   margin:0;
+  min-height:100vh;
   background:var(--bg);
   color:var(--t);
-  font-family:system-ui,-apple-system,Segoe UI,sans-serif;
+  font-family:system-ui,-apple-system,
+    "Segoe UI",sans-serif;
   line-height:1.5;
   overflow-x:hidden;
   background-image:
-    radial-gradient(circle at 15% -5%,#2358d8 0,transparent 42%),
-    radial-gradient(circle at 100% 35%,#0f3aa0 0,transparent 35%);
+    radial-gradient(
+      circle at 15% -5%,
+      #2358d8 0,
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 100% 35%,
+      #0f3aa0 0,
+      transparent 35%
+    );
   background-attachment:fixed;
 }
-[data-theme=light] body {
-  background-image:radial-gradient(circle at 15% -5%,#dbe6ff 0,transparent 45%);
+
+[data-theme="light"] body {
+  background-image:
+    radial-gradient(
+      circle at 15% -5%,
+      #dbe6ff 0,
+      transparent 45%
+    );
 }
-a {color:inherit}
-button,input {font:inherit}
+
+body.menu-open {
+  overflow:hidden;
+}
+
+a {
+  color:inherit;
+}
+
+button,input {
+  font:inherit;
+}
+
+button {
+  cursor:pointer;
+}
+
+button:disabled {
+  cursor:not-allowed;
+  opacity:.55;
+}
+
+/* ===== ВЕРХНЯ ПАНЕЛЬ ===== */
+
 header {
   position:sticky;
   top:0;
-  z-index:5;
-  background:var(--bg2);
-  border-bottom:1px solid var(--bd);
+  z-index:100;
   display:flex;
   align-items:center;
-  gap:10px;
-  padding:8px 14px;
-  flex-wrap:wrap;
+  gap:12px;
+  min-height:68px;
+  padding:9px 18px;
+  background:#0b276c;
+  border-bottom:1px solid #294996;
 }
+
 .brand {
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:9px;
+  margin-right:auto;
+  color:#ffffff;
+  font-size:19px;
   font-weight:800;
   text-decoration:none;
-  margin-right:5px;
+  white-space:nowrap;
 }
+
 .brand img {
-  width:38px;
-  height:38px;
+  width:40px;
+  height:40px;
   object-fit:contain;
 }
-nav {
+
+.menu-toggle {
   display:flex;
-  gap:4px;
-  flex:1;
-  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+  flex:none;
+  width:43px;
+  height:43px;
+  border:1px solid #4162ac;
+  border-radius:12px;
+  background:transparent;
+  color:white;
+  font-size:24px;
 }
-nav a {
+
+.menu-toggle:hover {
+  background:#193d90;
+}
+
+.header-actions {
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:9px;
+  min-width:0;
+}
+
+.header-actions #pt {
+  white-space:nowrap;
+}
+
+.header-actions #au {
+  white-space:nowrap;
+}
+
+.b {
+  display:inline-block;
+  padding:10px 16px;
+  border:0;
+  border-radius:12px;
+  background:var(--y);
+  color:#0b1f4d;
+  font-size:14px;
+  font-weight:700;
+  text-align:center;
+  text-decoration:none;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.b:hover {
+  filter:brightness(1.06);
+  transform:translateY(-1px);
+}
+
+.b.o {
+  background:transparent;
+  color:var(--t);
+  border:2px solid var(--bd);
+}
+
+header .b.o {
+  color:#ffffff;
+  border-color:#3658aa;
+}
+
+.pill {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
   padding:6px 12px;
   border-radius:16px;
-  text-decoration:none;
-  font-size:14px;
-}
-nav a:hover,nav a.on {
   background:var(--y);
   color:#0b1f4d;
-}
-#mn {display:none;order:5}
-.b {
-  background:var(--y);
-  color:#0b1f4d;
-  border:0;
-  border-radius:12px;
-  padding:10px 16px;
-  font-weight:700;
-  font-size:14px;
-  cursor:pointer;
-  text-decoration:none;
-  display:inline-block;
-}
-.b.o {
-  background:none;
-  color:var(--t);
-  border:2px solid var(--bd);
-}
-.b:disabled {
-  opacity:.5;
-  cursor:not-allowed;
-}
-main {
-  max-width:900px;
-  margin:0 auto;
-  padding:16px 14px 50px;
-}
-.hero {
-  width:100vw;
-  margin:-16px 0 0 calc(50% - 50vw);
-}
-.hero img {
-  width:100%;
-  max-height:70vh;
-  object-fit:cover;
-  object-position:center;
-  display:block;
-}
-.cta {
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin:14px 0;
-}
-.grid {
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px;
-}
-.big {
-  background:var(--card);
-  border:2px solid var(--y);
-  border-radius:18px;
-  padding:22px;
-  text-decoration:none;
-  font-size:22px;
-  font-weight:800;
-  text-align:center;
-  box-shadow:0 8px 24px #0005;
-  transition:.15s;
-}
-.big small {
-  display:block;
-  font-weight:400;
   font-size:13px;
-  color:var(--m);
+  font-weight:800;
 }
-.card {
-  background:var(--card);
-  border:1px solid var(--bd);
-  border-radius:14px;
-  padding:14px;
-  margin:10px 0;
+
+.pill:empty {
+  display:none;
 }
-.card small {color:var(--m)}
-.tabs {
+
+/* ===== БОКОВЕ МЕНЮ ===== */
+
+#nv {
+  position:fixed;
+  top:0;
+  left:0;
+  bottom:0;
+  z-index:120;
+
   display:flex;
-  gap:6px;
-  flex-wrap:wrap;
-  margin:10px 0;
+  flex-direction:column;
+  flex-wrap:nowrap;
+  flex:none;
+  gap:7px;
+
+  width:min(315px,86vw);
+  height:100dvh;
+  padding:20px 15px;
+
+  overflow-y:auto;
+  background:#082567;
+  border-right:1px solid #3758a6;
+  box-shadow:12px 0 45px #0005;
+
+  transform:translateX(-105%);
+  visibility:hidden;
+
+  transition:
+    transform .25s ease,
+    visibility .25s;
 }
-.tabs a,.tabs button {
-  padding:7px 14px;
-  border-radius:16px;
-  border:2px solid var(--bd);
-  background:none;
-  color:var(--t);
-  text-decoration:none;
-  font:inherit;
-  cursor:pointer;
+
+#nv.open {
+  transform:translateX(0);
+  visibility:visible;
 }
-.tabs .on {
-  background:var(--y);
-  color:#0b1f4d;
-  border-color:var(--y);
+
+.side-menu-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:7px 10px 20px;
+  color:#ffde59;
+  font-size:21px;
 }
-.f {
-  background:var(--y);
-  color:#0b1f4d;
-  padding:10px 14px;
+
+#closeMenu {
+  padding:7px 11px;
+  border:1px solid #4565ac;
   border-radius:10px;
-  font-weight:700;
-  margin:8px 0;
+  background:#163981;
+  color:#ffffff;
+  font-size:18px;
+}
+
+#nv a {
+  display:block;
+  width:100%;
+  padding:14px 15px;
+  border-radius:12px;
+  color:#ffffff;
+  font-size:16px;
+  font-weight:600;
+  text-decoration:none;
+  transition:.2s;
+}
+
+#nv a:hover,
+#nv a.on {
+  background:#ffde59;
+  color:#082567;
+}
+
+.side-menu-note {
+  margin-top:auto;
+  padding:20px 10px;
+  border-top:1px solid #3855a0;
+  color:#c1d0f5;
+  font-size:13px;
+  text-align:center;
+}
+
+#menuBackdrop {
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:110;
+  background:rgba(0,8,34,.68);
+}
+
+#menuBackdrop.open {
+  display:block;
+}
+
+/* ===== ОСНОВНИЙ КОНТЕНТ ===== */
+
+main {
+  width:100%;
+  max-width:1050px;
+  margin:0 auto;
+  padding:18px 16px 55px;
+  min-height:65vh;
+}
+
+footer {
+  padding:25px 15px;
+  color:var(--m);
+  font-size:13px;
+  text-align:center;
+}
+
+h1,h2,h3 {
+  line-height:1.3;
+}
+
+.card {
+  margin:12px 0;
+  padding:18px;
+  border:1px solid var(--bd);
+  border-radius:16px;
+  background:var(--card);
   overflow-wrap:anywhere;
 }
-.tip {
-  background:#fff3bd;
-  color:#4a3b00;
-  border-left:5px solid var(--y);
-  padding:10px 12px;
-  border-radius:8px;
-  margin:8px 0;
-}
-.err {
-  background:#ffe0e1;
-  color:#6b0f13;
-  border-left:5px solid var(--r);
-  padding:10px 12px;
-  border-radius:8px;
-  margin:8px 0;
-}
-.q button {
-  display:block;
-  width:100%;
-  text-align:left;
-  margin:5px 0;
-  padding:10px 12px;
-  border:2px solid var(--bd);
-  border-radius:10px;
-  background:none;
-  color:var(--t);
-  font:inherit;
-  cursor:pointer;
-}
-.q button.ok {
-  background:var(--g);
-  color:#032;
-  border-color:var(--g);
-}
-.q button.bad {
-  background:var(--r);
-  color:#300;
-  border-color:var(--r);
-}
-input {
-  width:100%;
-  padding:11px;
-  border:2px solid var(--bd);
-  border-radius:10px;
-  background:var(--bg2);
-  color:var(--t);
-}
-input[type=checkbox] {width:auto}
-iframe {
-  width:100%;
-  height:700px;
-  border:0;
-  border-radius:14px;
-  background:#fff;
-}
-footer {
-  text-align:center;
-  color:var(--m);
-  font-size:13px;
-  padding:20px;
-}
-figure {margin:12px 0}
-figure img {
-  max-width:100%;
-  border-radius:12px;
-  background:#fff;
-  display:block;
-}
-figcaption {
-  color:var(--m);
-  font-size:13px;
-  margin-top:4px;
-}
-.pill {
-  background:var(--y);
-  color:#0b1f4d;
-  border-radius:14px;
-  padding:5px 11px;
-  font-weight:700;
-  font-size:13px;
-}
-.pill:empty {display:none}
-.MathJax {
-  max-width:100%;
-  overflow-x:auto;
-  overflow-y:hidden;
-}
-.stat-grid {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-.stat {text-align:center;padding:15px 8px}
-.stat strong {
-  display:block;
-  color:var(--y);
-  font-size:27px;
-}
-.stat span {font-size:12px;color:var(--m)}
-.progress-line {
-  height:9px;
-  background:var(--bg);
-  border-radius:20px;
-  overflow:hidden;
-  margin:8px 0;
-}
-.progress-line span {
-  display:block;
-  height:100%;
-  background:var(--y);
-  border-radius:20px;
-}
-.topic-status {font-size:12px;color:var(--m)}
-.empty {
-  padding:18px;
-  text-align:center;
+
+.card small {
   color:var(--m);
 }
-a.card:hover,.big:hover {
+
+.card a {
+  overflow-wrap:anywhere;
+}
+
+a.card {
+  transition:.2s;
+}
+
+a.card:hover {
   transform:translateY(-3px);
   border-color:var(--y);
 }
 
-/* МАГАЗИН */
-.shop-grid {
+.grid {
   display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+
+.big {
+  padding:24px;
+  border:2px solid var(--y);
+  border-radius:18px;
+  background:var(--card);
+  box-shadow:0 8px 24px #0003;
+  font-size:23px;
+  font-weight:800;
+  text-align:center;
+  text-decoration:none;
+  transition:.2s;
+}
+
+.big:hover {
+  transform:translateY(-3px);
+}
+
+.big small {
+  display:block;
+  color:var(--m);
+  font-size:13px;
+  font-weight:400;
+}
+
+/* ===== ГОЛОВНА СТОРІНКА ===== */
+
+.home-hero {
+  position:relative;
+  overflow:hidden;
+  margin:12px 0 30px;
+  padding:68px 40px;
+  border:1px solid #3656a3;
+  border-radius:25px;
+  background:
+    radial-gradient(
+      circle at 90% 15%,
+      #2453b9 0,
+      transparent 43%
+    ),
+    linear-gradient(
+      135deg,
+      #082567,
+      #0e3283
+    );
+  text-align:center;
+}
+
+.home-hero::before {
+  content:"π";
+  position:absolute;
+  top:-65px;
+  right:5%;
+  color:rgba(255,255,255,.045);
+  font-size:270px;
+  font-weight:800;
+  pointer-events:none;
+}
+
+.hero-eyebrow {
+  position:relative;
+  display:inline-block;
+  padding:8px 16px;
+  border:1px solid #597ac4;
+  border-radius:30px;
+  background:#ffffff10;
+  color:#ffde59;
+  font-size:13px;
+  font-weight:700;
+}
+
+.home-hero h1 {
+  position:relative;
+  max-width:800px;
+  margin:24px auto;
+  color:#ffffff;
+  font-size:clamp(32px,5vw,58px);
+  line-height:1.12;
+  letter-spacing:-1.5px;
+}
+
+.home-hero h1 span {
+  color:#ffde59;
+}
+
+.home-hero p {
+  position:relative;
+  max-width:620px;
+  margin:0 auto 28px;
+  color:#d7e4ff;
+  font-size:17px;
+}
+
+.hero-actions {
+  position:relative;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
   gap:12px;
 }
-.shop-card {
+
+.hero-actions .b {
+  padding:13px 23px;
+}
+
+.hero-actions .b.o {
+  color:#ffffff;
+  border-color:#6688d4;
+}
+
+.home-section-title {
+  margin:30px 0 16px;
+  font-size:26px;
+}
+
+.home-subjects {
+  display:grid;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+  gap:15px;
+}
+
+.home-subject {
   display:flex;
   flex-direction:column;
   gap:8px;
-  padding:18px;
+  padding:28px 23px;
+  border:1px solid var(--bd);
+  border-radius:19px;
+  background:var(--card);
+  text-decoration:none;
   transition:.2s;
 }
+
+.home-subject:hover {
+  transform:translateY(-3px);
+  border-color:var(--y);
+}
+
+.subject-icon {
+  font-size:34px;
+}
+
+.home-subject strong {
+  font-size:24px;
+}
+
+.home-subject small {
+  color:var(--m);
+  font-size:14px;
+}
+
+.subject-link {
+  margin-top:10px;
+  color:var(--y);
+  font-weight:700;
+}
+
+.home-features {
+  display:grid;
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin:20px 0;
+}
+
+.home-feature {
+  padding:22px;
+  border:1px solid var(--bd);
+  border-radius:18px;
+  background:var(--card);
+}
+
+.feature-icon {
+  font-size:30px;
+}
+
+.home-feature h3 {
+  margin:12px 0 8px;
+  font-size:18px;
+}
+
+.home-feature p {
+  margin:0;
+  color:var(--m);
+  font-size:14px;
+}
+
+.home-bottom {
+  margin:30px 0;
+  padding:30px 25px;
+  border:1px solid var(--bd);
+  border-radius:20px;
+  background:var(--card);
+  text-align:center;
+}
+
+.home-bottom h2 {
+  margin-top:0;
+}
+
+.home-bottom p {
+  color:var(--m);
+}
+
+/* ===== ВКЛАДКИ ===== */
+
+.tabs {
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin:14px 0;
+}
+
+.tabs a,
+.tabs button {
+  padding:8px 14px;
+  border:2px solid var(--bd);
+  border-radius:16px;
+  background:transparent;
+  color:var(--t);
+  font:inherit;
+  text-decoration:none;
+  cursor:pointer;
+}
+
+.tabs .on {
+  background:var(--y);
+  border-color:var(--y);
+  color:#0b1f4d;
+}
+
+/* ===== МАТЕМАТИКА ===== */
+
+.f {
+  margin:10px 0;
+  padding:14px 16px;
+  border-radius:12px;
+  background:var(--y);
+  color:#0b1f4d;
+  font-weight:700;
+  overflow-wrap:anywhere;
+}
+
+.tip {
+  margin:10px 0;
+  padding:12px 15px;
+  border-left:5px solid var(--y);
+  border-radius:10px;
+  background:#fff3bd;
+  color:#4a3b00;
+}
+
+.err {
+  margin:10px 0;
+  padding:12px 15px;
+  border-left:5px solid var(--r);
+  border-radius:10px;
+  background:#ffe0e1;
+  color:#6b0f13;
+}
+
+.MathJax,
+mjx-container {
+  max-width:100%;
+  overflow-x:auto;
+  overflow-y:hidden;
+}
+
+figure {
+  margin:14px 0;
+}
+
+figure img {
+  display:block;
+  max-width:100%;
+  height:auto;
+  border-radius:12px;
+  background:#ffffff;
+}
+
+figcaption {
+  margin-top:5px;
+  color:var(--m);
+  font-size:13px;
+}
+
+/* ===== КВІЗИ ===== */
+
+.q button {
+  display:block;
+  width:100%;
+  margin:7px 0;
+  padding:12px 14px;
+  border:2px solid var(--bd);
+  border-radius:11px;
+  background:transparent;
+  color:var(--t);
+  font:inherit;
+  text-align:left;
+  cursor:pointer;
+  transition:.15s;
+}
+
+.q button:not(:disabled):hover {
+  border-color:var(--y);
+}
+
+.q button.ok {
+  background:var(--g);
+  border-color:var(--g);
+  color:#032;
+}
+
+.q button.bad {
+  background:var(--r);
+  border-color:var(--r);
+  color:#300;
+}
+
+/* ===== ПРАКТИКА ===== */
+
+input {
+  width:100%;
+  padding:12px;
+  border:2px solid var(--bd);
+  border-radius:11px;
+  background:var(--bg2);
+  color:var(--t);
+}
+
+input[type="checkbox"] {
+  width:auto;
+}
+
+.answer-row {
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+
+.answer-row input {
+  flex:1;
+  min-width:150px;
+}
+
+.feedback {
+  font-weight:650;
+}
+
+.feedback.good {
+  color:var(--g);
+}
+
+.feedback.bad {
+  color:var(--r);
+}
+
+details {
+  margin-top:12px;
+}
+
+summary {
+  cursor:pointer;
+  font-weight:600;
+}
+
+/* ===== КАБІНЕТ ===== */
+
+.stat-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:11px;
+}
+
+.stat {
+  padding:17px 8px;
+  text-align:center;
+}
+
+.stat strong {
+  display:block;
+  color:var(--y);
+  font-size:28px;
+}
+
+.stat span {
+  color:var(--m);
+  font-size:12px;
+}
+
+.progress-line {
+  height:10px;
+  margin:10px 0;
+  overflow:hidden;
+  border-radius:20px;
+  background:var(--bg);
+}
+
+.progress-line span {
+  display:block;
+  height:100%;
+  border-radius:20px;
+  background:var(--y);
+}
+
+.topic-status {
+  color:var(--m);
+  font-size:13px;
+}
+
+.empty {
+  padding:20px;
+  color:var(--m);
+  text-align:center;
+}
+
+/* ===== МАГАЗИН ===== */
+
+.shop-grid {
+  display:grid;
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+
+.shop-card {
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  padding:19px;
+  transition:.2s;
+}
+
 .shop-card:hover {
   transform:translateY(-3px);
   border-color:var(--y);
 }
-.shop-card h3 {margin:0}
-.shop-card p {flex:1;color:var(--m)}
+
+.shop-card h3 {
+  margin:0;
+}
+
+.shop-card p {
+  flex:1;
+  color:var(--m);
+}
+
 .shop-price {
+  color:var(--y);
   font-size:23px;
   font-weight:800;
-  color:var(--y);
 }
-.shop-card .b {text-align:center}
-.shop-section {margin:25px 0}
-.shop-icon {font-size:36px}
+
+.shop-card .b {
+  text-align:center;
+}
+
+.shop-section {
+  margin:26px 0;
+}
+
+.shop-icon {
+  font-size:38px;
+}
+
 .shop-balance {
   display:flex;
   align-items:center;
   justify-content:space-between;
   flex-wrap:wrap;
-  gap:12px;
+  gap:13px;
 }
+
 .shop-balance strong {
   color:var(--y);
-  font-size:26px;
+  font-size:27px;
 }
-.answer-row {
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-top:12px;
-}
-.answer-row input {flex:1;min-width:150px}
-.feedback {font-weight:650}
-.feedback.good {color:var(--g)}
-.feedback.bad {color:var(--r)}
 
-/* АДАПТАЦІЯ ДЛЯ ТЕЛЕФОНІВ */
+/* ===== ФОРМА ЗАПИСУ ===== */
+
+iframe {
+  width:100%;
+  height:700px;
+  border:0;
+  border-radius:15px;
+  background:white;
+}
+
+/* ===== ПЛАНШЕТИ ===== */
+
+@media(max-width:900px) {
+  .home-hero {
+    padding:50px 25px;
+  }
+
+  .home-features {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+  .shop-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+}
+
+/* ===== ТЕЛЕФОНИ ===== */
+
 @media(max-width:700px) {
   header {
+    min-height:62px;
     padding:8px 10px;
     gap:7px;
   }
+
+  .menu-toggle {
+    width:37px;
+    height:37px;
+    font-size:21px;
+  }
+
   .brand {
-    margin-right:auto;
-    font-size:15px;
+    gap:5px;
+    font-size:14px;
   }
+
   .brand img {
-    width:34px;
-    height:34px;
+    width:30px;
+    height:30px;
   }
-  #mn {display:inline-block}
-  nav {
-    display:none;
-    flex-direction:column;
-    width:100%;
-    flex:none;
-    order:9;
-    gap:2px;
+
+  .header-actions {
+    gap:5px;
   }
-  nav.open {display:flex}
-  nav a {
-    width:100%;
-    padding:12px;
-    font-size:16px;
+
+  .header-actions #pt {
+    padding:5px 7px;
+    font-size:11px;
   }
-  #au {
-    padding:8px 10px;
-    font-size:12px;
+
+  .header-actions #th {
+    padding:6px 8px;
+    font-size:13px;
   }
+
+  .header-actions #au {
+    max-width:94px;
+    padding:7px 8px;
+    overflow:hidden;
+    font-size:11px;
+    text-overflow:ellipsis;
+  }
+
+  #nv {
+    width:min(300px,85vw);
+  }
+
   main {
-    padding:14px 12px 40px;
+    padding:12px 12px 40px;
   }
-  .hero {
-    margin-top:-14px;
+
+  .home-hero {
+    margin-top:5px;
+    padding:42px 19px;
+    border-radius:19px;
   }
-  .hero img {
+
+  .home-hero h1 {
+    font-size:clamp(29px,8vw,42px);
+    letter-spacing:-1px;
+  }
+
+  .home-hero p {
+    font-size:14px;
+  }
+
+  .hero-actions {
+    flex-direction:column;
+  }
+
+  .hero-actions .b {
     width:100%;
-    height:auto;
-    max-height:none;
-    object-fit:contain;
   }
-  .grid,.shop-grid {
+
+  .home-subjects,
+  .home-features,
+  .shop-grid,
+  .grid {
     grid-template-columns:1fr;
   }
-  .card {overflow-wrap:anywhere}
-  .stat-grid {
-    grid-template-columns:repeat(2,minmax(0,1fr));
+
+  .home-subject {
+    padding:21px;
   }
-  .cta .b {
-    flex:1;
-    text-align:center;
+
+  .home-feature {
+    padding:18px;
+  }
+
+  .home-section-title {
+    font-size:22px;
+  }
+
+  .home-bottom {
+    padding:21px 16px;
+  }
+
+  .tabs {
+    gap:5px;
+  }
+
+  .tabs a,
+  .tabs button {
+    padding:7px 10px;
+    font-size:13px;
+  }
+
+  .stat-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+  .q button {
+    min-height:46px;
+  }
+
+  .card {
+    padding:15px;
+  }
+
+  .answer-row {
+    flex-direction:column;
+  }
+
+  .answer-row input {
+    width:100%;
+  }
+
+  iframe {
+    height:75vh;
+  }
+}
+
+/* ===== МАЛЕНЬКІ ТЕЛЕФОНИ ===== */
+
+@media(max-width:380px) {
+  .brand {
+    font-size:12px;
+  }
+
+  .brand img {
+    width:25px;
+    height:25px;
+  }
+
+  .header-actions #au {
+    max-width:75px;
+    font-size:10px;
+  }
+
+  .home-hero h1 {
+    font-size:28px;
   }
 }
 </style>
 </head>
 
 <body>
+
+<!-- ===== ШАПКА САЙТУ ===== -->
+
 <header>
+  <button
+    class="menu-toggle"
+    id="mn"
+    type="button"
+    aria-label="Відкрити меню"
+    aria-expanded="false"
+    aria-controls="nv"
+  >☰</button>
+
   <a class="brand" href="#home">
     <img id="lg" src="logo-white.png" alt="">
     Easyyy_Math
   </a>
 
-  <button class="b o" id="mn" aria-label="Меню">☰</button>
+  <nav id="nv" aria-label="Основна навігація">
+    <div class="side-menu-heading">
+      <strong>Навігація</strong>
 
-  <nav id="nv">
-    <a href="#home">Головна</a>
-    <a href="#account">Мій кабінет</a>
-    <a href="#shop">Магазин ⭐</a>
+      <button
+        id="closeMenu"
+        type="button"
+        aria-label="Закрити меню"
+      >✕</button>
+    </div>
+
+    <a href="#home">🏠 Головна</a>
+    <a href="#account">👤 Мій кабінет</a>
+    <a href="#shop">🛍️ Магазин ⭐</a>
     <a href="#leaderboard">🏆 Рейтинг</a>
-    <a href="#about">Твій наставник</a>
+    <a href="#about">🎓 Твій наставник</a>
+    <a href="#book">📅 Запис на заняття</a>
+
+    <div class="side-menu-note">
+      Математику не зубрять — її розуміють 💙
+    </div>
   </nav>
 
-  <span class="pill" id="pt"></span>
-  <button class="b o" id="th" aria-label="Змінити тему">🌓</button>
-  <button class="b" id="au">Увійти через Google</button>
+  <div id="menuBackdrop"></div>
+
+  <div class="header-actions">
+    <span class="pill" id="pt"></span>
+
+    <button
+      class="b o"
+      id="th"
+      aria-label="Змінити тему"
+    >🌓</button>
+
+    <button class="b" id="au">
+      Увійти через Google
+    </button>
+  </div>
 </header>
 
 <main id="app"></main>
@@ -471,7 +1118,10 @@ a.card:hover,.big:hover {
 </footer>
 
 <script type="module">
+
 import {firebaseConfig} from './firebase-config.js';
+
+/* ===== НАЛАШТУВАННЯ ===== */
 
 const LIVE=!!firebaseConfig?.apiKey &&
   !firebaseConfig.apiKey.startsWith('YOUR');
@@ -515,7 +1165,11 @@ let topics=[
     quiz:[
       {
         q:'x² − 9 = ?',
-        o:['(x − 3)²','(x − 3)(x + 3)','(x − 9)(x + 1)'],
+        o:[
+          '(x − 3)²',
+          '(x − 3)(x + 3)',
+          '(x − 9)(x + 1)'
+        ],
         a:1
       }
     ],
@@ -532,14 +1186,19 @@ let S={
   about:'Привіт! Я Саша — твій матнаставник. Допомагаю зрозуміти математику, а не зубрити її.',
   formUrl:'',
   socials:[
-    {name:'Telegram',url:'https://t.me/easyyy_math'}
+    {
+      name:'Telegram',
+      url:'https://t.me/easyyy_math'
+    }
   ]
 };
 
 let shopItems=[];
 let materialItems=[];
+
 let user=null;
 let prog={};
+
 let db,fs,auth,au;
 let authReady=false;
 
@@ -553,20 +1212,26 @@ const NAMES={
 
 const GRADES=[5,6,7,8,9,10,11];
 
+/* ===== ДОПОМІЖНІ ФУНКЦІЇ ===== */
+
 function esc(s) {
-  return String(s==null?'':s).replace(/[&<>"']/g,c=>({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
-  }[c]));
+  return String(s==null?'':s)
+    .replace(/[&<>"']/g,c=>({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#39;'
+    }[c]));
 }
 
 function safeLink(url) {
   try {
     const u=new URL(url,location.href);
-    return ['http:','https:'].includes(u.protocol)?u.href:'#';
+
+    return ['http:','https:'].includes(u.protocol)
+      ?u.href
+      :'#';
   }catch {
     return '#';
   }
@@ -580,26 +1245,38 @@ function rich(s) {
 
 function formulaMarkup(value) {
   const source=String(value??'').trim();
+
   if(!source)return '';
+
   const content=rich(source);
+
   const wrapped=/\\\(|\\\[|(^|[^\\])\$/.test(source);
-  return wrapped?content:`\\[${content}\\]`;
+
+  return wrapped
+    ?content
+    :`\\[${content}\\]`;
 }
 
 function typesetMath(root=app) {
   const mj=window.MathJax;
+
   if(!mj?.startup?.promise)return;
+
   mj.startup.promise.then(()=>{
     if(!root?.isConnected)return;
+
     mj.typesetClear([root]);
+
     return mj.typesetPromise([root]);
   }).catch(console.error);
 }
 
-/* FIREBASE */
+/* ===== FIREBASE ===== */
+
 if(LIVE) {
   try {
-    const base='https://www.gstatic.com/firebasejs/10.12.2/';
+    const base=
+      'https://www.gstatic.com/firebasejs/10.12.2/';
 
     const [A,Au,F]=await Promise.all([
       import(base+'firebase-app.js'),
@@ -613,32 +1290,60 @@ if(LIVE) {
 
     auth=Au.getAuth(firebaseApp);
     au=Au;
+
     db=F.getFirestore(firebaseApp);
     fs=F;
 
     try {
-      const t=await fs.getDocs(fs.collection(db,'topics'));
+      const t=await fs.getDocs(
+        fs.collection(db,'topics')
+      );
+
       if(!t.empty) {
-        topics=t.docs.map(d=>({id:d.id,...d.data()}))
+        topics=t.docs
+          .map(d=>({
+            id:d.id,
+            ...d.data()
+          }))
           .filter(t=>t.published!==false);
       }
 
-      const s=await fs.getDoc(fs.doc(db,'settings','site'));
-      if(s.exists())S={...S,...s.data()};
+      const s=await fs.getDoc(
+        fs.doc(db,'settings','site')
+      );
+
+      if(s.exists()) {
+        S={...S,...s.data()};
+      }
     }catch(e) {
-      console.error('Помилка завантаження тем:',e);
+      console.error(
+        'Помилка завантаження тем:',
+        e
+      );
     }
 
     try {
-      const sh=await fs.getDocs(fs.collection(db,'shop'));
-      shopItems=sh.docs.map(d=>({id:d.id,...d.data()}));
+      const sh=await fs.getDocs(
+        fs.collection(db,'shop')
+      );
+
+      shopItems=sh.docs.map(d=>({
+        id:d.id,
+        ...d.data()
+      }));
     }catch(e) {
       console.error('Помилка магазину:',e);
     }
 
     try {
-      const mt=await fs.getDocs(fs.collection(db,'materials'));
-      materialItems=mt.docs.map(d=>({id:d.id,...d.data()}));
+      const mt=await fs.getDocs(
+        fs.collection(db,'materials')
+      );
+
+      materialItems=mt.docs.map(d=>({
+        id:d.id,
+        ...d.data()
+      }));
     }catch(e) {
       console.error('Помилка матеріалів:',e);
     }
@@ -649,20 +1354,31 @@ if(LIVE) {
 
       if(u) {
         try {
-          const d=await fs.getDoc(fs.doc(db,'users',u.uid));
+          const d=await fs.getDoc(
+            fs.doc(db,'users',u.uid)
+          );
+
           prog=(d.data()||{}).progress||{};
 
-          await fs.setDoc(fs.doc(db,'users',u.uid),{
-            name:u.displayName||'Учень',
-            email:u.email||'',
-            last:Date.now()
-          },{merge:true});
+          await fs.setDoc(
+            fs.doc(db,'users',u.uid),
+            {
+              name:u.displayName||'Учень',
+              email:u.email||'',
+              last:Date.now()
+            },
+            {merge:true}
+          );
         }catch(e) {
-          console.error('Помилка прогресу:',e);
+          console.error(
+            'Помилка прогресу:',
+            e
+          );
         }
       }
 
       authReady=true;
+
       updateAuthButton();
       updatePoints();
       route();
@@ -676,10 +1392,12 @@ if(LIVE) {
   authReady=true;
 }
 
-/* АВТОРИЗАЦІЯ */
+/* ===== GOOGLE-АВТОРИЗАЦІЯ ===== */
+
 function updateAuthButton() {
   $('#au').textContent=user
-    ?'Вийти ('+(user.displayName||'').split(' ')[0]+')'
+    ?'Вийти ('+
+      (user.displayName||'').split(' ')[0]+')'
     :'Увійти через Google';
 }
 
@@ -699,13 +1417,18 @@ $('#au').onclick=async()=>{
       );
     }
   }catch(e) {
-    alert('Не вдалося виконати вхід: '+e.message);
+    alert(
+      'Не вдалося виконати вхід: '+
+      e.message
+    );
   }
 };
 
-/* ТЕМИ ОФОРМЛЕННЯ */
+/* ===== СВІТЛА / ТЕМНА ТЕМА ===== */
+
 function theme(t) {
   document.documentElement.dataset.theme=t;
+
   $('#lg').src=t==='dark'
     ?'logo-white.png'
     :'logo-black.png';
@@ -718,7 +1441,8 @@ function theme(t) {
 $('#th').onclick=()=>{
   theme(
     document.documentElement.dataset.theme==='dark'
-      ?'light':'dark'
+      ?'light'
+      :'dark'
   );
 };
 
@@ -730,13 +1454,24 @@ theme((()=>{
   }
 })()||'dark');
 
-/* ЗІРОЧКИ ТА ПРОГРЕС */
-const points=()=>Object.keys(prog).reduce((sum,k)=>
-  sum+(prog[k]&&/:q\d+$/.test(k)?10:
-       prog[k]&&/:p\d+$/.test(k)?5:0),0);
+/* ===== ЗІРОЧКИ ТА ПРОГРЕС ===== */
+
+const points=()=>Object.keys(prog).reduce(
+  (sum,k)=>
+    sum+(
+      prog[k]&&/:q\d+$/.test(k)
+        ?10
+        :prog[k]&&/:p\d+$/.test(k)
+          ?5
+          :0
+    ),
+  0
+);
 
 function updatePoints() {
-  $('#pt').textContent=user?'⭐ '+points():'';
+  $('#pt').textContent=user
+    ?'⭐ '+points()
+    :'';
 }
 
 async function saveProgress(key) {
@@ -747,92 +1482,206 @@ async function saveProgress(key) {
 
   if(user&&LIVE&&db) {
     try {
-      await fs.setDoc(fs.doc(db,'users',user.uid),{
-        progress:prog,
-        last:Date.now()
-      },{merge:true});
+      await fs.setDoc(
+        fs.doc(db,'users',user.uid),
+        {
+          progress:prog,
+          last:Date.now()
+        },
+        {merge:true}
+      );
     }catch(e) {
-      console.error('Помилка збереження:',e);
+      console.error(
+        'Помилка збереження:',
+        e
+      );
     }
   }
 }
 
-/* ГОЛОВНА СТОРІНКА */
+/* ===== ГОЛОВНА СТОРІНКА ===== */
+
 function home() {
   app.innerHTML=`
-    <div class="hero">
-      <img src="banner.jpg"
-        alt="Easyyy_Math — Саша, математичний наставник">
-    </div>
+    <section class="home-hero">
+      <span class="hero-eyebrow">
+        ✨ Навчальна платформа для 5–11 класів
+      </span>
 
-    <div class="cta">
-      <a class="b" href="#book">Записатися на заняття</a>
-      <a class="b o" href="#about">Твій наставник</a>
-    </div>
+      <h1>
+        Математика, яку ти
+        <span>нарешті зрозумієш.</span>
+      </h1>
 
-    <h2>Обирай предмет</h2>
-
-    <div class="grid">
-      <a class="big" href="#subj/algebra">
-        📐 Алгебра
-        <small>Теорія · квізи · практика</small>
-      </a>
-
-      <a class="big" href="#subj/geometry">
-        🔺 Геометрія
-        <small>Теорія · квізи · практика</small>
-      </a>
-    </div>
-
-    <div class="card">
-      <h3>🎓 Навчайся у своєму темпі</h3>
       <p>
-        Обирай клас, вивчай теорію, перевіряй себе
-        в квізах і закріплюй знання на практиці.
+        Забудь про нудне зубріння!
+        Вивчай теорію, проходь квізи,
+        розв'язуй завдання та заробляй зірочки.
+        Усе у твоєму темпі 💙
       </p>
 
-      ${user
-        ?'<a class="b" href="#account">Перейти до мого кабінету</a>'
-        :'<p class="topic-status">Увійди через Google, щоб зберігати власний прогрес.</p>'
+      <div class="hero-actions">
+        <a class="b" href="#subj/algebra">
+          🚀 Почати навчання
+        </a>
+
+        <a class="b o" href="#account">
+          👤 Мій прогрес
+        </a>
+      </div>
+    </section>
+
+    <h2 class="home-section-title">
+      📚 Що будемо вивчати?
+    </h2>
+
+    <div class="home-subjects">
+      <a class="home-subject"
+         href="#subj/algebra">
+
+        <span class="subject-icon">📐</span>
+
+        <strong>Алгебра</strong>
+
+        <small>
+          Рівняння, функції, дроби, степені
+          та багато іншого.
+        </small>
+
+        <span class="subject-link">
+          Обрати клас →
+        </span>
+      </a>
+
+      <a class="home-subject"
+         href="#subj/geometry">
+
+        <span class="subject-icon">🔺</span>
+
+        <strong>Геометрія</strong>
+
+        <small>
+          Фігури, кути, площі, теореми
+          та просторове мислення.
+        </small>
+
+        <span class="subject-link">
+          Обрати клас →
+        </span>
+      </a>
+    </div>
+
+    <h2 class="home-section-title">
+      💡 Як працює Easyyy_Math?
+    </h2>
+
+    <div class="home-features">
+      <div class="home-feature">
+        <span class="feature-icon">📖</span>
+
+        <h3>1. Вивчай теорію</h3>
+
+        <p>
+          Зрозумілі правила, формули,
+          приклади та асоціації.
+        </p>
+      </div>
+
+      <div class="home-feature">
+        <span class="feature-icon">🧠</span>
+
+        <h3>2. Перевіряй знання</h3>
+
+        <p>
+          Проходь квізи та закріплюй
+          матеріал практичними завданнями.
+        </p>
+      </div>
+
+      <div class="home-feature">
+        <span class="feature-icon">⭐</span>
+
+        <h3>3. Отримуй нагороди</h3>
+
+        <p>
+          Заробляй зірочки та обмінюй
+          їх на товари в магазині.
+        </p>
+      </div>
+    </div>
+
+    <section class="home-bottom">
+      <h2>
+        🎯 Твій прогрес — твоя перемога!
+      </h2>
+
+      <p>
+        Навчайся без поспіху, повертайся
+        до складних тем і спостерігай,
+        як зростають твої результати.
+      </p>
+
+      ${
+        user
+          ?`<a class="b" href="#account">
+               Перейти до мого кабінету
+             </a>`
+          :`<button class="b" id="homeLogin">
+               Увійти та зберігати прогрес
+             </button>`
       }
-    </div>
+    </section>
+  `;
 
-    <div class="card">
-      <h3>⭐ Заробляй зірочки!</h3>
-      <p>
-        Навчайся, виконуй завдання та накопичуй зірочки.
-        У магазині на тебе чекають гайди, ігри,
-        рамки й інші нагороди.
-      </p>
-      <a class="b" href="#shop">Перейти в магазин</a>
-    </div>`;
+  const loginButton=$('#homeLogin');
+
+  if(loginButton) {
+    loginButton.onclick=()=>$('#au').click();
+  }
 }
 
-/* СТОРІНКА ПРЕДМЕТА */
+/* ===== СТОРІНКА ПРЕДМЕТА ===== */
+
 function subjectPage(subject,grade) {
-  const list=topics.filter(t=>t.subject===subject);
-  const selected=grade?Number(grade):null;
+  const list=topics.filter(
+    t=>t.subject===subject
+  );
+
+  const selected=grade
+    ?Number(grade)
+    :null;
 
   app.innerHTML=`
     <h2>${NAMES[subject]||'Предмет'}</h2>
-    <p class="topic-status">Обери клас, щоб переглянути теми.</p>
+
+    <p class="topic-status">
+      Обери клас, щоб переглянути теми.
+    </p>
 
     <div class="tabs">
       ${GRADES.map(g=>`
-        <a class="${selected===g?'on':''}"
-           href="#subj/${subject}/${g}">
+        <a
+          class="${selected===g?'on':''}"
+          href="#subj/${subject}/${g}"
+        >
           ${g} клас
         </a>
       `).join('')}
     </div>
 
-    <div id="subjectTopics"></div>`;
+    <div id="subjectTopics"></div>
+  `;
 
   if(!selected)return;
 
-  const filtered=list.filter(t=>Number(t.grade)===selected);
+  const filtered=list.filter(
+    t=>Number(t.grade)===selected
+  );
+
   const sections=[...new Set(
-    filtered.map(t=>t.section||'Інші теми')
+    filtered.map(
+      t=>t.section||'Інші теми'
+    )
   )];
 
   const target=$('#subjectTopics');
@@ -842,7 +1691,8 @@ function subjectPage(subject,grade) {
       <div class="card empty">
         У цьому класі поки немає доданих тем.
         Скоро вони з'являться 💛
-      </div>`;
+      </div>
+    `;
     return;
   }
 
@@ -855,22 +1705,31 @@ function subjectPage(subject,grade) {
       const done=!!prog[t.id+':done'];
 
       return `
-        <a class="card"
-           style="display:block;text-decoration:none"
-           href="#topic/${encodeURIComponent(t.id)}">
+        <a
+          class="card"
+          style="
+            display:block;
+            text-decoration:none;
+          "
+          href="#topic/${encodeURIComponent(t.id)}"
+        >
           <b>${esc(t.title)}</b><br>
+
           <small>
             ${done?'✓ Квіз пройдено · ':''}
             Теорія · Квіз · Практика
           </small>
-        </a>`;
+        </a>
+      `;
     }).join('')}
   `).join('');
 }
 
-/* СТОРІНКА ТЕМИ */
+/* ===== СТОРІНКА ТЕМИ ===== */
+
 function topicPage(id,tab='theory') {
   const t=topics.find(x=>x.id===id);
+
   if(!t) {
     home();
     return;
@@ -891,93 +1750,147 @@ function topicPage(id,tab='theory') {
 
         ${(t.images||[]).map(m=>`
           <figure>
-            <img src="${esc(safeLink(m.src))}"
-                 alt="${esc(m.cap||'Ілюстрація до теми')}">
-            ${m.cap
-              ?`<figcaption>${esc(m.cap)}</figcaption>`
-              :''}
+            <img
+              src="${esc(safeLink(m.src))}"
+              alt="${esc(
+                m.cap||'Ілюстрація до теми'
+              )}"
+              loading="lazy"
+            >
+
+            ${
+              m.cap
+                ?`<figcaption>
+                    ${esc(m.cap)}
+                  </figcaption>`
+                :''
+            }
           </figure>
         `).join('')}
 
-        ${t.formula
-          ?`<div class="f">${formulaMarkup(t.formula)}</div>`
-          :''}
+        ${
+          t.formula
+            ?`<div class="f">
+                ${formulaMarkup(t.formula)}
+              </div>`
+            :''
+        }
 
-        ${t.tip
-          ?`<div class="tip">💡 ${rich(t.tip)}</div>`
-          :''}
+        ${
+          t.tip
+            ?`<div class="tip">
+                💡 ${rich(t.tip)}
+              </div>`
+            :''
+        }
 
-        ${t.mistake
-          ?`<div class="err">⚠️ ${rich(t.mistake)}</div>`
-          :''}
+        ${
+          t.mistake
+            ?`<div class="err">
+                ⚠️ ${rich(t.mistake)}
+              </div>`
+            :''
+        }
       </div>
 
-      <a class="b"
-         href="#topic/${encodeURIComponent(id)}/quiz">
+      <a
+        class="b"
+        href="#topic/${encodeURIComponent(id)}/quiz"
+      >
         Перевірити себе → квіз
-      </a>`;
+      </a>
+    `;
   }
 
   if(tab==='quiz') {
     const quiz=t.quiz||[];
 
-    body=quiz.length?quiz.map((q,i)=>`
-      <div class="card q" data-i="${i}">
-        <b>${i+1}. ${rich(q.q||q.question||'')}</b>
+    body=quiz.length
+      ?quiz.map((q,i)=>`
+        <div class="card q" data-i="${i}">
+          <b>
+            ${i+1}.
+            ${rich(q.q||q.question||'')}
+          </b>
 
-        ${(q.o||q.options||[]).map((o,j)=>`
-          <button type="button" data-j="${j}">
-            ${rich(o)}
-          </button>
-        `).join('')}
-      </div>
-    `).join(''):
-    '<div class="card empty">Квіз ще не додано.</div>';
+          ${(q.o||q.options||[]).map((o,j)=>`
+            <button
+              type="button"
+              data-j="${j}"
+            >
+              ${rich(o)}
+            </button>
+          `).join('')}
+        </div>
+      `).join('')
+      :`<div class="card empty">
+          Квіз ще не додано.
+        </div>`;
   }
 
   if(tab==='practice') {
     const practice=t.practice||[];
 
-    body=practice.length?practice.map((p,i)=>{
-      const done=!!prog[id+':p'+i];
+    body=practice.length
+      ?practice.map((p,i)=>{
+        const done=!!prog[id+':p'+i];
 
-      return `
-        <div class="card">
-          <b>${i+1}. ${rich(p.q||p.question||p.task||'')}</b>
+        return `
+          <div class="card">
+            <b>
+              ${i+1}.
+              ${rich(
+                p.q||p.question||p.task||''
+              )}
+            </b>
 
-          <div class="answer-row">
-            <input
-              data-answer="${i}"
-              placeholder="Введи свою відповідь"
-              aria-label="Відповідь на завдання ${i+1}"
-              ${done?'disabled':''}>
+            <div class="answer-row">
+              <input
+                data-answer="${i}"
+                placeholder="Введи свою відповідь"
+                aria-label="Відповідь на завдання ${i+1}"
+                ${done?'disabled':''}
+              >
 
-            <button class="b"
-              data-check="${i}"
-              ${done?'disabled':''}>
-              ${done?'✓ Виконано':'Перевірити'}
-            </button>
-          </div>
-
-          <p class="feedback ${done?'good':''}"
-             data-feedback="${i}">
-            ${done?'✓ Завдання виконано':''}
-          </p>
-
-          <details data-help="${i}">
-            <summary>Показати пояснення</summary>
-
-            ${p.explanation
-              ?`<p>${rich(p.explanation)}</p>`
-              :''}
-
-            <div class="f">
-              ${rich(p.a||p.answer||'')}
+              <button
+                class="b"
+                data-check="${i}"
+                ${done?'disabled':''}
+              >
+                ${done?'✓ Виконано':'Перевірити'}
+              </button>
             </div>
-          </details>
+
+            <p
+              class="feedback ${done?'good':''}"
+              data-feedback="${i}"
+            >
+              ${done?'✓ Завдання виконано':''}
+            </p>
+
+            <details data-help="${i}">
+              <summary>
+                Показати пояснення
+              </summary>
+
+              ${
+                p.explanation
+                  ?`<p>
+                      ${rich(p.explanation)}
+                    </p>`
+                  :''
+              }
+
+              <div class="f">
+                ${rich(p.a||p.answer||'')}
+              </div>
+            </details>
+          </div>
+        `;
+      }).join('')
+      :`<div class="card empty">
+          Практику ще не додано.
         </div>`;
-    }).join(''):
-    '<div class="card empty">Практику ще не додано.</div>';
   }
 
   app.innerHTML=`
@@ -989,23 +1902,35 @@ function topicPage(id,tab='theory') {
 
     <div class="tabs">
       ${tabs.map(([key,name])=>`
-        <a class="${key===tab?'on':''}"
-           href="#topic/${encodeURIComponent(id)}/${key}">
+        <a
+          class="${key===tab?'on':''}"
+          href="#topic/${encodeURIComponent(id)}/${key}"
+        >
           ${name}
         </a>
       `).join('')}
     </div>
 
-    ${body}`;
+    ${body}
+  `;
 
-  if(tab==='quiz')setupQuiz(t,id);
-  if(tab==='practice')setupPractice(t,id);
+  if(tab==='quiz') {
+    setupQuiz(t,id);
+  }
+
+  if(tab==='practice') {
+    setupPractice(t,id);
+  }
 }
 
-/* КВІЗИ */
+/* ===== КВІЗИ ===== */
+
 function setupQuiz(t,id) {
   const quiz=t.quiz||[];
-  const boxes=[...app.querySelectorAll('.q')];
+
+  const boxes=[
+    ...app.querySelectorAll('.q')
+  ];
 
   let right=0;
   let answered=0;
@@ -1015,53 +1940,78 @@ function setupQuiz(t,id) {
     const i=Number(box.dataset.i);
     const q=quiz[i];
 
-    box.querySelectorAll('button').forEach(button=>{
-      button.onclick=()=>{
-        if(button.disabled||finished)return;
+    box.querySelectorAll('button')
+      .forEach(button=>{
+        button.onclick=()=>{
+          if(button.disabled||finished)return;
 
-        const chosen=Number(button.dataset.j);
-        const correct=Number(q.a??q.correct??0);
+          const chosen=Number(
+            button.dataset.j
+          );
 
-        box.querySelectorAll('button').forEach((b,j)=>{
-          b.disabled=true;
-          if(j===correct)b.classList.add('ok');
-        });
+          const correct=Number(
+            q.a??q.correct??0
+          );
 
-        if(chosen===correct) {
-          right++;
-          saveProgress(id+':q'+i);
-        }else {
-          button.classList.add('bad');
-        }
+          box.querySelectorAll('button')
+            .forEach((b,j)=>{
+              b.disabled=true;
 
-        answered++;
-
-        if(answered===quiz.length&&!finished) {
-          finished=true;
-          saveProgress(id+':done');
-
-          app.insertAdjacentHTML('beforeend',`
-            <div class="card">
-              <h3>Результат: ${right} / ${quiz.length}</h3>
-
-              <p>
-                ${right===quiz.length
-                  ?'Чудова робота! Усі відповіді правильні 🎉'
-                  :'Гарна спроба! Переглянь помилки та повтори тему.'}
-              </p>
-
-              ${user
-                ?'<small>Прогрес збережено в кабінеті.</small>'
-                :'<small>Увійди через Google, щоб зберігати прогрес.</small>'
+              if(j===correct) {
+                b.classList.add('ok');
               }
-            </div>`);
-        }
-      };
-    });
+            });
+
+          if(chosen===correct) {
+            right++;
+            saveProgress(id+':q'+i);
+          }else {
+            button.classList.add('bad');
+          }
+
+          answered++;
+
+          if(
+            answered===quiz.length &&
+            !finished
+          ) {
+            finished=true;
+
+            saveProgress(id+':done');
+
+            app.insertAdjacentHTML(
+              'beforeend',
+              `
+                <div class="card">
+                  <h3>
+                    Результат:
+                    ${right} / ${quiz.length}
+                  </h3>
+
+                  <p>
+                    ${
+                      right===quiz.length
+                        ?'Чудова робота! Усі відповіді правильні 🎉'
+                        :'Гарна спроба! Переглянь помилки та повтори тему.'
+                    }
+                  </p>
+
+                  ${
+                    user
+                      ?'<small>Прогрес збережено в кабінеті.</small>'
+                      :'<small>Увійди через Google, щоб зберігати прогрес.</small>'
+                  }
+                </div>
+              `
+            );
+          }
+        };
+      });
   });
 }
 
-/* ПЕРЕВІРКА ПРАКТИКИ */
+/* ===== ПЕРЕВІРКА ПРАКТИКИ ===== */
+
 function normalizeAnswer(value) {
   return String(value??'')
     .trim()
@@ -1074,83 +2024,106 @@ function normalizeAnswer(value) {
 
 function checkAnswer(value,expected) {
   const a=normalizeAnswer(value);
+
   if(!a)return false;
 
-  return String(expected??'').split(';').some(option=>{
-    const b=normalizeAnswer(option);
+  return String(expected??'')
+    .split(';')
+    .some(option=>{
+      const b=normalizeAnswer(option);
 
-    if(a===b)return true;
+      if(a===b)return true;
 
-    const x=Number(a);
-    const y=Number(b);
+      const x=Number(a);
+      const y=Number(b);
 
-    return a!==''&&b!==''&&
-      Number.isFinite(x)&&Number.isFinite(y)&&
-      Math.abs(x-y)<1e-9;
-  });
+      return a!=='' &&
+        b!=='' &&
+        Number.isFinite(x) &&
+        Number.isFinite(y) &&
+        Math.abs(x-y)<1e-9;
+    });
 }
 
 function setupPractice(t,id) {
-  app.querySelectorAll('[data-check]').forEach(button=>{
-    button.onclick=async()=>{
-      const i=Number(button.dataset.check);
-      const p=t.practice[i];
+  app.querySelectorAll('[data-check]')
+    .forEach(button=>{
+      button.onclick=async()=>{
+        const i=Number(
+          button.dataset.check
+        );
 
-      const input=app.querySelector(
-        `[data-answer="${i}"]`
-      );
+        const p=t.practice[i];
 
-      const feedback=app.querySelector(
-        `[data-feedback="${i}"]`
-      );
+        const input=app.querySelector(
+          `[data-answer="${i}"]`
+        );
 
-      const value=input.value.trim();
-      const expected=p.a||p.answer||'';
+        const feedback=app.querySelector(
+          `[data-feedback="${i}"]`
+        );
 
-      if(!value) {
-        feedback.textContent='Спочатку введи відповідь.';
-        return;
-      }
+        const value=input.value.trim();
+        const expected=p.a||p.answer||'';
 
-      if(!expected) {
-        feedback.textContent='Правильну відповідь ще не додано.';
-        return;
-      }
-
-      if(checkAnswer(value,expected)) {
-        feedback.textContent='Правильно! +5 ⭐';
-        feedback.className='feedback good';
-
-        input.disabled=true;
-        button.disabled=true;
-        button.textContent='✓ Виконано';
-
-        if(!prog[id+':p'+i]) {
-          await saveProgress(id+':p'+i);
+        if(!value) {
+          feedback.textContent=
+            'Спочатку введи відповідь.';
+          return;
         }
-      }else {
-        feedback.textContent='Поки неправильно. Спробуй ще раз 💙';
-        feedback.className='feedback bad';
-      }
-    };
-  });
+
+        if(!expected) {
+          feedback.textContent=
+            'Правильну відповідь ще не додано.';
+          return;
+        }
+
+        if(checkAnswer(value,expected)) {
+          feedback.textContent=
+            'Правильно! +5 ⭐';
+
+          feedback.className=
+            'feedback good';
+
+          input.disabled=true;
+          button.disabled=true;
+          button.textContent='✓ Виконано';
+
+          if(!prog[id+':p'+i]) {
+            await saveProgress(
+              id+':p'+i
+            );
+          }
+        }else {
+          feedback.textContent=
+            'Поки неправильно. Спробуй ще раз 💙';
+
+          feedback.className=
+            'feedback bad';
+        }
+      };
+    });
 }
 
-/* МАГАЗИН — БАЗОВИЙ ЕКРАН */
+/* ===== МАГАЗИН ===== */
+
 function shopPage() {
   app.innerHTML=`
     <h1>⭐ Магазин Easyyy_Math</h1>
 
     <div class="card">
       <h3>Завантаження магазину...</h3>
+
       <p>
         Тут будуть покупки, інвентар,
         рамки, значки та оформлення профілю.
       </p>
-    </div>`;
+    </div>
+  `;
 }
 
-/* ОСОБИСТИЙ КАБІНЕТ */
+/* ===== ОСОБИСТИЙ КАБІНЕТ ===== */
+
 function accountPage() {
   if(!user) {
     app.innerHTML=`
@@ -1162,36 +2135,57 @@ function accountPage() {
           власний прогрес і зберігати результати.
         </p>
 
-        <button class="b" id="accountLogin">
+        <button
+          class="b"
+          id="accountLogin"
+        >
           Увійти через Google
         </button>
-      </div>`;
+      </div>
+    `;
 
-    $('#accountLogin').onclick=()=>$('#au').click();
+    $('#accountLogin').onclick=
+      ()=>$('#au').click();
+
     return;
   }
 
-  const completed=topics.filter(t=>prog[t.id+':done']);
+  const completed=topics.filter(
+    t=>prog[t.id+':done']
+  );
 
   const quizAnswers=Object.keys(prog)
-    .filter(k=>/:q\d+$/.test(k)).length;
+    .filter(k=>/:q\d+$/.test(k))
+    .length;
 
   const practiceDone=Object.keys(prog)
-    .filter(k=>/:p\d+$/.test(k)).length;
+    .filter(k=>/:p\d+$/.test(k))
+    .length;
 
   const totalTopics=topics.length;
 
   const percent=totalTopics
-    ?Math.round(completed.length/totalTopics*100)
+    ?Math.round(
+      completed.length/totalTopics*100
+    )
     :0;
 
   app.innerHTML=`
     <h2>👤 Мій кабінет</h2>
 
     <div class="card">
-      <h3>Привіт, ${esc(user.displayName||'учню')}! 💛</h3>
-      <p class="topic-status">${esc(user.email||'')}</p>
-      <p>Тут зберігається твій навчальний прогрес.</p>
+      <h3>
+        Привіт,
+        ${esc(user.displayName||'учню')}! 💛
+      </h3>
+
+      <p class="topic-status">
+        ${esc(user.email||'')}
+      </p>
+
+      <p>
+        Тут зберігається твій навчальний прогрес.
+      </p>
     </div>
 
     <div class="stat-grid">
@@ -1212,7 +2206,11 @@ function accountPage() {
     </div>
 
     <div class="card">
-      <div style="display:flex;justify-content:space-between;gap:10px">
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        gap:10px;
+      ">
         <b>Загальний прогрес</b>
         <b>${percent}%</b>
       </div>
@@ -1222,23 +2220,29 @@ function accountPage() {
       </div>
 
       <small>
-        Пройдено тем: ${completed.length} із ${totalTopics}
+        Пройдено тем:
+        ${completed.length} із ${totalTopics}
       </small>
     </div>
 
     <div class="card">
       <h3>⭐ Мої зірочки: ${points()}</h3>
+
       <p>
-        За правильну відповідь у квізі — 10 зірочок,
-        за виконане практичне завдання — 5.
+        За правильну відповідь у квізі —
+        10 зірочок, за виконане практичне
+        завдання — 5.
       </p>
 
-      <a class="b" href="#shop">🎒 Магазин та інвентар</a>
+      <a class="b" href="#shop">
+        🎒 Магазин та інвентар
+      </a>
     </div>
 
     <h3>📚 Мої результати за темами</h3>
 
-    <div id="myTopics"></div>`;
+    <div id="myTopics"></div>
+  `;
 
   const target=$('#myTopics');
 
@@ -1246,7 +2250,8 @@ function accountPage() {
     target.innerHTML=`
       <div class="card empty">
         Навчальні теми поки не додані.
-      </div>`;
+      </div>
+    `;
     return;
   }
 
@@ -1255,20 +2260,33 @@ function accountPage() {
     const practiceCount=(t.practice||[]).length;
 
     const correct=(t.quiz||[])
-      .filter((q,i)=>!!prog[t.id+':q'+i]).length;
+      .filter((q,i)=>
+        !!prog[t.id+':q'+i]
+      ).length;
 
     const practice=(t.practice||[])
-      .filter((p,i)=>!!prog[t.id+':p'+i]).length;
+      .filter((p,i)=>
+        !!prog[t.id+':p'+i]
+      ).length;
 
     const done=!!prog[t.id+':done'];
 
     return `
       <div class="card">
-        <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          gap:10px;
+          flex-wrap:wrap;
+        ">
           <b>${esc(t.title)}</b>
 
           <span class="topic-status">
-            ${done?'✓ Квіз завершено':'У процесі'}
+            ${
+              done
+                ?'✓ Квіз завершено'
+                :'У процесі'
+            }
           </span>
         </div>
 
@@ -1278,120 +2296,261 @@ function accountPage() {
         </small>
 
         <p class="topic-status">
-          Правильних відповідей: ${correct}/${quizCount}<br>
-          Практичних завдань: ${practice}/${practiceCount}
+          Правильних відповідей:
+          ${correct}/${quizCount}<br>
+
+          Практичних завдань:
+          ${practice}/${practiceCount}
         </p>
 
-        <a class="b o"
-           href="#topic/${encodeURIComponent(t.id)}">
+        <a
+          class="b o"
+          href="#topic/${encodeURIComponent(t.id)}"
+        >
           Перейти до теми
         </a>
-      </div>`;
+      </div>
+    `;
   }).join('');
 }
 
-/* ТВІЙ НАСТАВНИК */
+/* ===== ТВІЙ НАСТАВНИК ===== */
+
 function aboutPage() {
-  const socials=(S.socials||[]).map(s=>`
-    <a class="b o"
-       target="_blank"
-       rel="noopener noreferrer"
-       href="${esc(safeLink(s.url))}">
-      ${esc(s.name)}
-    </a>
-  `).join('');
+  const socials=(S.socials||[])
+    .map(s=>`
+      <a
+        class="b o"
+        target="_blank"
+        rel="noopener noreferrer"
+        href="${esc(safeLink(s.url))}"
+      >
+        ${esc(s.name)}
+      </a>
+    `).join('');
 
-  const cases=(S.cases||[]).map(c=>`
-    <div class="card">
-      <h3>${esc(c.title||'Результат учня')}</h3>
+  const cases=(S.cases||[])
+    .map(c=>`
+      <div class="card">
+        <h3>
+          ${esc(c.title||'Результат учня')}
+        </h3>
 
-      ${(c.grade||c.subject)
-        ?`<small>${esc([c.grade,c.subject].filter(Boolean).join(' · '))}</small>`
-        :''}
+        ${
+          (c.grade||c.subject)
+            ?`<small>
+                ${esc(
+                  [c.grade,c.subject]
+                    .filter(Boolean)
+                    .join(' · ')
+                )}
+              </small>`
+            :''
+        }
 
-      ${c.image&&safeLink(c.image)!=='#'
-        ?`<figure>
-             <img src="${esc(safeLink(c.image))}"
+        ${
+          c.image &&
+          safeLink(c.image)!=='#'
+            ?`<figure>
+                <img
+                  src="${esc(safeLink(c.image))}"
                   alt="Приклад роботи учня"
-                  loading="lazy">
-           </figure>`
-        :''}
+                  loading="lazy"
+                >
+              </figure>`
+            :''
+        }
 
-      ${c.description
-        ?`<p>${rich(c.description)}</p>`
-        :''}
+        ${
+          c.description
+            ?`<p>
+                ${rich(c.description)}
+              </p>`
+            :''
+        }
 
-      ${c.result
-        ?`<div class="tip">
-             <b>Результат:</b> ${rich(c.result)}
-           </div>`
-        :''}
-    </div>
-  `).join('');
+        ${
+          c.result
+            ?`<div class="tip">
+                <b>Результат:</b>
+                ${rich(c.result)}
+              </div>`
+            :''
+        }
+      </div>
+    `).join('');
 
-  const reviews=(S.reviews||[]).map(r=>`
-    <div class="card">
-      <p>«${rich(r.text||'')}»</p>
-      <b>${esc(r.name||'Відгук')}</b>
-      ${r.detail
-        ?`<br><small>${esc(r.detail)}</small>`
-        :''}
-    </div>
-  `).join('');
+  const reviews=(S.reviews||[])
+    .map(r=>`
+      <div class="card">
+        <p>
+          «${rich(r.text||'')}»
+        </p>
+
+        <b>
+          ${esc(r.name||'Відгук')}
+        </b>
+
+        ${
+          r.detail
+            ?`<br>
+               <small>
+                 ${esc(r.detail)}
+               </small>`
+            :''
+        }
+      </div>
+    `).join('');
 
   app.innerHTML=`
-    <h2>Твій наставник</h2>
+    <h2>🎓 Твій наставник</h2>
 
     <div class="card">
       <p>${rich(S.about||'')}</p>
-      <div class="cta">${socials}</div>
+
+      <div class="hero-actions">
+        ${socials}
+      </div>
     </div>
 
-    ${cases?'<h2>Результати учнів</h2>'+cases:''}
+    ${
+      cases
+        ?'<h2>Результати учнів</h2>'+cases
+        :''
+    }
 
-    ${reviews?'<h2>Відгуки</h2>'+reviews:''}
+    ${
+      reviews
+        ?'<h2>Відгуки</h2>'+reviews
+        :''
+    }
 
     <a class="b" href="#book">
       Записатися на заняття
-    </a>`;
+    </a>
+  `;
 }
 
-/* ЗАПИС НА ЗАНЯТТЯ */
+/* ===== ЗАПИС НА ЗАНЯТТЯ ===== */
+
 function bookPage() {
   const link=safeLink(S.formUrl||'');
 
   app.innerHTML=`
-    <h2>Запис на заняття</h2>
+    <h2>📅 Запис на заняття</h2>
 
-    ${S.formUrl&&link!=='#'
-      ?`<iframe src="${esc(link)}"
-           title="Форма запису"></iframe>
+    ${
+      S.formUrl && link!=='#'
+        ?`
+          <iframe
+            src="${esc(link)}"
+            title="Форма запису"
+          ></iframe>
 
-         <p>
-           <a href="${esc(link)}"
+          <p>
+            <a
+              href="${esc(link)}"
               target="_blank"
-              rel="noopener">
-             Відкрити форму окремо
-           </a>
-         </p>`
+              rel="noopener noreferrer"
+            >
+              Відкрити форму окремо
+            </a>
+          </p>
+        `
+        :`
+          <div class="card">
+            <p>
+              Форму ще не підключено.
+            </p>
 
-      :`<div class="card">
-           <p>Форму ще не підключено.</p>
-           <p>Напиши мені в Telegram:</p>
+            <p>
+              Напиши мені в Telegram:
+            </p>
 
-           <a class="b"
+            <a
+              class="b"
               href="https://t.me/easyyy_math"
               target="_blank"
-              rel="noopener">
-             Перейти в Telegram
-           </a>
-         </div>`
-    }`;
+              rel="noopener noreferrer"
+            >
+              Перейти в Telegram
+            </a>
+          </div>
+        `
+    }
+  `;
 }
 
-/* НАВІГАЦІЯ */
+/* ===== БОКОВЕ МЕНЮ ===== */
+
+const menu=$('#nv');
+const menuButton=$('#mn');
+const menuBackdrop=$('#menuBackdrop');
+const closeMenuButton=$('#closeMenu');
+
+function openSideMenu() {
+  menu.classList.add('open');
+  menuBackdrop.classList.add('open');
+
+  document.body.classList.add('menu-open');
+
+  menuButton.setAttribute(
+    'aria-expanded',
+    'true'
+  );
+
+  menuButton.setAttribute(
+    'aria-label',
+    'Закрити меню'
+  );
+}
+
+function closeSideMenu() {
+  menu.classList.remove('open');
+  menuBackdrop.classList.remove('open');
+
+  document.body.classList.remove('menu-open');
+
+  menuButton.setAttribute(
+    'aria-expanded',
+    'false'
+  );
+
+  menuButton.setAttribute(
+    'aria-label',
+    'Відкрити меню'
+  );
+}
+
+menuButton.onclick=()=>{
+  if(menu.classList.contains('open')) {
+    closeSideMenu();
+  }else {
+    openSideMenu();
+  }
+};
+
+closeMenuButton.onclick=closeSideMenu;
+menuBackdrop.onclick=closeSideMenu;
+
+menu.querySelectorAll('a').forEach(link=>{
+  link.addEventListener(
+    'click',
+    closeSideMenu
+  );
+});
+
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape') {
+    closeSideMenu();
+  }
+});
+
+/* ===== НАВІГАЦІЯ САЙТУ ===== */
+
 function route() {
   const parts=location.hash.slice(1).split('/');
+
   const routeName=parts[0]||'home';
 
   const a=parts[1]
@@ -1402,47 +2561,72 @@ function route() {
     ?decodeURIComponent(parts[2])
     :'';
 
-  $('#nv').classList.remove('open');
+  closeSideMenu();
 
-  document.querySelectorAll('#nv a').forEach(link=>{
-    link.classList.toggle(
-      'on',
-      link.getAttribute('href')==='#'+routeName
-    );
-  });
+  document.querySelectorAll('#nv a')
+    .forEach(link=>{
+      link.classList.toggle(
+        'on',
+        link.getAttribute('href')===
+          '#'+routeName
+      );
+    });
 
   const routes={
     home:home,
+
     subj:()=>subjectPage(a,b),
-    topic:()=>topicPage(a,b||'theory'),
+
+    topic:()=>topicPage(
+      a,
+      b||'theory'
+    ),
+
     account:accountPage,
+
     shop:shopPage,
+
     leaderboard:()=>{
-      app.innerHTML='<div class="card">Завантаження рейтингу...</div>';
+      app.innerHTML=`
+        <div class="card">
+          Завантаження рейтингу...
+        </div>
+      `;
     },
-    materials:()=>{location.hash='#shop';},
+
+    materials:()=>{
+      location.hash='#shop';
+    },
+
     about:aboutPage,
+
     book:bookPage
   };
 
   (routes[routeName]||home)();
 
   window.scrollTo(0,0);
+
   typesetMath(app);
 }
 
-$('#mn').onclick=()=>{
-  $('#nv').classList.toggle('open');
-};
+/* ===== ЗАПУСК ===== */
 
 addEventListener('hashchange',route);
-window.addEventListener('load',()=>typesetMath(app));
+
+window.addEventListener('load',()=>{
+  typesetMath(app);
+});
 
 route();
+
 </script>
 
-<!-- Магазин, інвентар, рамки, значки та рейтинг -->
-<script type="module" src="./store-extension.js"></script>
+<!-- Магазин, інвентар, PNG-рамки, значки та рейтинг -->
+<script
+  type="module"
+  src="./store-extension.js">
+</script>
 
 </body>
 </html>
