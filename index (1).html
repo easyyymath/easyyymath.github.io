@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="uk" data-theme="dark"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Easyyy_Math</title>
+<meta name="description" content="Easyyy_Math — математика просто, цікаво, зрозуміло. Алгебра і геометрія 7–11 класів: теорія, квізи, практика. Репетитор Саша.">
+<link rel="icon" type="image/png" href="favicon.png"><link rel="apple-touch-icon" href="favicon.png">
+<meta property="og:title" content="Easyyy_Math"><meta property="og:image" content="hero.jpg"><meta property="og:type" content="website">
+<style>
+:root{--bg:#06194a;--bg2:#0a2670;--card:#0e2f86;--t:#fff;--m:#b9c6ee;--y:#ffd23f;--r:#ff6b70;--g:#3ddc97;--bd:#2a4aa8}
+[data-theme=light]{--bg:#f3f6fd;--bg2:#fff;--card:#fff;--t:#0b1f4d;--m:#5a6b99;--bd:#d5ddf0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font-family:system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.5}
+a{color:inherit}
+header{position:sticky;top:0;z-index:5;background:var(--bg2);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;padding:8px 14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:8px;font-weight:800;text-decoration:none}.brand img{width:38px;height:38px}
+nav{display:flex;gap:4px;flex:1;flex-wrap:wrap}nav a{padding:6px 12px;border-radius:16px;text-decoration:none;font-size:14px}nav a:hover{background:var(--y);color:#0b1f4d}
+.b{background:var(--y);color:#0b1f4d;border:0;border-radius:12px;padding:10px 16px;font:700 14px inherit;cursor:pointer;text-decoration:none;display:inline-block}
+.b.o{background:none;color:var(--t);border:2px solid var(--bd)}
+main{max-width:900px;margin:0 auto;padding:16px 14px 50px}
+.hero img{width:100%;border-radius:18px;display:block}.cta{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.big{background:var(--card);border:2px solid var(--y);border-radius:18px;padding:22px;text-decoration:none;font-size:22px;font-weight:800;text-align:center}.big small{display:block;font-weight:400;font-size:13px;color:var(--m)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin:10px 0}
+.card small{color:var(--m)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}.tabs a,.tabs button{padding:7px 14px;border-radius:16px;border:2px solid var(--bd);background:none;color:var(--t);text-decoration:none;font:inherit;cursor:pointer}.tabs .on{background:var(--y);color:#0b1f4d;border-color:var(--y)}
+.f{background:var(--y);color:#0b1f4d;padding:10px 14px;border-radius:10px;font-weight:700;margin:8px 0}
+.tip{background:#fff3bd;color:#4a3b00;border-left:5px solid var(--y);padding:10px 12px;border-radius:8px;margin:8px 0}
+.err{background:#ffe0e1;color:#6b0f13;border-left:5px solid var(--r);padding:10px 12px;border-radius:8px;margin:8px 0}
+.q button{display:block;width:100%;text-align:left;margin:5px 0;padding:10px 12px;border:2px solid var(--bd);border-radius:10px;background:none;color:var(--t);font:inherit;cursor:pointer}
+.q button.ok{background:var(--g);color:#032;border-color:var(--g)}.q button.bad{background:var(--r);color:#300;border-color:var(--r)}
+input{width:100%;padding:11px;border:2px solid var(--bd);border-radius:10px;background:var(--bg2);color:var(--t);font:inherit}
+iframe{width:100%;height:700px;border:0;border-radius:14px;background:#fff}
+footer{text-align:center;color:var(--m);font-size:13px;padding:20px}
+body{background-image:radial-gradient(circle at 15% -5%,#2358d8 0,transparent 42%),radial-gradient(circle at 100% 35%,#0f3aa0 0,transparent 35%);background-attachment:fixed}
+[data-theme=light] body{background-image:radial-gradient(circle at 15% -5%,#dbe6ff 0,transparent 45%)}
+.card,.big{transition:.15s}a.card:hover,.big:hover{transform:translateY(-3px);border-color:var(--y)}
+.hero img{box-shadow:0 12px 40px #0008}.big{box-shadow:0 8px 24px #0005}
+figure{margin:12px 0}figure img{max-width:100%;border-radius:12px;background:#fff;display:block}figcaption{color:var(--m);font-size:13px;margin-top:4px}
+.pill{background:var(--y);color:#0b1f4d;border-radius:14px;padding:5px 11px;font-weight:700;font-size:13px}.pill:empty{display:none}
+.lb{display:flex;align-items:center;gap:10px}.lb img{width:36px;height:36px;border-radius:50%}.lb .rk{width:34px;font-size:22px;text-align:center}.lb .pp{margin-left:auto;font-weight:800;color:var(--y)}.lb.me{box-shadow:0 0 0 2px var(--y)}
+</style></head><body>
+<header><a class="brand" href="#home"><img id="lg" src="logo-white.png" alt="">Easyyy_Math</a>
+<nav><a href="#subj/algebra">Алгебра</a><a href="#subj/geometry">Геометрія</a><a href="#rating">🏆 Рейтинг</a><a href="#about">Про мене</a><a href="#book">Запис</a></nav>
+<span class="pill" id="pt"></span><button class="b o" id="th">🌓</button><button class="b" id="au">Увійти через Google</button></header>
+<main id="app"></main><footer>© Easyyy_Math · математику не зубрять — її розуміють</footer>
+
+<script type="module">
+import {firebaseConfig} from './firebase-config.js';
+const LIVE=!firebaseConfig.apiKey.startsWith('YOUR');
+let topics=[
+{id:'g1',subject:'geometry',grade:7,section:'Трикутники',title:'Сума кутів трикутника',theory:'Сума кутів будь-якого трикутника дорівнює 180°.',formula:'∠A+∠B+∠C=180°',tip:'Три кути складаються в розгорнутий кут.',mistake:'У чотирикутнику сума 360°, не 180°.',quiz:[{q:'Кути 50° і 60°. Третій?',o:['60°','70°','80°'],a:1}],practice:[{q:'У трикутнику два кути по 45°. Знайди третій.',a:'90°'}]},
+{id:'a1',subject:'algebra',grade:7,section:'Вирази',title:'Формула різниці квадратів',theory:'Різниця квадратів розкладається на добуток суми й різниці.',formula:'a²−b²=(a−b)(a+b)',tip:'«Квадрат мінус квадрат — дужка на дужку».',mistake:'(a−b)² ≠ a²−b².',quiz:[{q:'x²−9 = ?',o:['(x−3)²','(x−3)(x+3)','(x−9)(x+1)'],a:1}],practice:[{q:'Розклади 25−y².',a:'(5−y)(5+y)'}]}];
+let S={about:'Привіт! Я Саша — твій матнаставник. Допомагаю зрозуміти математику, а не зубрити її.',formUrl:'',socials:[{name:'Telegram',url:'https://t.me/easyyy_math'}]};
+let user=null,prog={},db,fs,auth,au;
+if(LIVE){
+ const v='10.12.2/';const B='https://www.gstatic.com/firebasejs/'+v;
+ const [A,Au,F]=await Promise.all([import(B+'firebase-app.js'),import(B+'firebase-auth.js'),import(B+'firebase-firestore.js')]);
+ const app=A.initializeApp(firebaseConfig);auth=Au.getAuth(app);au=Au;db=F.getFirestore(app);fs=F;
+ try{const t=await fs.getDocs(fs.collection(db,'topics'));if(!t.empty)topics=t.docs.map(d=>({id:d.id,...d.data()}));
+  const s=await fs.getDoc(fs.doc(db,'settings','site'));if(s.exists())S={...S,...s.data()}}catch(e){console.warn(e)}
+ au.onAuthStateChanged(auth,async u=>{user=u;prog={};
+  if(u){try{const d=await fs.getDoc(fs.doc(db,'users',u.uid));prog=(d.data()||{}).progress||{};
+   await fs.setDoc(fs.doc(db,'users',u.uid),{name:u.displayName,email:u.email,last:Date.now()},{merge:true})}catch(e){}}
+  document.getElementById('au').textContent=u?'Вийти ('+(u.displayName||'').split(' ')[0]+')':'Увійти через Google';sync();route()});
+}
+const $=s=>document.querySelector(s),app=$('#app');
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+$('#au').onclick=()=>{if(!LIVE)return alert('Спочатку підключи Firebase (див. інструкцію)');user?au.signOut(auth):au.signInWithPopup(auth,new au.GoogleAuthProvider())};
+function theme(t){document.documentElement.dataset.theme=t;$('#lg').src=t==='dark'?'logo-white.png':'logo-black.png';try{localStorage.setItem('th',t)}catch(e){}}
+$('#th').onclick=()=>theme(document.documentElement.dataset.theme==='dark'?'light':'dark');
+theme((()=>{try{return localStorage.getItem('th')}catch(e){}})()||'dark');
+const pts=()=>Object.keys(prog).reduce((s,k)=>s+(/:q\d+$/.test(k)?10:/:p\d+$/.test(k)?5:0),0);
+async function sync(){const e=document.getElementById('pt');if(e)e.textContent=user?'⭐ '+pts():'';
+ if(user&&LIVE)try{await fs.setDoc(fs.doc(db,'users',user.uid),{progress:prog},{merge:true});
+ await fs.setDoc(fs.doc(db,'leaderboard',user.uid),{name:(user.displayName||'Учень').split(' ')[0],photo:user.photoURL||'',points:pts()})}catch(e){}}
+async function save(k){prog[k]=1;sync()}
+const rich=s=>esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
+async function rating(){
+ app.innerHTML='<h2>🏆 Рейтинг</h2><p class="card">Правильна відповідь у квізі: +10 ⭐ · завдання практики: +5 ⭐. Бали рахуються автоматично.</p><div id="lb">Завантаження…</div>';
+ let rows=[];
+ if(LIVE)try{rows=(await fs.getDocs(fs.query(fs.collection(db,'leaderboard'),fs.orderBy('points','desc'),fs.limit(20)))).docs.map(d=>({id:d.id,...d.data()}))}catch(e){}
+ document.getElementById('lb').innerHTML=rows.map((r,i)=>`<div class="card lb ${user&&r.id===user.uid?'me':''}"><span class="rk">${['🥇','🥈','🥉'][i]||i+1}</span>${r.photo?`<img src="${esc(r.photo)}" alt="">`:''}<b>${esc(r.name)}</b><span class="pp">⭐ ${r.points}</span></div>`).join('')||'<p class="card">Поки порожньо — стань першою! Увійди через Google і пройди квіз.</p>';
+}
+const NAMES={algebra:'Алгебра',geometry:'Геометрія'};
+
+function home(){app.innerHTML=`<div class="hero"><img src="hero.jpg" alt="Easyyy_Math — Саша, математичний наставник"></div>
+<div class="cta"><a class="b" href="#book">Записатися на заняття</a><a class="b o" href="#about">Про мене</a></div>
+<div class="grid"><a class="big" href="#subj/algebra">📐 Алгебра<small>теорія · квізи · практика</small></a><a class="big" href="#subj/geometry">🔺 Геометрія<small>теорія · квізи · практика</small></a></div>
+${user?'':'<p class="card">🔐 Увійди через Google — і прогрес квізів та практики збережеться.</p>'}`}
+function subj(s,g){
+ const L=topics.filter(t=>t.subject===s),gs=[...new Set(L.map(t=>+t.grade))].sort();g=+g||gs[0];
+ const secs=[...new Set(L.filter(t=>+t.grade===g).map(t=>t.section))];
+ app.innerHTML=`<h2>${NAMES[s]}</h2><div class="tabs">${gs.map(x=>`<a class="${x===g?'on':''}" href="#subj/${s}/${x}">${x} клас</a>`).join('')}</div>`
+ +(secs.map(c=>`<h3>${esc(c)}</h3>`+L.filter(t=>+t.grade===g&&t.section===c).map(t=>`<a class="card" style="display:block;text-decoration:none" href="#topic/${t.id}"><b>${esc(t.title)}</b><br><small>${prog[t.id+':done']?'✓ квіз пройдено · ':''}Теорія · Квіз · Практика</small></a>`).join('')).join('')||'<p>Тем поки немає.</p>');
+}
+function topic(id,tab='theory'){
+ const t=topics.find(x=>x.id===id);if(!t)return home();
+ const tabs=[['theory','Теорія'],['quiz','Квіз'],['practice','Практика']];
+ let body='';
+ if(tab==='theory')body=`<div class="card"><p>${rich(t.theory)}</p>${(t.images||[]).map(m=>`<figure><img src="${esc(m.src)}" alt="${esc(m.cap)}">${m.cap?`<figcaption>${esc(m.cap)}</figcaption>`:''}</figure>`).join('')}${t.formula?`<div class="f">${esc(t.formula)}</div>`:''}${t.tip?`<div class="tip">💡 ${esc(t.tip)}</div>`:''}${t.mistake?`<div class="err">⚠️ ${esc(t.mistake)}</div>`:''}</div><a class="b" href="#topic/${id}/quiz">Перевірити себе → квіз</a>`;
+ if(tab==='quiz')body=(t.quiz||[]).map((q,i)=>`<div class="card q" data-i="${i}"><b>${i+1}. ${esc(q.q)}</b>${q.o.map((o,j)=>`<button data-j="${j}">${esc(o)}</button>`).join('')}</div>`).join('')||'<p>Квіз ще не додано.</p>';
+ if(tab==='practice')body=(t.practice||[]).map((p,i)=>`<div class="card"><b>${i+1}. ${esc(p.q)}</b><details><summary>Показати відповідь</summary><div class="f">${esc(p.a)}</div><label><input type="checkbox" style="width:auto" data-p="${i}" ${prog[id+':p'+i]?'checked':''}> Розв'язала сама</label></details></div>`).join('')||'<p>Практику ще не додано.</p>';
+ app.innerHTML=`<a href="#subj/${t.subject}/${t.grade}">← ${NAMES[t.subject]}, ${t.grade} клас</a><h2>${esc(t.title)}</h2><div class="tabs">${tabs.map(([k,n])=>`<a class="${k===tab?'on':''}" href="#topic/${id}/${k}">${n}</a>`).join('')}</div>${body}`;
+ let right=0;const n=(t.quiz||[]).length;
+ app.querySelectorAll('.q button').forEach(b=>b.onclick=()=>{const box=b.parentNode,q=t.quiz[box.dataset.i],j=+b.dataset.j;
+  box.querySelectorAll('button').forEach((x,k)=>{x.disabled=true;if(k===q.a)x.classList.add('ok')});if(j!==q.a)b.classList.add('bad');else{right++;save(id+':q'+box.dataset.i)}
+  if(app.querySelectorAll('.q button:disabled').length===n*(q.o.length)){app.insertAdjacentHTML('beforeend',`<div class="card"><b>Результат: ${right}/${n}</b>${user?'':'<br><small>Увійди через Google, щоб зберігати прогрес.</small>'}</div>`);save(id+':done')}});
+ app.querySelectorAll('[data-p]').forEach(c=>c.onchange=()=>{if(c.checked)save(id+':p'+c.dataset.p)});
+}
+function about(){app.innerHTML=`<h2>Про мене</h2><div class="card"><p>${esc(S.about).replace(/\n/g,'<br>')}</p><div class="cta">${(S.socials||[]).map(s=>`<a class="b o" target="_blank" rel="noopener" href="${esc(s.url)}">${esc(s.name)}</a>`).join('')}</div></div><a class="b" href="#book">Записатися на заняття</a>`}
+function book(){app.innerHTML=`<h2>Запис на заняття</h2>`+(S.formUrl?`<iframe src="${esc(S.formUrl)}"></iframe><p><a href="${esc(S.formUrl)}" target="_blank">Відкрити форму окремо</a></p>`:'<p class="card">Форму ще не підключено. Напиши в Telegram: <a href="https://t.me/easyyy_math">@easyyy_math</a></p>')}
+function route(){const [r,a,b]=location.hash.slice(1).split('/');
+ ({subj:()=>subj(a,b),topic:()=>topic(a,b),about,book,rating}[r]||home)();scrollTo(0,0)}
+addEventListener('hashchange',route);route();
+</script></body></html>

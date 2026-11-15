@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Easyyy_Math — адмін</title><meta name="robots" content="noindex"><link rel="icon" href="favicon.png">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#06194a;color:#fff;font-family:system-ui,sans-serif}
+main{max-width:900px;margin:0 auto;padding:16px}
+input,textarea,select{width:100%;padding:10px;border:2px solid #2a4aa8;border-radius:10px;background:#0a2670;color:#fff;font:inherit;margin:4px 0 8px}
+label{font-size:12px;color:#b9c6ee}
+.b{background:#ffd23f;color:#0b1f4d;border:0;border-radius:10px;padding:9px 14px;font-weight:700;cursor:pointer;margin:3px}.b.d{background:#ff6b70}
+.card{background:#0e2f86;border:1px solid #2a4aa8;border-radius:14px;padding:14px;margin:12px 0}
+.tabs button{margin-right:6px}.im{display:flex;gap:6px;align-items:center}.im img{width:70px;height:50px;object-fit:cover;border-radius:8px;background:#fff}.im input{margin:0}.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+</style></head><body><main id="app"><p>Завантаження…</p></main>
+<script type="module">
+import {firebaseConfig,ADMINS} from './firebase-config.js';
+const app=document.getElementById('app'),esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+if(firebaseConfig.apiKey.startsWith('YOUR')){app.innerHTML='<p>Спочатку встав дані Firebase у firebase-config.js</p>';throw 0}
+const B='https://www.gstatic.com/firebasejs/10.12.2/';
+const [A,Au,F]=await Promise.all([import(B+'firebase-app.js'),import(B+'firebase-auth.js'),import(B+'firebase-firestore.js')]);
+const a=Au.getAuth(A.initializeApp(firebaseConfig)),db=F.getFirestore();
+let topics=[],S={},users=[],tab='topics';
+Au.onAuthStateChanged(a,async u=>{
+ if(!u)return app.innerHTML='<h2>Адмін-панель</h2><button class="b" id="in">Увійти через Google</button>',document.getElementById('in').onclick=()=>Au.signInWithPopup(a,new Au.GoogleAuthProvider());
+ if(!ADMINS.includes(u.email))return app.innerHTML='<p>Немає доступу: '+esc(u.email)+'</p><button class="b" id="o">Вийти</button>',document.getElementById('o').onclick=()=>Au.signOut(a);
+ await load();draw()});
+async function load(){
+ topics=(await F.getDocs(F.collection(db,'topics'))).docs.map(d=>({id:d.id,...d.data()}));
+ const s=await F.getDoc(F.doc(db,'settings','site'));S=s.exists()?s.data():{};
+ users=(await F.getDocs(F.collection(db,'users'))).docs.map(d=>({id:d.id,...d.data()}))}
+function imRow(src,cap){return `<div class="im" data-src="${esc(src)}"><img src="${esc(src)}"><input class="cap" placeholder="Підпис" value="${esc(cap)}"><button class="b d rm">✕</button></div>`}
+function toData(f){return new Promise((ok,no)=>{const r=new FileReader();r.onerror=no;
+ r.onload=()=>{if(f.type==='image/svg+xml')return ok(r.result);
+  const im=new Image();im.onerror=no;im.onload=()=>{const k=Math.min(1,900/Math.max(im.width,im.height)),c=document.createElement('canvas');
+   c.width=im.width*k;c.height=im.height*k;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);ok(c.toDataURL('image/jpeg',.8))};im.src=r.result};
+ r.readAsDataURL(f)})}
+function pts(p){return Object.keys(p||{}).reduce((s,k)=>s+(/:q\d+$/.test(k)?10:/:p\d+$/.test(k)?5:0),0)}
+const T=['subject','grade','section','title','theory','formula','tip','mistake'];
+const L={subject:'Предмет (algebra / geometry)',grade:'Клас',section:'Розділ',title:'Назва теми',theory:'Теорія',formula:'Формула',tip:'Асоціація 💡',mistake:'Типова помилка ⚠️'};
+const quizTxt=q=>(q||[]).map(x=>x.q+' | '+x.o.join('; ')+' | '+(x.a+1)).join('\n');
+const prTxt=p=>(p||[]).map(x=>x.q+' | '+x.a).join('\n');
+function draw(){
+ const head=`<h2>⚙️ Адмін Easyyy_Math</h2><div class="tabs">${[['topics','Теми'],['site','Сайт і «Про мене»'],['users','🏆 Учні та рейтинг ('+users.length+')']].map(([k,n])=>`<button class="b" data-t="${k}">${n}</button>`).join('')}</div>`;
+ let body='';
+ if(tab==='topics')body=`<button class="b" id="add">+ Нова тема</button>`+topics.sort((x,y)=>(x.subject+x.grade).localeCompare(y.subject+y.grade)).map(t=>`<div class="card" data-id="${t.id}"><b>${esc(t.title)}</b> <small>${esc(t.subject)}, ${t.grade} кл.</small>`
+  +T.map(k=>k==='subject'?`<label>Предмет</label><select data-k="subject"><option value="algebra" ${t.subject==='algebra'?'selected':''}>Алгебра</option><option value="geometry" ${t.subject==='geometry'?'selected':''}>Геометрія</option></select>`:k==='theory'?`<label>Теорія (**жирний текст**, Enter — новий рядок)</label><textarea rows="5" data-k="${k}">${esc(t[k])}</textarea>`:`<label>${L[k]}${k==='grade'?' (будь-який: 5, 6, 7…11)':''}</label><input data-k="${k}" value="${esc(t[k])}">`).join('')
+  +`<label>Малюнки та схеми (файл JPG/PNG/SVG або посилання)</label><div class="ims">${(t.images||[]).map(m=>imRow(m.src,m.cap)).join('')}</div><input type="file" class="up" accept="image/*,.svg" multiple><input class="url" placeholder="або встав посилання на картинку й натисни Enter">`
+  +`<label>Квіз: питання | варіанти через ; | номер правильного (кожен рядок — окреме питання)</label><textarea rows="3" data-k="quiz">${esc(quizTxt(t.quiz))}</textarea>
+  <label>Практика: завдання | відповідь</label><textarea rows="3" data-k="practice">${esc(prTxt(t.practice))}</textarea>
+  <button class="b sv">Зберегти</button><button class="b d dl">Видалити</button></div>`).join('');
+ if(tab==='site')body=`<div class="card"><label>Про мене</label><textarea rows="6" id="ab">${esc(S.about)}</textarea>
+  <label>Соцмережі: кожен рядок «Назва | посилання»</label><textarea rows="5" id="so">${esc((S.socials||[]).map(s=>s.name+' | '+s.url).join('\n'))}</textarea>
+  <label>Посилання на Google-форму запису (…/viewform?embedded=true)</label><input id="fu" value="${esc(S.formUrl)}"><button class="b" id="ss">Зберегти</button></div>`;
+ if(tab==='users')body='<p>🏆 Рейтинг: правильна відповідь у квізі +10, завдання практики +5. Бали рахуються автоматично.</p>'+users.map(u=>({...u,p:pts(u.progress)})).sort((x,y)=>y.p-x.p).map((u,i)=>`<div class="card">${['🥇','🥈','🥉'][i]||i+1+'.'} <b>${esc(u.name)}</b> · ⭐ ${u.p}<br><small>${esc(u.email)} · остання активність ${u.last?new Date(u.last).toLocaleDateString('uk'):'—'}</small></div>`).join('')||'<p>Поки нікого.</p>';
+ app.innerHTML=head+body;
+ app.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{tab=b.dataset.t;draw()});
+ app.querySelectorAll('.rm').forEach(b=>b.onclick=()=>b.closest('.im').remove());
+ app.querySelectorAll('.up').forEach(i=>i.onchange=async()=>{const box=i.closest('.card').querySelector('.ims');
+  for(const f of i.files){try{box.insertAdjacentHTML('beforeend',imRow(await toData(f),''))}catch(e){alert('Не вдалося: '+f.name)}}
+  i.value='';box.querySelectorAll('.rm').forEach(b=>b.onclick=()=>b.closest('.im').remove())});
+ app.querySelectorAll('.url').forEach(i=>i.onkeydown=e=>{if(e.key!=='Enter'||!i.value.trim())return;const box=i.closest('.card').querySelector('.ims');
+  box.insertAdjacentHTML('beforeend',imRow(i.value.trim(),''));i.value='';box.querySelectorAll('.rm').forEach(b=>b.onclick=()=>b.closest('.im').remove())});
+ const add=document.getElementById('add');if(add)add.onclick=async()=>{await F.addDoc(F.collection(db,'topics'),{subject:'geometry',grade:7,section:'Новий розділ',title:'Нова тема',theory:'',quiz:[],practice:[]});await load();draw()};
+ app.querySelectorAll('.sv').forEach(b=>b.onclick=async()=>{const c=b.closest('.card'),d={};
+  c.querySelectorAll('[data-k]').forEach(e=>d[e.dataset.k]=e.value);d.grade=+d.grade||7;
+  d.images=[...c.querySelectorAll('.im')].map(m=>({src:m.dataset.src,cap:m.querySelector('.cap').value}));
+  if(JSON.stringify(d).length>950000)return alert('Забагато/завеликі картинки для однієї теми. Видали одну або встав посилання замість файлу.');
+  d.quiz=d.quiz.split('\n').map(l=>l.split('|').map(s=>s.trim())).filter(x=>x.length>=3&&x[0]).map(x=>({q:x[0],o:x[1].split(';').map(s=>s.trim()),a:Math.max(0,(+x[2]||1)-1)}));
+  d.practice=d.practice.split('\n').map(l=>l.split('|').map(s=>s.trim())).filter(x=>x.length>=2&&x[0]).map(x=>({q:x[0],a:x[1]}));
+  await F.setDoc(F.doc(db,'topics',c.dataset.id),d);b.textContent='Збережено ✓'});
+ app.querySelectorAll('.dl').forEach(b=>b.onclick=async()=>{if(confirm('Видалити тему?')){await F.deleteDoc(F.doc(db,'topics',b.closest('.card').dataset.id));await load();draw()}});
+ const ss=document.getElementById('ss');if(ss)ss.onclick=async()=>{
+  await F.setDoc(F.doc(db,'settings','site'),{about:ab.value,formUrl:fu.value,socials:so.value.split('\n').map(l=>l.split('|').map(s=>s.trim())).filter(x=>x.length>=2).map(x=>({name:x[0],url:x[1]}))});ss.textContent='Збережено ✓'};
+}
+</script></body></html>
