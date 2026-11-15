@@ -390,7 +390,21 @@ main{max-width:1150px;margin:auto;padding:22px}
     <textarea id="pDescription"></textarea>
     <label>Клас</label>
     <input id="pGrade">
-    <label>Посилання (необов'язково)</label>
+
+    <div id="pImageFields" class="hidden">
+     <label>PNG-зображення рамки або значка *</label>
+     <input id="pImageUrl" type="url" placeholder="https://.../images/frames/gold.png">
+     <small>Завантаж PNG у GitHub та встав пряме посилання. Для рамки потрібен прозорий центр.</small>
+     <div id="pImagePreview" class="item hidden" style="text-align:center">
+      <div style="position:relative;width:130px;height:130px;margin:12px auto">
+       <div style="position:absolute;inset:15%;border-radius:50%;background:#ffde59;color:#082567;display:grid;place-items:center;font-size:42px">👤</div>
+       <img id="pPreviewImage" alt="Попередній перегляд" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain">
+      </div>
+      <small id="pPreviewCaption">Попередній перегляд</small>
+     </div>
+    </div>
+
+    <label>Посилання на матеріал (необов'язково)</label>
     <input id="pUrl" placeholder="https://...">
     <p class="muted">Не додавай приватні платні файли, доки не налаштований захищений доступ до покупок.</p>
     <label class="row"><input type="checkbox" id="pPublished" checked> Опублікувати</label>
@@ -453,7 +467,9 @@ const [FA,AU,FS]=await Promise.all([
  import(BASE+'firebase-firestore.js')
 ]);
 
-const firebaseApp=FA.initializeApp(firebaseConfig);
+const firebaseApp=FA.getApps().length
+ ? FA.getApp()
+ : FA.initializeApp(firebaseConfig);
 const auth=AU.getAuth(firebaseApp);
 const db=FS.getFirestore(firebaseApp);
 
@@ -752,7 +768,7 @@ function collectTopic(){
  };
 }
 
-/* ТІЛЬКИ НАЗВА ОБОВ'ЯЗКОВА */
+/* ПЕРЕВІРКА ТЕМИ */
 function validateTopic(t){
  if(!t.title)return 'Вкажи назву теми.';
 
@@ -914,10 +930,32 @@ function openProduct(key){
  $('pDescription').value=p.description||'';
  $('pGrade').value=p.grade||'';
  $('pUrl').value=p.url||'';
+ $('pImageUrl').value=p.imageUrl||'';
+ updateProductImageFields();
  $('pPublished').checked=p.published!==false;
  $('deleteProduct').classList.toggle('hidden',!key);
  dirty=false;
 }
+function updateProductImageFields(){
+ const type=$('pType').value;
+ const imageType=['frame','badge'].includes(type);
+ $('pImageFields').classList.toggle('hidden',!imageType);
+ const value=$('pImageUrl').value.trim();
+ const valid=/^https:\/\//i.test(value)&&safeUrl(value)!=='#';
+ $('pImagePreview').classList.toggle('hidden',!imageType||!valid);
+ if(valid&&imageType){
+  $('pPreviewImage').src=safeUrl(value);
+  $('pPreviewImage').style.inset=type==='frame'?'0':'25%';
+  $('pPreviewImage').style.width=type==='frame'?'100%':'50%';
+  $('pPreviewImage').style.height=type==='frame'?'100%':'50%';
+  $('pPreviewCaption').textContent=type==='frame'?'Рамка поверх аватара':'Значок';
+ }
+}
+$('pType').addEventListener('change',updateProductImageFields);
+$('pImageUrl').addEventListener('input',updateProductImageFields);
+$('pPreviewImage').addEventListener('error',()=>{
+ $('pPreviewCaption').textContent='Не вдалося завантажити картинку. Перевір посилання.';
+});
 $('newProduct').onclick=()=>openProduct(null);
 $('backShop').onclick=()=>{
  if(!canLeave())return;
@@ -926,6 +964,8 @@ $('backShop').onclick=()=>{
  $('productEditor').classList.add('hidden');
 };
 $('productEditor').addEventListener('input',()=>dirty=true);
+$('productEditor').addEventListener('change',()=>dirty=true);
+
 $('saveProduct').onclick=async()=>{
  const data={
   title:$('pTitle').value.trim(),
@@ -935,21 +975,34 @@ $('saveProduct').onclick=async()=>{
   description:$('pDescription').value.trim(),
   grade:$('pGrade').value.trim(),
   url:$('pUrl').value.trim(),
+  imageUrl:$('pImageUrl').value.trim(),
   published:$('pPublished').checked,
   updatedAt:Date.now()
  };
  if(!data.title){notify('Вкажи назву товару');return}
- if(!Number.isSafeInteger(data.price)||data.price<0){notify('Перевір ціну');return}
- if(data.url&&safeUrl(data.url)==='#'){notify('Перевір посилання');return}
+ if(['frame','badge'].includes(data.type)
+  && (!/^https:\/\//i.test(data.imageUrl)||safeUrl(data.imageUrl)==='#')){
+  notify('Вкажи HTTPS-посилання на PNG');return;
+ }
+ if(!Number.isSafeInteger(data.price)||data.price<0){
+  notify('Перевір ціну');return;
+ }
+ if(data.url&&safeUrl(data.url)==='#'){
+  notify('Перевір посилання');return;
+ }
+ const button=$('saveProduct');
+ button.disabled=true;
  try{
   const [collection,id]=editingProduct?editingProduct.split(':'):['shop',null];
   const ref=id?FS.doc(db,collection,id):FS.doc(FS.collection(db,collection));
   await FS.setDoc(ref,data,{merge:true});
-  dirty=false;await loadProducts();
+  dirty=false;
+  await loadProducts();
   $('shopOverview').classList.remove('hidden');
   $('productEditor').classList.add('hidden');
   notify('Товар збережено');
  }catch(e){notify(e.message)}
+ finally{button.disabled=false}
 };
 $('deleteProduct').onclick=async()=>{
  if(!editingProduct||!confirm('Видалити товар?'))return;
@@ -1050,9 +1103,11 @@ function showScreen(id){
 AU.onAuthStateChanged(auth,async user=>{
  currentUser=user;
  if(!user){showScreen('login');return}
- const allowed=Array.isArray(ADMINS)&&ADMINS.some(email=>
-  String(email).toLowerCase()===String(user.email||'').toLowerCase()
- );
+ const allowed=user.emailVerified
+  && Array.isArray(ADMINS)
+  && ADMINS.some(email=>
+   String(email).toLowerCase()===String(user.email||'').toLowerCase()
+  );
  if(!allowed){showScreen('denied');return}
  showScreen('loading');
  $('adminEmail').textContent=user.email||'';
@@ -1081,6 +1136,7 @@ window.addEventListener('beforeunload',e=>{
  if(dirty){e.preventDefault();e.returnValue=''}
 });
 </script>
- <script type="module" src="./store-admin.js"></script>
+
+<script type="module" src="./store-admin.js"></script>
 </body>
 </html>
