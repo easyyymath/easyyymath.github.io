@@ -33,7 +33,7 @@ window.MathJax = {
   --card:#0e2f86;
   --t:#fff;
   --m:#b9c6ee;
-  --y:#ffd23f;
+  --y:#ffde59;
   --r:#ff6b70;
   --g:#3ddc97;
   --bd:#2a4aa8;
@@ -455,6 +455,7 @@ a.card:hover,.big:hover {
     <a href="#home">Головна</a>
     <a href="#account">Мій кабінет</a>
     <a href="#shop">Магазин ⭐</a>
+    <a href="#leaderboard">🏆 Рейтинг</a>
     <a href="#about">Твій наставник</a>
   </nav>
 
@@ -606,7 +607,10 @@ if(LIVE) {
       import(base+'firebase-firestore.js')
     ]);
 
-    const firebaseApp=A.initializeApp(firebaseConfig);
+    const firebaseApp=A.getApps().length
+      ?A.getApp()
+      :A.initializeApp(firebaseConfig);
+
     auth=Au.getAuth(firebaseApp);
     au=Au;
     db=F.getFirestore(firebaseApp);
@@ -728,7 +732,8 @@ theme((()=>{
 
 /* ЗІРОЧКИ ТА ПРОГРЕС */
 const points=()=>Object.keys(prog).reduce((sum,k)=>
-  sum+(/:q\d+$/.test(k)?10:/:p\d+$/.test(k)?5:0),0);
+  sum+(prog[k]&&/:q\d+$/.test(k)?10:
+       prog[k]&&/:p\d+$/.test(k)?5:0),0);
 
 function updatePoints() {
   $('#pt').textContent=user?'⭐ '+points():'';
@@ -796,7 +801,7 @@ function home() {
       <h3>⭐ Заробляй зірочки!</h3>
       <p>
         Навчайся, виконуй завдання та накопичуй зірочки.
-        У магазині з'являтимуться гайди, ігри,
+        У магазині на тебе чекають гайди, ігри,
         рамки й інші нагороди.
       </p>
       <a class="b" href="#shop">Перейти в магазин</a>
@@ -1131,121 +1136,17 @@ function setupPractice(t,id) {
   });
 }
 
-/* МАГАЗИН */
+/* МАГАЗИН — БАЗОВИЙ ЕКРАН */
 function shopPage() {
-  const goods=[
-    ...materialItems.map(item=>({
-      ...item,
-      type:'material'
-    })),
-    ...shopItems
-  ];
-
-  const categories=[
-    {type:'material',name:'📚 Навчальні матеріали'},
-    {type:'game',name:'🎮 Ігри'},
-    {type:'frame',name:'🖼️ Рамки аватара'},
-    {type:'badge',name:'🏅 Значки'},
-    {type:'theme',name:'🎨 Оформлення профілю'}
-  ];
-
-  function productCard(item) {
-    const price=Math.max(0,Number(item.price)||0);
-
-    return `
-      <div class="card shop-card">
-        <div class="shop-icon">
-          ${esc(item.emoji||'🎁')}
-        </div>
-
-        <h3>${esc(item.title||'Товар')}</h3>
-
-        <p>${rich(item.description||'')}</p>
-
-        ${item.grade
-          ?`<small>${esc(item.grade)} клас</small>`
-          :''}
-
-        <div class="shop-price">
-          ⭐ ${price}
-        </div>
-
-        <button class="b" disabled>
-          Незабаром
-        </button>
-      </div>`;
-  }
-
-  const sections=categories.map(category=>{
-    const items=goods.filter(
-      item=>item.type===category.type
-    );
-
-    if(!items.length)return '';
-
-    return `
-      <section class="shop-section">
-        <h2>${category.name}</h2>
-
-        <div class="shop-grid">
-          ${items.map(productCard).join('')}
-        </div>
-      </section>`;
-  }).join('');
-
-  const other=goods.filter(item=>
-    !categories.some(c=>c.type===item.type)
-  );
-
   app.innerHTML=`
     <h1>⭐ Магазин Easyyy_Math</h1>
 
-    <p>
-      Навчайся, заробляй зірочки та відкривай
-      цікаві нагороди!
-    </p>
-
-    <div class="card shop-balance">
-      <div>
-        <h3>Твій баланс</h3>
-        <small>Зірочки за навчальні досягнення</small>
-      </div>
-
-      <strong>
-        ${user?points()+' ⭐':'Увійди через Google'}
-      </strong>
-    </div>
-
-    ${sections}
-
-    ${other.length?`
-      <section class="shop-section">
-        <h2>✨ Інші товари</h2>
-
-        <div class="shop-grid">
-          ${other.map(productCard).join('')}
-        </div>
-      </section>
-    `:''}
-
-    ${!goods.length?`
-      <div class="card empty">
-        <h3>Магазин скоро відкриється 💛</h3>
-        <p>
-          Тут з'являться матеріали, ігри,
-          рамки та інші нагороди.
-        </p>
-      </div>
-    `:''}
-
     <div class="card">
-      <h3>💡 Як заробляти зірочки?</h3>
-      <p>Правильна відповідь у квізі — 10 ⭐</p>
-      <p>Виконане практичне завдання — 5 ⭐</p>
-      <small>
-        Покупки стануть доступними після
-        підключення захищеної системи оплати зірочками.
-      </small>
+      <h3>Завантаження магазину...</h3>
+      <p>
+        Тут будуть покупки, інвентар,
+        рамки, значки та оформлення профілю.
+      </p>
     </div>`;
 }
 
@@ -1332,7 +1233,7 @@ function accountPage() {
         за виконане практичне завдання — 5.
       </p>
 
-      <a class="b" href="#shop">Відкрити магазин</a>
+      <a class="b" href="#shop">🎒 Магазин та інвентар</a>
     </div>
 
     <h3>📚 Мої результати за темами</h3>
@@ -1516,6 +1417,9 @@ function route() {
     topic:()=>topicPage(a,b||'theory'),
     account:accountPage,
     shop:shopPage,
+    leaderboard:()=>{
+      app.innerHTML='<div class="card">Завантаження рейтингу...</div>';
+    },
     materials:()=>{location.hash='#shop';},
     about:aboutPage,
     book:bookPage
@@ -1536,5 +1440,9 @@ window.addEventListener('load',()=>typesetMath(app));
 
 route();
 </script>
+
+<!-- Магазин, інвентар, рамки, значки та рейтинг -->
+<script type="module" src="./store-extension.js"></script>
+
 </body>
 </html>
