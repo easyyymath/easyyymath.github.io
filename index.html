@@ -271,6 +271,22 @@ let user=null, U={};            // U — документ користувача
 let db,fs,auth,au;
 let shopState='loading', rankState='loading';   // loading | ok | error
 let accGrade=null;
+const API_URL='https://neeupndspaqztttpogxy.supabase.co/functions/v1/easyyy-math-api-';
+async function apiCall(payload){
+  if(!user||!auth)throw new Error('Увійди через Google.');
+  const token=await user.getIdToken();
+  const response=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(payload)});
+  let data;try{data=await response.json()}catch{throw new Error('Сервер повернув некоректну відповідь.');}
+  if(!response.ok||!data.success)throw new Error(data.error||'Сервер тимчасово недоступний.');
+  return data;
+}
+async function refreshAccount(){
+  if(!user)return;
+  const doc=await fs.getDoc(fs.doc(db,'users',user.uid));
+  U=doc.data()||{};
+  updatePoints();
+}
+
 
 const $=s=>document.querySelector(s);
 const app=$('#app');
@@ -349,33 +365,18 @@ function deepMerge(a,b){
 }
 
 async function answerQuiz(t,i,j){
-  const quiz=t.quiz||[];
-  return mutate((cur,guest)=>{
-    if(cur.progress?.[t.id+':done'])return null;
-    const st=qState(cur,t); if(st.done||st.a[i]!==undefined)return null;
-    const a={...st.a,[i]:j};
-    const paid={...(cur.paid?.[t.id]||{})};
-    let add=0;
-    if(!guest&&j===qCorrect(quiz[i])&&!isPaid(cur,t.id,'q'+i)){paid['q'+i]=1;add+=REWARD.quiz}
-    const finished=quiz.every((q,k)=>a[k]!==undefined);
-    const right=quiz.filter((q,k)=>a[k]===qCorrect(q)).length;
-    let bonus=0;
-    if(!guest&&finished&&right===quiz.length&&!isPaid(cur,t.id,'bonus')){paid.bonus=1;bonus=REWARD.quizBonus;add+=bonus}
-    const patch={quiz:{[t.id]:{a,done:finished,right}},last:Date.now()};
-    if(!guest){patch.paid={[t.id]:paid};patch.earned=earnedOf(cur)+add}
-    return {patch,add,bonus,finished,right};
-  });
+  if(!user)throw new Error('Увійди через Google, щоб зберегти відповідь.');
+  const r=await apiCall({action:'submit-answer',topicId:t.id,kind:'quiz',index:i,answer:j});
+  await refreshAccount();
+  if(U.publicOn)await syncPublic();
+  return {add:r.awarded||0,bonus:r.quizBonus||0,finished:r.finished,right:r.right};
 }
-async function answerPractice(t,i,value,ok){
-  return mutate((cur,guest)=>{
-    if(pState(cur,t,i))return null;
-    const paid={...(cur.paid?.[t.id]||{})};
-    let add=0;
-    if(!guest&&ok&&!isPaid(cur,t.id,'p'+i)){paid['p'+i]=1;add=REWARD.practice}
-    const patch={prac:{[t.id]:{[i]:{ok,v:String(value).slice(0,200)}}},last:Date.now()};
-    if(!guest){patch.paid={[t.id]:paid};patch.earned=earnedOf(cur)+add}
-    return {patch,add};
-  });
+async function answerPractice(t,i,value){
+  if(!user)throw new Error('Увійди через Google, щоб зберегти відповідь.');
+  const r=await apiCall({action:'submit-answer',topicId:t.id,kind:'practice',index:i,answer:value});
+  await refreshAccount();
+  if(U.publicOn)await syncPublic();
+  return {add:r.awarded||0,correct:r.correct};
 }
 
 /* ===== ПЕРЕВІРКА ВІДПОВІДЕЙ ===== */
@@ -423,7 +424,11 @@ async function loadRank(){
     const r=await fs.getDocs(fs.collection(db,'publicProfiles'));
     rankList=r.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.show!==false&&x.nickname);
     rankState='ok';
-  }catch(e){console.error('Рейтинг:',e);rankState='error'}
+  }catch(e){
+    console.warn('Рейтинг Firestore:',e);
+    try{const r=await apiCall({action:'get-ranking'});rankList=r.profiles||[];rankState='ok';}
+    catch(err){console.error('Рейтинг:',err);rankState='error';}
+  }
 }
 async function loadUser(){
   U={};
@@ -432,7 +437,7 @@ async function loadUser(){
     const ref=fs.doc(db,'users',user.uid);
     const d=await fs.getDoc(ref); U=d.data()||{};
     const base={name:user.displayName||'Учень',email:user.email||'',last:Date.now()};
-    // Не записуємо earned під час входу: це захищене поле балансу.
+    if(U.earned===undefined)base.earned=legacyEarned(U);   // перенесення вже зароблених зірочок
     await fs.setDoc(ref,base,{merge:true});
     U={...U,...base};
   }catch(e){console.error('Користувач:',e)}
@@ -444,7 +449,7 @@ async function syncPublic(){
       nickname:U.nickname,score:earnedOf(U),show:true,
       frame:U.equipped?.frame||'',badge:U.equipped?.badge||'',photo:U.photo||'',updated:Date.now()
     },{merge:true});
-  }catch(e){console.warn('Публічний профіль:',e);throw e}
+  }catch(e){console.warn('Публічний профіль:',e)}
 }
 
 if(LIVE){
@@ -641,13 +646,14 @@ function bindQuiz(t){
     const i=Number(box.dataset.i);
     box.querySelectorAll('button:not(:disabled)').forEach(btn=>{
       btn.onclick=async()=>{
+        if(!user){toast('Увійди через Google, щоб зберегти відповідь.',true);return;}
         app.querySelectorAll('.q button').forEach(b=>b.disabled=true);
         const j=Number(btn.dataset.j);
         try{
           const r=await answerQuiz(t,i,j);
           if(r?.add)toast(`+${r.add} ★${r.bonus?` (у т.ч. бонус +${r.bonus})`:''}`);
           updatePoints();
-        }catch(e){console.error(e);toast('Не вдалося зберегти відповідь. Спробуй ще раз.',true)}
+        }catch(e){console.error(e);toast('Не вдалося зберегти: '+e.message,true);app.querySelectorAll('.q button').forEach(b=>b.disabled=false);return;}
         const y=window.scrollY;
         topicPage(t.id,'quiz');window.scrollTo(0,y);typesetMath(app);
       };
@@ -691,13 +697,11 @@ function bindPractice(t,only){
       const i=Number(btn.dataset.check);
       const card=app.querySelector(`[data-pc="${i}"]`);
       const input=card.querySelector('input'), value=input.value.trim();
-      const p=t.practice[i], expected=p.a||p.answer||'';
       if(!value){toast('Спочатку введи відповідь.',true);return}
-      if(!expected){toast('Правильну відповідь ще не додано.',true);return}
+      if(!user){toast('Увійди через Google, щоб зберегти відповідь.',true);return}
       btn.disabled=input.disabled=true;
-      const ok=checkAnswer(value,expected);
       try{
-        const r=await answerPractice(t,i,value,ok);
+        const r=await answerPractice(t,i,value);
         if(r?.add)toast(`+${r.add} ★`);
         updatePoints();
       }catch(e){console.error(e);toast('Не вдалося зберегти. Спробуй ще раз.',true);btn.disabled=input.disabled=false;return}
@@ -821,9 +825,8 @@ async function saveNick(){
   try{
     await fs.setDoc(fs.doc(db,'users',user.uid),{nickname:nick,publicOn:on},{merge:true});
     U.nickname=nick;U.publicOn=on;
-    if(on){
-      try{await syncPublic()}catch(e){console.warn('Публічний профіль:',e);toast('Нік збережено, але рейтинг недоступний: '+e.message,true);accountPage();return}
-    }else{try{await fs.deleteDoc(fs.doc(db,'publicProfiles',user.uid))}catch(e){console.warn('Видалення з рейтингу:',e)}}
+    if(on)await syncPublic();
+    else{try{await fs.deleteDoc(fs.doc(db,'publicProfiles',user.uid))}catch(e){}}
     toast('Збережено');accountPage();
   }catch(e){toast('Не вдалося зберегти: '+e.message,true)}
 }
@@ -901,33 +904,16 @@ let busy=false;
 async function buy(id){
   if(!user){toggleAuth();return}
   if(busy)return;
-  const item=goodById(id); if(!item)return;
+  const item=goodById(id);if(!item)return;
   if(ownedIds().includes(id)){toast('Цей товар уже придбано.');return}
-  if(balanceOf(U)<(Number(item.price)||0)){toast('Недостатньо зірочок. Нічого не списано.',true);return}
   if(!confirm(`Купити «${item.title}» за ${Number(item.price)||0} зірочок?`))return;
   busy=true;
   try{
-    const uref=fs.doc(db,'users',user.uid), iref=fs.doc(db,item.source,id);
-    await fs.runTransaction(db,async tx=>{
-      const [us,is]=await Promise.all([tx.get(uref),tx.get(iref)]);
-      if(!is.exists()||is.data().published===false)throw new Error('GONE');
-      const cur=us.data()||{}, price=Math.max(0,Number(is.data().price)||0);   // ціна береться з бази
-      const inv=Array.isArray(cur.inventory)?cur.inventory:[];
-      if(inv.includes(id))throw new Error('OWNED');
-      const earned=earnedOf(cur), spent=Number(cur.shopSpent)||0;
-      if(earned-spent<price)throw new Error('FUNDS');
-      tx.set(uref,{
-        earned,inventory:[...inv,id],shopSpent:spent+price,
-        purchaseLog:[...(cur.purchaseLog||[]),{id,title:is.data().title||'',price,at:Date.now()}]
-      },{merge:true});
-    });
-    await loadUser();updatePoints();
+    await apiCall({action:'buy-item',productId:id,source:item.source});
+    await refreshAccount();
     toast('Покупку здійснено! Товар в інвентарі.');
-  }catch(e){
-    const m={FUNDS:'Недостатньо зірочок. Нічого не списано.',OWNED:'Цей товар уже придбано.',GONE:'Товар більше недоступний.'}[e.message];
-    toast(m||'Технічна помилка, зірочки не списано. Спробуй пізніше.',true);
-    if(!m)console.error(e);
-  }finally{busy=false;shopPage()}
+  }catch(e){console.error(e);toast('Не вдалося купити: '+e.message,true)}
+  finally{busy=false;shopPage()}
 }
 async function equip(id){
   if(busy||!user)return;
