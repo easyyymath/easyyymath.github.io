@@ -271,7 +271,7 @@ let user=null, U={};            // U — документ користувача
 let db,fs,auth,au;
 let shopState='loading', rankState='loading';   // loading | ok | error
 let accGrade=null;
-const API_URL='https://neeupndspaqztttpogxy.supabase.co/functions/v1/easyyy-math-api';
+const API_URL='https://neeupndspaqztttpogxy.supabase.co/functions/v1/easyyy-math-api-';
 async function apiCall(payload){
   if(!user||!auth)throw new Error('Увійди через Google.');
   const token=await user.getIdToken();
