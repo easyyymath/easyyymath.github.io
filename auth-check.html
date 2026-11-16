@@ -4,10 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Easyyy_Math — перевірка входу</title>
+  <title>Easyyy_Math — перевірка сервера</title>
 
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -22,14 +24,27 @@
 
     main {
       width: 100%;
-      max-width: 480px;
+      max-width: 500px;
       background: white;
       color: #082567;
       padding: 28px;
       border-radius: 20px;
+      box-shadow: 0 15px 45px #0002;
     }
 
-    h1 { margin-top: 0; }
+    h1 {
+      margin: 0 0 8px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
 
     input {
       width: 100%;
@@ -37,12 +52,14 @@
       border: 1px solid #a9b4c8;
       border-radius: 10px;
       font: inherit;
-      margin: 10px 0;
+      color: #082567;
+      background: #f4f6fc;
+      margin-bottom: 14px;
     }
 
     button {
       width: 100%;
-      padding: 13px;
+      padding: 14px;
       background: #ffde59;
       color: #082567;
       border: 0;
@@ -53,33 +70,52 @@
       margin-top: 10px;
     }
 
+    button.secondary {
+      background: #e8eefb;
+    }
+
     button:disabled {
-      opacity: .5;
-      cursor: wait;
+      opacity: 0.5;
+      cursor: not-allowed;
     }
 
     #result {
-      margin-top: 18px;
-      padding: 14px;
-      border-radius: 10px;
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 12px;
       background: #eef2fb;
       white-space: pre-wrap;
       overflow-wrap: anywhere;
       font-size: 14px;
+      line-height: 1.6;
     }
 
-    label { font-weight: 600; }
+    #result.success {
+      background: #e4f7e9;
+      color: #176534;
+    }
+
+    #result.error {
+      background: #ffe8e8;
+      color: #a32121;
+    }
+
+    .hint {
+      font-size: 13px;
+      color: #63718c;
+      margin-top: 14px;
+    }
   </style>
 </head>
 
 <body>
+
 <main>
   <h1>Easyyy_Math</h1>
-  <p>Перевірка захищеного входу через Firebase.</p>
 
-  <label for="endpoint">
-    Адреса Edge Function
-  </label>
+  <p>Перевірка захищеного підключення Firebase та Supabase.</p>
+
+  <label for="endpoint">Адреса Edge Function</label>
 
   <input
     id="endpoint"
@@ -92,20 +128,30 @@
     Увійти через Google
   </button>
 
-  <button id="test" disabled>
-    Перевірити сервер
+  <button id="testAuth" disabled>
+    1. Перевірити Firebase-акаунт
   </button>
 
-  <button id="logout" disabled>
+  <button id="testFirestore" disabled>
+    2. Перевірити Firestore
+  </button>
+
+  <button id="logout" class="secondary" disabled>
     Вийти з акаунта
   </button>
 
   <div id="result" role="status">
     Очікування входу...
   </div>
+
+  <p class="hint">
+    Перевірка Firestore доступна лише адміністратору Easyyy_Math.
+    Дані учнів і зірочки не змінюються.
+  </p>
 </main>
 
 <script type="module">
+
 import { firebaseConfig }
   from "./firebase-config.js";
 
@@ -125,97 +171,179 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const login = document.getElementById("login");
-const test = document.getElementById("test");
+const testAuth = document.getElementById("testAuth");
+const testFirestore = document.getElementById("testFirestore");
 const logout = document.getElementById("logout");
 const result = document.getElementById("result");
 const endpoint = document.getElementById("endpoint");
 
-function message(text) {
+let busy = false;
+
+function message(text, type = "") {
+  result.className = type;
   result.textContent = text;
 }
 
+function updateButtons() {
+  const signedIn = Boolean(auth.currentUser);
+
+  login.disabled = busy || signedIn;
+  testAuth.disabled = busy || !signedIn;
+  testFirestore.disabled = busy || !signedIn;
+  logout.disabled = busy || !signedIn;
+}
+
 onAuthStateChanged(auth, user => {
-  login.disabled = Boolean(user);
-  test.disabled = !user;
-  logout.disabled = !user;
+  updateButtons();
 
   if (user) {
-    message("Google-вхід виконано. Можна перевіряти сервер.");
+    message(
+      "Google-вхід виконано.\n" +
+      "Тепер можна перевіряти Firebase та Firestore."
+    );
   } else {
     message("Увійди через Google.");
   }
 });
 
 login.onclick = async () => {
+  busy = true;
+  updateButtons();
+
   try {
     await signInWithPopup(
       auth,
       new GoogleAuthProvider()
     );
+
+    message("Вхід через Google успішний.", "success");
   } catch (error) {
-    message("Помилка входу: " + error.message);
+    message(
+      "Помилка входу: " + error.message,
+      "error"
+    );
+  } finally {
+    busy = false;
+    updateButtons();
   }
 };
 
-test.onclick = async () => {
+async function callServer(action) {
   const user = auth.currentUser;
 
   if (!user) {
-    message("Спочатку увійди через Google.");
+    message("Спочатку увійди через Google.", "error");
     return;
   }
 
-  const url = endpoint.value.trim();
+  busy = true;
+  updateButtons();
 
-  test.disabled = true;
-  message("Перевіряємо Firebase-акаунт...");
+  message("Перевіряємо підключення...");
 
   try {
     const token = await user.getIdToken(true);
 
-    const response = await fetch(url, {
+    const response = await fetch(endpoint.value.trim(), {
       method: "POST",
       headers: {
         "Authorization": "Bearer " + token,
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        action: "verify-auth"
-      })
+      body: JSON.stringify({ action })
     });
 
     const data = await response.json();
 
-    if (
-      response.ok &&
-      data.success === true &&
-      data.authenticated === true
-    ) {
-      message(
-        "УСПІХ!\n\n" +
-        "Сервер підтвердив Firebase-акаунт.\n" +
-        "HTTP: " + response.status
-      );
-    } else {
-      message(
-        "Перевірка не пройшла.\n" +
-        "HTTP: " + response.status + "\n" +
-        "Помилка: " + (data.error || "Невідома")
-      );
+    if (action === "verify-auth") {
+      if (
+        response.ok &&
+        data.success === true &&
+        data.authenticated === true
+      ) {
+        message(
+          "УСПІХ!\n\n" +
+          "Firebase-акаунт підтверджено.\n" +
+          "HTTP: " + response.status,
+          "success"
+        );
+      } else {
+        message(
+          "Помилка перевірки Firebase.\n" +
+          "HTTP: " + response.status + "\n" +
+          (data.error || "Невідома помилка"),
+          "error"
+        );
+      }
+
+      return;
     }
+
+    if (action === "check-firestore") {
+      if (
+        response.ok &&
+        data.success === true &&
+        data.firestore?.connected === true
+      ) {
+        message(
+          "УСПІХ!\n\n" +
+          "Supabase підключився до Firestore.\n" +
+          "HTTP: " + response.status + "\n\n" +
+          "Колекція topics доступна: " +
+          (data.firestore.topicsCollectionAccessible
+            ? "ТАК"
+            : "НІ") + "\n" +
+          "Знайдено документ: " +
+          (data.firestore.sampleDocumentFound
+            ? "ТАК"
+            : "НІ"),
+          "success"
+        );
+      } else {
+        message(
+          "Не вдалося перевірити Firestore.\n\n" +
+          "HTTP: " + response.status + "\n" +
+          "Помилка: " +
+          (data.error || "Невідома") + "\n" +
+          (data.details || ""),
+          "error"
+        );
+      }
+    }
+
   } catch (error) {
     message(
-      "Помилка з'єднання: " + error.message +
-      "\n\nПеревір CORS у Supabase Edge Function."
+      "Помилка з'єднання: " + error.message,
+      "error"
     );
   } finally {
-    test.disabled = !auth.currentUser;
+    busy = false;
+    updateButtons();
+  }
+}
+
+testAuth.onclick = () => callServer("verify-auth");
+
+testFirestore.onclick = () => callServer("check-firestore");
+
+logout.onclick = async () => {
+  busy = true;
+  updateButtons();
+
+  try {
+    await signOut(auth);
+    message("Вихід виконано.");
+  } catch (error) {
+    message(
+      "Помилка виходу: " + error.message,
+      "error"
+    );
+  } finally {
+    busy = false;
+    updateButtons();
   }
 };
 
-logout.onclick = async () => {
-  await signOut(auth);
-};
 </script>
 </body>
 </html>
