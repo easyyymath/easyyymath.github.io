@@ -3,9 +3,9 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Easyyy_Math — перевірка входу</title>
+
   <style>
     * { box-sizing: border-box; }
 
@@ -71,6 +71,7 @@
     label { font-weight: 600; }
   </style>
 </head>
+
 <body>
 <main>
   <h1>Easyyy_Math</h1>
@@ -83,7 +84,8 @@
   <input
     id="endpoint"
     type="url"
-    placeholder="https://...supabase.co/functions/v1/..."
+    readonly
+    value="https://neeupndspaqztttpogxy.supabase.co/functions/v1/easyyy-math-api-"
   >
 
   <button id="login">
@@ -165,13 +167,6 @@ test.onclick = async () => {
 
   const url = endpoint.value.trim();
 
-  if (
-    !/^https:\/\/[a-z0-9-]+\.supabase\.co\/functions\/v1\/[a-z0-9-]+\/?$/.test(url)
-  ) {
-    message("Введи правильну адресу Supabase Edge Function.");
-    return;
-  }
-
   test.disabled = true;
   message("Перевіряємо Firebase-акаунт...");
 
@@ -209,7 +204,10 @@ test.onclick = async () => {
       );
     }
   } catch (error) {
-    message("Помилка з'єднання: " + error.message);
+    message(
+      "Помилка з'єднання: " + error.message +
+      "\n\nПеревір CORS у Supabase Edge Function."
+    );
   } finally {
     test.disabled = !auth.currentUser;
   }
