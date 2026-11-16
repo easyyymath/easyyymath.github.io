@@ -1049,6 +1049,13 @@ iframe {
     font-size:28px;
   }
 }
+
+/* Вхід у меню; старий вигляд сторінки збережено */
+#au[hidden]{display:none!important}
+#nv .menu-auth{display:block;width:100%;text-align:left;padding:14px 15px;border:1px solid #4565ac;border-radius:12px;background:#163981;color:white;font:600 16px system-ui,sans-serif;cursor:pointer;margin-top:8px}
+#nv .menu-auth:hover{background:#ffde59;color:#082567}
+.menu-toggle{font-size:25px;line-height:1;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+@media(max-width:480px){.header-actions{gap:6px}.header-actions #th{padding:8px 10px}}
 </style>
 </head>
 
@@ -1089,6 +1096,8 @@ iframe {
     <a href="#about">🎓 Твій наставник</a>
     <a href="#book">📅 Запис на заняття</a>
 
+    <button type="button" id="menuAuth" class="menu-auth">🔐 Увійти через Google</button>
+
     <div class="side-menu-note">
       Математику не зубрять — її розуміють 💙
     </div>
@@ -1105,7 +1114,7 @@ iframe {
       aria-label="Змінити тему"
     >🌓</button>
 
-    <button class="b" id="au">
+    <button class="b" id="au" hidden>
       Увійти через Google
     </button>
   </div>
@@ -1395,10 +1404,11 @@ if(LIVE) {
 /* ===== GOOGLE-АВТОРИЗАЦІЯ ===== */
 
 function updateAuthButton() {
-  $('#au').textContent=user
-    ?'Вийти ('+
-      (user.displayName||'').split(' ')[0]+')'
-    :'Увійти через Google';
+  const label=user
+    ?'🚪 Вийти ('+(user.displayName||'').split(' ')[0]+')'
+    :'🔐 Увійти через Google';
+  $('#au').textContent=label;
+  $('#menuAuth').textContent=label;
 }
 
 $('#au').onclick=async()=>{
@@ -2529,6 +2539,8 @@ menuButton.onclick=()=>{
     openSideMenu();
   }
 };
+
+$('#menuAuth').onclick=()=>{closeSideMenu();$('#au').click();};
 
 closeMenuButton.onclick=closeSideMenu;
 menuBackdrop.onclick=closeSideMenu;
