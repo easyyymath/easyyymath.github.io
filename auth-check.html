@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+  <title>Easyyy_Math — перевірка входу</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #082567;
+      color: white;
+      font-family: system-ui, sans-serif;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+
+    main {
+      width: 100%;
+      max-width: 480px;
+      background: white;
+      color: #082567;
+      padding: 28px;
+      border-radius: 20px;
+    }
+
+    h1 { margin-top: 0; }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #a9b4c8;
+      border-radius: 10px;
+      font: inherit;
+      margin: 10px 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      background: #ffde59;
+      color: #082567;
+      border: 0;
+      border-radius: 10px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:disabled {
+      opacity: .5;
+      cursor: wait;
+    }
+
+    #result {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #eef2fb;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-size: 14px;
+    }
+
+    label { font-weight: 600; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Easyyy_Math</h1>
+  <p>Перевірка захищеного входу через Firebase.</p>
+
+  <label for="endpoint">
+    Адреса Edge Function
+  </label>
+
+  <input
+    id="endpoint"
+    type="url"
+    placeholder="https://...supabase.co/functions/v1/..."
+  >
+
+  <button id="login">
+    Увійти через Google
+  </button>
+
+  <button id="test" disabled>
+    Перевірити сервер
+  </button>
+
+  <button id="logout" disabled>
+    Вийти з акаунта
+  </button>
+
+  <div id="result" role="status">
+    Очікування входу...
+  </div>
+</main>
+
+<script type="module">
+import { firebaseConfig }
+  from "./firebase-config.js";
+
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const login = document.getElementById("login");
+const test = document.getElementById("test");
+const logout = document.getElementById("logout");
+const result = document.getElementById("result");
+const endpoint = document.getElementById("endpoint");
+
+function message(text) {
+  result.textContent = text;
+}
+
+onAuthStateChanged(auth, user => {
+  login.disabled = Boolean(user);
+  test.disabled = !user;
+  logout.disabled = !user;
+
+  if (user) {
+    message("Google-вхід виконано. Можна перевіряти сервер.");
+  } else {
+    message("Увійди через Google.");
+  }
+});
+
+login.onclick = async () => {
+  try {
+    await signInWithPopup(
+      auth,
+      new GoogleAuthProvider()
+    );
+  } catch (error) {
+    message("Помилка входу: " + error.message);
+  }
+};
+
+test.onclick = async () => {
+  const user = auth.currentUser;
+
+  if (!user) {
+    message("Спочатку увійди через Google.");
+    return;
+  }
+
+  const url = endpoint.value.trim();
+
+  if (
+    !/^https:\/\/[a-z0-9-]+\.supabase\.co\/functions\/v1\/[a-z0-9-]+\/?$/.test(url)
+  ) {
+    message("Введи правильну адресу Supabase Edge Function.");
+    return;
+  }
+
+  test.disabled = true;
+  message("Перевіряємо Firebase-акаунт...");
+
+  try {
+    const token = await user.getIdToken(true);
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + token,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        action: "verify-auth"
+      })
+    });
+
+    const data = await response.json();
+
+    if (
+      response.ok &&
+      data.success === true &&
+      data.authenticated === true
+    ) {
+      message(
+        "УСПІХ!\n\n" +
+        "Сервер підтвердив Firebase-акаунт.\n" +
+        "HTTP: " + response.status
+      );
+    } else {
+      message(
+        "Перевірка не пройшла.\n" +
+        "HTTP: " + response.status + "\n" +
+        "Помилка: " + (data.error || "Невідома")
+      );
+    }
+  } catch (error) {
+    message("Помилка з'єднання: " + error.message);
+  } finally {
+    test.disabled = !auth.currentUser;
+  }
+};
+
+logout.onclick = async () => {
+  await signOut(auth);
+};
+</script>
+</body>
+</html>
