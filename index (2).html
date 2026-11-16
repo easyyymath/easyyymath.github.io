@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="uk" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b276c">
+<title>Easyyy_Math — математика просто та зрозуміло</title>
+<meta name="description" content="Easyyy_Math — навчальна платформа з математики для 5–11 класів. Теорія, квізи, практика, зірочки.">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+
+<script>
+window.MathJax={
+  tex:{inlineMath:[['\\(','\\)'],['$','$']],displayMath:[['\\[','\\]']],processEscapes:true},
+  options:{skipHtmlTags:['script','style','textarea','pre','code']},
+  startup:{typeset:false}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+<style>
+:root{
+  --bg:#071a4a;--card:#0e2c7a;--card2:#12358f;--t:#fff;--m:#b9c6ee;
+  --y:#ffde59;--on-y:#082567;--r:#ff7b80;--g:#3ddc97;--bd:#2a4aa8;--link:#ffde59;
+  --hdr:#0b276c;
+}
+[data-theme="light"]{
+  --bg:#ffffff;--card:#ffffff;--card2:#f3f6fd;--t:#0b1f4d;--m:#4a5a86;
+  --r:#c62828;--g:#17804f;--bd:#d5ddf0;--link:#1a3fa3;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--t);
+  font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}
+body.menu-open{overflow:hidden}
+a{color:var(--link)}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:disabled{cursor:not-allowed;opacity:.55}
+h1,h2,h3{line-height:1.25;margin:0 0 8px}
+h1{font-size:clamp(22px,5.5vw,30px)}
+h2{font-size:clamp(19px,4.5vw,24px)}
+h3{font-size:17px}
+p{margin:0 0 10px}
+small,.muted{color:var(--m);font-size:14px}
+.ic{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ===== верхня панель: завжди синя ===== */
+header{position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:10px;
+  height:56px;padding:0 12px;background:var(--hdr);color:#fff;border-bottom:1px solid #294996}
+header a,header button{color:#fff}
+.menu-toggle{width:40px;height:40px;border:0;background:transparent;font-size:24px;line-height:1;border-radius:10px}
+.menu-toggle:hover{background:rgba(255,255,255,.12)}
+.brand{display:flex;align-items:center;gap:8px;text-decoration:none;font-weight:700;min-width:0}
+.brand img{height:30px;width:auto;display:block}
+.brand span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.header-actions{margin-left:auto;display:flex;align-items:center;gap:6px}
+.pill{background:rgba(255,255,255,.14);border-radius:999px;padding:4px 10px;font-weight:700;font-size:14px;white-space:nowrap;color:var(--y)}
+.pill:empty{display:none}
+.hbtn{border:1px solid rgba(255,255,255,.35);background:transparent;border-radius:10px;
+  height:36px;padding:0 12px;font-weight:600;font-size:14px;white-space:nowrap}
+.hbtn:hover{background:rgba(255,255,255,.14)}
+#th{width:36px;padding:0;font-size:17px}
+@media(max-width:420px){.brand span{display:none}.hbtn{padding:0 10px}}
+
+/* ===== бокове меню ===== */
+#nv{position:fixed;top:0;left:0;bottom:0;width:min(290px,84vw);z-index:300;background:#0b276c;color:#fff;
+  padding:12px;transform:translateX(-102%);transition:transform .2s;display:flex;flex-direction:column;gap:4px;overflow-y:auto}
+#nv.open{transform:none}
+#menuBackdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:250;opacity:0;pointer-events:none;transition:opacity .2s}
+#menuBackdrop.open{opacity:1;pointer-events:auto}
+.side-menu-heading{display:flex;justify-content:space-between;align-items:center;padding:2px 4px 10px}
+#closeMenu{border:0;background:transparent;color:#fff;font-size:20px;width:36px;height:36px;border-radius:8px}
+#nv a,#nv .menu-auth{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:10px;
+  color:#fff;text-decoration:none;font-weight:600;border:0;background:transparent;width:100%;text-align:left}
+#nv a:hover,#nv .menu-auth:hover{background:rgba(255,255,255,.12)}
+#nv a.on{background:var(--y);color:var(--on-y)}
+#nv .menu-auth{margin-top:auto;border:1px solid rgba(255,255,255,.3)}
+
+/* ===== каркас ===== */
+main{max-width:1000px;margin:0 auto;padding:16px 14px 28px}
+footer{text-align:center;padding:14px;color:var(--m);font-size:13px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin:0 0 12px}
+.empty{color:var(--m)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.between{justify-content:space-between}
+.back{display:inline-block;margin-bottom:10px;font-size:15px;font-weight:600;text-decoration:none}
+
+.b{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:42px;padding:0 18px;
+  border:2px solid var(--y);border-radius:12px;background:var(--y);color:var(--on-y);
+  font-weight:700;text-decoration:none;cursor:pointer}
+.b:hover{filter:brightness(.95)}
+.b.o{background:transparent;color:var(--t)}
+[data-theme="light"] .b.o{border-color:#0b276c;color:#0b276c}
+.b.sm{min-height:36px;padding:0 12px;font-size:14px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
+.tabs a,.tabs button{padding:7px 13px;border:1px solid var(--bd);border-radius:999px;text-decoration:none;
+  color:var(--t);background:transparent;font-size:14px;font-weight:600}
+.tabs .on{background:var(--y);color:var(--on-y);border-color:var(--y)}
+
+/* ===== головна ===== */
+.hero{position:relative;overflow:hidden;margin:0 0 14px;padding:22px 20px;border-radius:20px;
+  border:1px solid var(--bd);background:linear-gradient(135deg,#123a9c 0%,#0b276c 60%,#082058 100%);color:#fff}
+.hero::after{content:"π";position:absolute;right:14px;top:-18px;font:800 150px/1 Georgia,serif;color:rgba(255,222,89,.13);pointer-events:none}
+.hero>*{position:relative;z-index:1}
+.eyebrow{display:inline-block;padding:5px 12px;margin-bottom:10px;border:1px solid rgba(255,222,89,.55);border-radius:999px;
+  color:var(--y);font-size:13px;font-weight:700}
+.hero h1{margin-bottom:8px;font-size:clamp(24px,6vw,36px)}
+.hero h1 span{color:var(--y)}
+.hero p{color:#d3dcf7;max-width:560px;margin:0}
+[data-theme="light"] .hero{background:linear-gradient(135deg,#eaf0ff 0%,#ffffff 70%);color:#0b1f4d}
+[data-theme="light"] .hero::after{color:rgba(11,39,108,.08)}
+[data-theme="light"] .hero .eyebrow{color:#0b276c;border-color:#0b276c}
+[data-theme="light"] .hero h1 span{color:#1a3fa3}
+[data-theme="light"] .hero p{color:#4a5a86}
+@media(max-width:520px){.hero{padding:16px 14px}.hero::after{font-size:110px;top:-10px}}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.chip{padding:6px 12px;border-radius:999px;border:1px solid var(--bd);background:var(--card);font-size:13px;font-weight:600;color:var(--m)}
+.chip b{color:var(--y)}
+[data-theme="light"] .chip b{color:#8a6a00}
+.me-strip{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:0 0 16px;
+  padding:12px 14px;border:1px solid var(--bd);border-radius:14px;background:var(--card)}
+.me-strip b{font-size:17px}
+.sec-title{display:flex;align-items:center;gap:10px;margin:18px 0 10px}
+.sec-title::after{content:"";flex:1;height:1px;background:var(--bd)}
+.subjects{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:6px}
+.subject{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:6px;padding:16px 16px 16px 20px;
+  border:1px solid var(--bd);border-radius:16px;background:var(--card);text-decoration:none;color:var(--t);
+  transition:transform .15s,border-color .15s}
+.subject::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--y)}
+.subject:hover{transform:translateY(-2px);border-color:var(--y)}
+.subject .gr{align-self:flex-start;padding:3px 10px;border-radius:999px;background:rgba(255,222,89,.16);font-size:12px;font-weight:700;color:var(--y)}
+[data-theme="light"] .subject .gr{color:#6b5200;background:#fff3c2}
+.subject strong{font-size:20px}
+.subject small{flex:1}
+.subject .b{align-self:flex-start;margin-top:8px}
+.steps{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start}
+details.how{border:1px solid var(--bd);border-radius:14px;background:var(--card);margin:0}
+details.how summary{cursor:pointer;padding:12px 14px;font-weight:700;list-style:none;display:flex;align-items:center;gap:10px}
+details.how summary::-webkit-details-marker{display:none}
+details.how summary .n{width:26px;height:26px;flex:none;border-radius:50%;background:var(--y);color:var(--on-y);display:grid;place-items:center;font-size:13px;font-weight:800}
+details.how summary::after{content:"";margin-left:auto;width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .15s;margin-right:4px}
+details.how[open] summary::after{transform:rotate(-135deg)}
+
+.home-cab{margin:0 0 16px}
+details.how-all{border:1px solid var(--bd);border-radius:14px;background:var(--card);margin:18px 0 0}
+details.how-all summary{cursor:pointer;padding:14px 16px;font-size:20px;font-weight:800;list-style:none;display:flex;align-items:center;gap:10px}
+details.how-all summary::-webkit-details-marker{display:none}
+details.how-all summary::after{content:"";margin-left:auto;width:9px;height:9px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .15s;margin-right:4px}
+details.how-all[open] summary::after{transform:rotate(-135deg)}
+details.how-all ol{list-style:none;margin:0;padding:0 16px 8px}
+details.how-all li{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--bd)}
+details.how-all li .n{width:26px;height:26px;flex:none;border-radius:50%;background:var(--y);color:var(--on-y);display:grid;place-items:center;font-size:13px;font-weight:800}
+details.how-all li p{margin:2px 0 0;color:var(--m)}
+details.how p{padding:0 14px 12px 50px;margin:0;color:var(--m)}
+@media(max-width:760px){.subjects{grid-template-columns:1fr}.steps{grid-template-columns:1fr}}
+
+/* ===== теми, теорія, квіз ===== */
+.topic-link{display:block;text-decoration:none;color:var(--t);padding:12px 14px}
+.topic-link .row{justify-content:space-between}
+.tag{font-size:13px;font-weight:700;color:var(--g)}
+.f{background:var(--card2);border-radius:10px;padding:10px 12px;margin:10px 0;overflow-x:auto;max-width:100%}
+.tip,.err{border-radius:10px;padding:9px 12px;margin:10px 0}
+.tip{background:rgba(255,222,89,.14);border-left:4px solid var(--y)}
+.err{background:rgba(255,107,112,.14);border-left:4px solid var(--r)}
+figure{margin:10px 0}
+figure img,iframe{max-width:100%;border-radius:10px}
+iframe{width:100%;min-height:560px;border:0;background:#fff}
+.q button{display:block;width:100%;text-align:left;margin-top:7px;padding:10px 12px;border:1px solid var(--bd);
+  border-radius:10px;background:var(--card2);color:var(--t)}
+.q button:hover:not(:disabled){border-color:var(--y)}
+.q button.ok{border-color:var(--g);background:rgba(61,220,151,.18);opacity:1}
+.q button.bad{border-color:var(--r);background:rgba(255,107,112,.18);opacity:1}
+.q button:disabled{opacity:1;cursor:default}
+.answer-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.answer-row input{flex:1;min-width:140px;padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);color:var(--t)}
+.good{color:var(--g)}.bad-t{color:var(--r)}
+.feedback{margin:8px 0 0;font-weight:600}
+.reveal{margin-top:8px;padding:10px 12px;border-radius:10px;background:var(--card2)}
+.note{font-size:14px;color:var(--m);margin:0 0 10px}
+
+/* ===== кабінет ===== */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.stat{text-align:center;padding:10px 6px;margin:0}
+.stat strong{display:block;font-size:22px;color:var(--y)}
+[data-theme="light"] .stat strong{color:#1a3fa3}
+.stat span{font-size:13px;color:var(--m)}
+.progress-line{height:9px;border-radius:9px;background:var(--card2);overflow:hidden;margin:8px 0}
+.progress-line span{display:block;height:100%;background:var(--y)}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.field input[type=text]{padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card2);color:var(--t)}
+.check{display:flex;gap:8px;align-items:flex-start;font-size:14px}
+.check input{margin-top:3px}
+
+/* ===== магазин та рейтинг ===== */
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.shop-card{display:flex;flex-direction:column;gap:4px;margin:0;padding:12px}
+.shop-card img{width:84px;height:84px;object-fit:contain;align-self:center}
+.shop-card p{color:var(--m);font-size:14px;margin:0;flex:1}
+.price{font-weight:800;color:var(--y)}
+[data-theme="light"] .price{color:#8a6a00}
+.shop-card .b{margin-top:6px;width:100%}
+.rank{display:flex;align-items:center;gap:10px;padding:8px 12px}
+.rank .n{width:26px;font-weight:800;text-align:center}
+.avatar{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.avatar .in{position:absolute;inset:9%;border-radius:50%;background:var(--y);color:var(--on-y);display:grid;place-items:center;font-weight:800;overflow:hidden}
+.avatar .in img{position:static;inset:auto;width:100%;height:100%;object-fit:cover;border-radius:50%}
+.photo-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
+
+#toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(30px);opacity:0;z-index:500;
+  max-width:92vw;padding:10px 16px;border-radius:12px;background:#fff;color:#0b1f4d;font-weight:600;
+  box-shadow:0 6px 24px rgba(0,0,0,.35);transition:.2s;pointer-events:none}
+#toast.show{opacity:1;transform:translateX(-50%)}
+#toast.err{background:#ffe0e1;color:#7a1015}
+
+@media(max-width:520px){
+  main{padding:12px 10px 22px}
+  .card{padding:12px}
+  .stat-grid{gap:6px}
+  .stat strong{font-size:19px}
+  .b{padding:0 14px}
+  .actions .b{flex:1 1 auto}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <button class="menu-toggle" id="mn" type="button" aria-label="Відкрити меню" aria-expanded="false" aria-controls="nv">☰</button>
+
+  <a class="brand" href="#home"><img src="logo-white.png" alt=""><span>Easyyy_Math</span></a>
+
+  <nav id="nv" aria-label="Основна навігація">
+    <div class="side-menu-heading">
+      <strong>Навігація</strong>
+      <button id="closeMenu" type="button" aria-label="Закрити меню">✕</button>
+    </div>
+    <a href="#home"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Головна</a>
+    <a href="#account"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Мій кабінет</a>
+    <a href="#shop"><svg class="ic" viewBox="0 0 24 24"><path d="M6 7h12l1 13H5z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>Магазин</a>
+    <a href="#leaderboard"><svg class="ic" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H4v1a4 4 0 0 0 4 4M16 6h4v1a4 4 0 0 1-4 4M12 13v4M8 20h8"/></svg>Рейтинг</a>
+    <a href="#about"><svg class="ic" viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg>Твій наставник</a>
+    <a href="#book"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Запис на заняття</a>
+    <button type="button" id="menuAuth" class="menu-auth">Увійти через Google</button>
+  </nav>
+  <div id="menuBackdrop"></div>
+
+  <div class="header-actions">
+    <span class="pill" id="pt"></span>
+    <button class="hbtn" id="th" type="button" aria-label="Змінити тему">🌓</button>
+    <button class="hbtn" id="au" type="button">Увійти</button>
+  </div>
+</header>
+
+<main id="app"></main>
+<footer>© Easyyy_Math</footer>
+<div id="toast" role="status"></div>
+
+<script type="module">
+import {firebaseConfig} from './firebase-config.js';
+
+const LIVE=!!firebaseConfig?.apiKey&&!firebaseConfig.apiKey.startsWith('YOUR');
+const REWARD={quiz:5,quizBonus:20,practice:10};
+
+/* ===== СТАН ===== */
+let topics=[], shopItems=[], rankList=[], S={about:'',formUrl:'',socials:[]};
+let user=null, U={};            // U — документ користувача (users/{uid})
+let db,fs,auth,au;
+let shopState='loading', rankState='loading';   // loading | ok | error
+let accGrade=null;
+
+const $=s=>document.querySelector(s);
+const app=$('#app');
+
+const NAMES={math:'Математика',algebra:'Алгебра',geometry:'Геометрія'};
+const SUBJ_GRADES={math:[5,6],algebra:[7,8,9,10,11],geometry:[7,8,9,10,11]};
+// 5–6 класи — лише «Математика». Старі теми з algebra/geometry у 5–6 класах теж потрапляють сюди.
+const subjOf=t=>Number(t.grade)<=6?'math':(t.subject==='geometry'?'geometry':'algebra');
+
+/* ===== ДОПОМІЖНІ ===== */
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function safeLink(url){try{const u=new URL(url,location.href);return['http:','https:'].includes(u.protocol)?u.href:'#'}catch{return'#'}}
+const rich=s=>esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
+function formulaMarkup(v){
+  const src=String(v??'').trim(); if(!src)return '';
+  const c=rich(src);
+  return /\\\(|\\\[|(^|[^\\])\$/.test(src)?c:`\\[${c}\\]`;
+}
+function typesetMath(root=app){
+  const mj=window.MathJax; if(!mj?.startup?.promise)return;
+  mj.startup.promise.then(()=>{if(!root?.isConnected)return;mj.typesetClear([root]);return mj.typesetPromise([root])}).catch(console.error);
+}
+let toastTimer;
+function toast(msg,isErr){
+  const t=$('#toast'); t.textContent=msg; t.className='show'+(isErr?' err':'');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.className='',3200);
+}
+
+/* ===== ДАНІ КОРИСТУВАЧА: зірочки, квізи, практика ===== */
+// Старий формат: progress {"тема:q0":1,"тема:p0":1,"тема:done":1}. Він зберігається й враховується.
+const legacyEarned=cur=>Object.keys(cur.progress||{}).reduce((s,k)=>
+  s+(cur.progress[k]&&/:q\d+$/.test(k)?10:cur.progress[k]&&/:p\d+$/.test(k)?5:0),0);
+const earnedOf=cur=>cur.earned!==undefined?Number(cur.earned)||0:legacyEarned(cur);
+const balanceOf=cur=>Math.max(0,earnedOf(cur)-(Number(cur.shopSpent)||0));
+const qCorrect=q=>Number(q.a??q.correct??0);
+
+function qState(cur,t){
+  const quiz=t.quiz||[], saved=cur.quiz?.[t.id];
+  if(saved)return {a:{...(saved.a||{})},done:!!saved.done};
+  const lp=cur.progress||{}, a={};
+  quiz.forEach((q,i)=>{if(lp[t.id+':q'+i])a[i]=qCorrect(q)});
+  if(lp[t.id+':done']){quiz.forEach((q,i)=>{if(a[i]===undefined)a[i]=-1});return {a,done:true}}
+  return {a,done:false};
+}
+const qRight=(t,st)=>(t.quiz||[]).filter((q,i)=>st.a[i]===qCorrect(q)).length;
+function pState(cur,t,i){
+  const s=cur.prac?.[t.id]?.[i]; if(s)return s;
+  if(cur.progress?.[t.id+':p'+i])return {ok:true,v:''};
+  return null;
+}
+const isPaid=(cur,tid,key)=>!!cur.paid?.[tid]?.[key]||!!cur.progress?.[tid+':'+key];
+
+/* Атомарний запис у Firestore: читаємо актуальний документ, рахуємо, пишемо. */
+async function mutate(fn){
+  if(!user||!LIVE||!db){          // гість: лише локально, без зірочок
+    const res=fn(U,true); if(res)localMerge(res.patch); return res;
+  }
+  const ref=fs.doc(db,'users',user.uid);
+  const res=await fs.runTransaction(db,async tx=>{
+    const snap=await tx.get(ref); const cur=snap.data()||{};
+    const r=fn(cur,false); if(r)tx.set(ref,r.patch,{merge:true});
+    return r;
+  });
+  if(res){localMerge(res.patch); if(res.add)syncPublic();}
+  return res;
+}
+function localMerge(p){
+  for(const k of Object.keys(p)){
+    if(p[k]&&typeof p[k]==='object'&&!Array.isArray(p[k])){U[k]=U[k]||{};deepMerge(U[k],p[k])}else U[k]=p[k];
+  }
+}
+function deepMerge(a,b){
+  for(const k of Object.keys(b)){
+    if(b[k]&&typeof b[k]==='object'&&!Array.isArray(b[k])){a[k]=a[k]||{};deepMerge(a[k],b[k])}else a[k]=b[k];
+  }
+}
+
+async function answerQuiz(t,i,j){
+  const quiz=t.quiz||[];
+  return mutate((cur,guest)=>{
+    if(cur.progress?.[t.id+':done'])return null;
+    const st=qState(cur,t); if(st.done||st.a[i]!==undefined)return null;
+    const a={...st.a,[i]:j};
+    const paid={...(cur.paid?.[t.id]||{})};
+    let add=0;
+    if(!guest&&j===qCorrect(quiz[i])&&!isPaid(cur,t.id,'q'+i)){paid['q'+i]=1;add+=REWARD.quiz}
+    const finished=quiz.every((q,k)=>a[k]!==undefined);
+    const right=quiz.filter((q,k)=>a[k]===qCorrect(q)).length;
+    let bonus=0;
+    if(!guest&&finished&&right===quiz.length&&!isPaid(cur,t.id,'bonus')){paid.bonus=1;bonus=REWARD.quizBonus;add+=bonus}
+    const patch={quiz:{[t.id]:{a,done:finished,right}},last:Date.now()};
+    if(!guest){patch.paid={[t.id]:paid};patch.earned=earnedOf(cur)+add}
+    return {patch,add,bonus,finished,right};
+  });
+}
+async function answerPractice(t,i,value,ok){
+  return mutate((cur,guest)=>{
+    if(pState(cur,t,i))return null;
+    const paid={...(cur.paid?.[t.id]||{})};
+    let add=0;
+    if(!guest&&ok&&!isPaid(cur,t.id,'p'+i)){paid['p'+i]=1;add=REWARD.practice}
+    const patch={prac:{[t.id]:{[i]:{ok,v:String(value).slice(0,200)}}},last:Date.now()};
+    if(!guest){patch.paid={[t.id]:paid};patch.earned=earnedOf(cur)+add}
+    return {patch,add};
+  });
+}
+
+/* ===== ПЕРЕВІРКА ВІДПОВІДЕЙ ===== */
+function normalizeAnswer(v){
+  return String(v??'').trim().toLowerCase()
+    .replace(/[−–—]/g,'-').replace(/,/g,'.').replace(/\s+/g,'')
+    .replace(/^[a-zа-яіїє]\w?=/,'').replace(/°$/,'');
+}
+function toNumber(s){
+  if(/^-?\d+(\.\d+)?\/\d+(\.\d+)?$/.test(s)){const[a,b]=s.split('/').map(Number);return b?a/b:NaN}
+  return /^-?\d*\.?\d+$/.test(s)?Number(s):NaN;
+}
+// Кілька правильних відповідей розділяються «;», «|» або новим рядком. Кома й крапка в дробах рівнозначні.
+const answerOptions=exp=>String(exp??'').split(/;|\||\n/).map(s=>s.trim()).filter(Boolean);
+function checkAnswer(value,expected){
+  const a=normalizeAnswer(value); if(!a)return false;
+  return answerOptions(expected).some(opt=>{
+    const b=normalizeAnswer(opt); if(a===b)return true;
+    const x=toNumber(a),y=toNumber(b);
+    return Number.isFinite(x)&&Number.isFinite(y)&&Math.abs(x-y)<1e-9;
+  });
+}
+
+/* ===== FIREBASE ===== */
+async function loadPublicData(){
+  try{
+    const t=await fs.getDocs(fs.collection(db,'topics'));
+    if(!t.empty)topics=t.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.published!==false);
+    const s=await fs.getDoc(fs.doc(db,'settings','site'));
+    if(s.exists())S={...S,...s.data()};
+  }catch(e){console.error('Теми:',e)}
+  shopState='loading';
+  try{
+    const [sh,mt]=await Promise.all([fs.getDocs(fs.collection(db,'shop')),fs.getDocs(fs.collection(db,'materials'))]);
+    shopItems=[
+      ...sh.docs.map(d=>({id:d.id,source:'shop',...d.data(),type:d.data().type||'material'})),
+      ...mt.docs.map(d=>({id:d.id,source:'materials',...d.data(),type:'material'}))
+    ].filter(x=>x.published!==false);
+    shopState='ok';
+  }catch(e){console.error('Магазин:',e);shopState='error'}
+}
+async function loadRank(){
+  rankState='loading';
+  try{
+    const r=await fs.getDocs(fs.collection(db,'publicProfiles'));
+    rankList=r.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.show!==false&&x.nickname);
+    rankState='ok';
+  }catch(e){console.error('Рейтинг:',e);rankState='error'}
+}
+async function loadUser(){
+  U={};
+  if(!user)return;
+  try{
+    const ref=fs.doc(db,'users',user.uid);
+    const d=await fs.getDoc(ref); U=d.data()||{};
+    const base={name:user.displayName||'Учень',email:user.email||'',last:Date.now()};
+    if(U.earned===undefined)base.earned=legacyEarned(U);   // перенесення вже зароблених зірочок
+    await fs.setDoc(ref,base,{merge:true});
+    U={...U,...base};
+  }catch(e){console.error('Користувач:',e)}
+}
+async function syncPublic(){
+  if(!user||!db||!U.publicOn||!U.nickname)return;
+  try{
+    await fs.setDoc(fs.doc(db,'publicProfiles',user.uid),{
+      nickname:U.nickname,score:earnedOf(U),show:true,
+      frame:U.equipped?.frame||'',badge:U.equipped?.badge||'',updated:Date.now()
+    },{merge:true});
+  }catch(e){console.warn('Публічний профіль:',e)}
+}
+
+if(LIVE){
+  try{
+    const base='https://www.gstatic.com/firebasejs/10.12.2/';
+    const [A,Au,F]=await Promise.all([import(base+'firebase-app.js'),import(base+'firebase-auth.js'),import(base+'firebase-firestore.js')]);
+    const fa=A.getApps().length?A.getApp():A.initializeApp(firebaseConfig);
+    auth=Au.getAuth(fa);au=Au;db=F.getFirestore(fa);fs=F;
+    loadPublicData().then(()=>route());
+    au.onAuthStateChanged(auth,async u=>{
+      user=u;
+      await loadUser();
+      updateAuthButton();updatePoints();route();
+    });
+  }catch(e){console.error('Firebase:',e);shopState='error';rankState='error'}
+}else{shopState='error';rankState='error'}
+
+/* ===== АВТОРИЗАЦІЯ ===== */
+function updateAuthButton(){
+  $('#au').textContent=user?'Вийти':'Увійти';
+  $('#menuAuth').textContent=user?'Вийти з акаунта':'Увійти через Google';
+}
+async function toggleAuth(){
+  if(!LIVE||!auth){toast('Потрібно підключити Firebase.',true);return}
+  try{
+    if(user)await au.signOut(auth);
+    else await au.signInWithPopup(auth,new au.GoogleAuthProvider());
+  }catch(e){toast('Не вдалося виконати вхід: '+e.message,true)}
+}
+$('#au').onclick=toggleAuth;
+
+/* ===== ТЕМА (логотип завжди білий, шапка завжди синя) ===== */
+function theme(t){
+  document.documentElement.dataset.theme=t;
+  try{localStorage.setItem('th',t)}catch(e){}
+}
+$('#th').onclick=()=>theme(document.documentElement.dataset.theme==='dark'?'light':'dark');
+theme((()=>{try{return localStorage.getItem('th')}catch(e){return null}})()||'dark');
+
+function updatePoints(){$('#pt').textContent=user?'★ '+balanceOf(U):''}
+
+/* ===== ГОЛОВНА ===== */
+function home(){
+  const how=[
+    ['Вивчай теорію','Короткі зрозумілі правила, формули та приклади.'],
+    ['Проходь квізи',`Питання з варіантами відповідей. Квіз можна пройти один раз, відповіді зберігаються автоматично.`],
+    ['Виконуй практику','Введи відповідь і натисни «Відповісти» — одразу побачиш результат і пояснення.'],
+    ['Заробляй зірочки','Обмінюй зірочки на рамки, значки та матеріали в магазині.']
+  ];
+  let strip='';
+  if(user){
+    strip=`<div class="home-cab"><a class="b" href="#account">Мій кабінет</a></div>`;
+  }
+  app.innerHTML=`
+    <section class="hero">
+      <span class="eyebrow">Навчальна платформа для 5–11 класів</span>
+      <h1>Математика, яку ти <span>нарешті зрозумієш</span></h1>
+      <p>Теорія, квізи та практика. Навчайся у своєму темпі й заробляй зірочки.</p>
+    </section>
+
+    ${strip}
+
+    <h2 class="sec-title">Що будемо вивчати?</h2>
+    <div class="subjects">
+      <a class="subject" href="#subj/math"><span class="gr">5–6 класи</span><strong>Математика</strong><small>Числа, дроби, рівняння, фігури.</small><span class="b sm">Обрати клас</span></a>
+      <a class="subject" href="#subj/algebra"><span class="gr">7–11 класи</span><strong>Алгебра</strong><small>Вирази, функції, рівняння, степені.</small><span class="b sm">Обрати клас</span></a>
+      <a class="subject" href="#subj/geometry"><span class="gr">7–11 класи</span><strong>Геометрія</strong><small>Фігури, кути, площі, теореми.</small><span class="b sm">Обрати клас</span></a>
+    </div>
+
+    <details class="how-all">
+      <summary>Як працює Easyyy_Math?</summary>
+      <ol>${how.map(([h,p],i)=>`<li><span class="n">${i+1}</span><div><b>${h}</b><p>${p}</p></div></li>`).join('')}</ol>
+    </details>
+  `;
+}
+
+/* ===== СТОРІНКА ПРЕДМЕТА ===== */
+function subjectPage(subject,grade){
+  if(!NAMES[subject]){home();return}
+  const grades=SUBJ_GRADES[subject];
+  const sel=grade&&grades.includes(Number(grade))?Number(grade):null;
+  app.innerHTML=`
+    <a class="back" href="#home">← На головну</a>
+    <h2>${NAMES[subject]}</h2>
+    <p class="note">${sel?'':'Обери клас, щоб переглянути теми.'}</p>
+    <div class="tabs">${grades.map(g=>`<a class="${sel===g?'on':''}" href="#subj/${subject}/${g}">${g} клас</a>`).join('')}</div>
+    <div id="subjectTopics"></div>`;
+  if(!sel)return;
+  const list=topics.filter(t=>subjOf(t)===subject&&Number(t.grade)===sel);
+  const target=$('#subjectTopics');
+  if(!list.length){target.innerHTML='<div class="card empty">У цьому класі поки немає тем. Скоро з’являться.</div>';return}
+  const sections=[...new Set(list.map(t=>t.section||'Інші теми'))];
+  target.innerHTML=sections.map(sec=>`
+    <h3>${esc(sec)}</h3>
+    ${list.filter(t=>(t.section||'Інші теми')===sec).map(t=>{
+      const q=qState(U,t).done;
+      return `<a class="card topic-link" href="#topic/${encodeURIComponent(t.id)}">
+        <div class="row"><b>${esc(t.title)}</b>${q?'<span class="tag">Квіз пройдено</span>':''}</div></a>`;
+    }).join('')}`).join('');
+}
+
+/* ===== СТОРІНКА ТЕМИ ===== */
+function topicNav(t,id,tab){
+  const tabs=[['theory','Теорія'],['quiz','Квіз'],['practice','Практика']];
+  return `
+    <a class="back" href="#subj/${subjOf(t)}/${t.grade}">← До тем класу</a>
+    <h2>${esc(t.title)}</h2>
+    <div class="tabs">${tabs.map(([k,n])=>`<a class="${k===tab?'on':''}" href="#topic/${encodeURIComponent(id)}/${k}">${n}</a>`).join('')}</div>`;
+}
+const homeActions=`<div class="actions"><a class="b o" href="#home">На головну</a><a class="b o" href="#account">Мій кабінет</a></div>`;
+
+function topicPage(id,tab='theory'){
+  const t=topics.find(x=>x.id===id);
+  if(!t){home();return}
+  const hasQuiz=(t.quiz||[]).length>0, hasPrac=(t.practice||[]).length>0;
+  let body='';
+
+  if(tab==='theory'){
+    const next=hasQuiz?`<a class="b" href="#topic/${encodeURIComponent(id)}/quiz">До квізу →</a>`
+      :hasPrac?`<a class="b" href="#topic/${encodeURIComponent(id)}/practice">До практики →</a>`:'';
+    body=`
+      <div class="card">
+        <p>${rich(t.theory||'')}</p>
+        ${(t.images||[]).map(m=>`<figure><img src="${esc(safeLink(m.src))}" alt="${esc(m.cap||'Ілюстрація до теми')}" loading="lazy">${m.cap?`<figcaption class="muted">${esc(m.cap)}</figcaption>`:''}</figure>`).join('')}
+        ${t.formula?`<div class="f">${formulaMarkup(t.formula)}</div>`:''}
+        ${t.tip?`<div class="tip">${rich(t.tip)}</div>`:''}
+        ${t.mistake?`<div class="err">${rich(t.mistake)}</div>`:''}
+      </div>
+      <div class="actions">${next}</div>`;
+  }
+  if(tab==='quiz')body=quizHTML(t);
+  if(tab==='practice'){
+    body=hasPrac?`<p class="note">Введи відповідь і натисни «Відповісти». Кома й крапка в дробах рівнозначні. За правильну відповідь +${REWARD.practice} зірочок. Після відповіді побачиш пояснення.</p>
+      ${!user?'<p class="note"><b>Увійди через Google, щоб отримувати зірочки та зберігати результати.</b></p>':''}
+      ${t.practice.map((p,i)=>practiceCard(t,i)).join('')}${homeActions}`
+      :`<div class="card empty">Практику ще не додано.</div>${homeActions}`;
+  }
+  app.innerHTML=topicNav(t,id,tab)+body;
+  if(tab==='quiz')bindQuiz(t);
+  if(tab==='practice')bindPractice(t);
+}
+
+/* ===== КВІЗ ===== */
+function quizHTML(t){
+  const quiz=t.quiz||[];
+  if(!quiz.length)return `<div class="card empty">Квіз ще не додано.</div>${homeActions}`;
+  const st=qState(U,t);
+  const answered=Object.keys(st.a).length;
+  const right=qRight(t,st);
+  const info=st.done?'':`<p class="note">Квіз можна пройти лише один раз: +${REWARD.quiz} за правильну відповідь, +${REWARD.quizBonus} якщо без помилок. ${
+    user?'Відповіді зберігаються автоматично — можна продовжити з іншого пристрою.':'<b>Увійди через Google, щоб отримувати зірочки та зберігати відповіді.</b>'}</p>`;
+  const qs=quiz.map((q,i)=>{
+    const chosen=st.a[i], correct=qCorrect(q);
+    return `<div class="card q" data-i="${i}">
+      <b>${i+1}. ${rich(q.q||q.question||'')}</b>
+      ${(q.o||q.options||[]).map((o,j)=>{
+        const cls=chosen===undefined?'':j===correct?'ok':j===chosen?'bad':'';
+        return `<button type="button" data-j="${j}" class="${cls}" ${chosen!==undefined?'disabled':''}>${rich(o)}</button>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+  let result='';
+  if(st.done){
+    const perfect=right===quiz.length;
+    result=`<div class="card"><h3>Результат: ${right} / ${quiz.length}</h3>
+      <p>${perfect?'Чудова робота! Усі відповіді правильні.':'Гарна спроба! Переглянь теорію ще раз і переходь до практики.'}</p>
+      ${user?'':'<small>Результат не збережено — увійди через Google.</small>'}
+      <div class="actions">
+        ${(t.practice||[]).length?`<a class="b" href="#topic/${encodeURIComponent(t.id)}/practice">До практики →</a>`:''}
+        <a class="b o" href="#home">На головну</a><a class="b o" href="#account">Мій кабінет</a>
+      </div></div>`;
+  }
+  const leave=st.done?'':`<div class="actions"><button class="b o sm" id="quizHome" type="button">На головну</button></div>`;
+  return info+qs+result+leave;
+}
+function bindQuiz(t){
+  app.querySelectorAll('.q').forEach(box=>{
+    const i=Number(box.dataset.i);
+    box.querySelectorAll('button:not(:disabled)').forEach(btn=>{
+      btn.onclick=async()=>{
+        app.querySelectorAll('.q button').forEach(b=>b.disabled=true);
+        const j=Number(btn.dataset.j);
+        try{
+          const r=await answerQuiz(t,i,j);
+          if(r?.add)toast(`+${r.add} ★${r.bonus?` (у т.ч. бонус +${r.bonus})`:''}`);
+          updatePoints();
+        }catch(e){console.error(e);toast('Не вдалося зберегти відповідь. Спробуй ще раз.',true)}
+        const y=window.scrollY;
+        topicPage(t.id,'quiz');window.scrollTo(0,y);typesetMath(app);
+      };
+    });
+  });
+  const h=$('#quizHome');
+  if(h)h.onclick=()=>{
+    if(!user&&Object.keys(qState(U,t).a).length&&!confirm('Ти не увійшов(-ла) в акаунт — відповіді не збережуться. Вийти з квізу?'))return;
+    location.hash='#home';
+  };
+}
+// Гість не втрачає відповіді без попередження
+addEventListener('beforeunload',e=>{
+  if(user||!location.hash.startsWith('#topic/')||!location.hash.endsWith('/quiz'))return;
+  const t=topics.find(x=>x.id===decodeURIComponent(location.hash.split('/')[1]||''));
+  if(t&&Object.keys(qState(U,t).a).length&&!qState(U,t).done){e.preventDefault();e.returnValue=''}
+});
+
+/* ===== ПРАКТИКА ===== */
+function practiceCard(t,i){
+  const p=t.practice[i], ps=pState(U,t,i);
+  const expected=p.a||p.answer||'';
+  const shown=answerOptions(expected).join(' або ');
+  let fb='',reveal='';
+  if(ps){
+    fb=ps.ok?'<p class="feedback good">Правильно!</p>':'<p class="feedback bad-t">Неправильно.</p>';
+    reveal=`<div class="reveal">${ps.ok?'':`<div>Правильна відповідь: <b>${rich(shown)}</b></div>`}${p.explanation?`<div>${rich(p.explanation)}</div>`:''}</div>`;
+    if(ps.ok&&!p.explanation)reveal='';
+  }
+  return `<div class="card" data-pc="${i}">
+    <b>${i+1}. ${rich(p.q||p.question||p.task||'')}</b>
+    <div class="answer-row">
+      <input data-answer="${i}" placeholder="Твоя відповідь" aria-label="Відповідь на завдання ${i+1}" value="${esc(ps?.v||'')}" ${ps?'disabled':''}>
+      <button class="b" data-check="${i}" ${ps?'disabled':''}>${ps?(ps.ok?'Виконано':'Відповідь дано'):'Відповісти'}</button>
+    </div>${fb}${reveal}</div>`;
+}
+function bindPractice(t,only){
+  const scope=only||app;
+  scope.querySelectorAll('[data-check]').forEach(btn=>{
+    btn.onclick=async()=>{
+      const i=Number(btn.dataset.check);
+      const card=app.querySelector(`[data-pc="${i}"]`);
+      const input=card.querySelector('input'), value=input.value.trim();
+      const p=t.practice[i], expected=p.a||p.answer||'';
+      if(!value){toast('Спочатку введи відповідь.',true);return}
+      if(!expected){toast('Правильну відповідь ще не додано.',true);return}
+      btn.disabled=input.disabled=true;
+      const ok=checkAnswer(value,expected);
+      try{
+        const r=await answerPractice(t,i,value,ok);
+        if(r?.add)toast(`+${r.add} ★`);
+        updatePoints();
+      }catch(e){console.error(e);toast('Не вдалося зберегти. Спробуй ще раз.',true);btn.disabled=input.disabled=false;return}
+      card.outerHTML=practiceCard(t,i);
+      bindPractice(t,app.querySelector(`[data-pc="${i}"]`));
+      typesetMath(app);
+    };
+  });
+}
+
+/* ===== АВАТАР, ЗНАЧОК ===== */
+const goodById=id=>shopItems.find(x=>x.id===id);
+function avatarHTML(name,frameId,size=56,photo=''){
+  const f=goodById(frameId), url=f&&f.type==='frame'?safeLink(f.imageUrl||''):'#';
+  return `<span class="avatar" style="width:${size}px;height:${size}px"><span class="in" style="font-size:${size/2.4}px">${photo&&/^data:image\/jpeg;base64,/.test(photo)?`<img src="${photo}" alt="">`:esc((name||'У').trim().charAt(0).toUpperCase())}</span>${url!=='#'?`<img src="${esc(url)}" alt="">`:''}</span>`;
+}
+function badgeHTML(id,size=24){
+  const b=goodById(id); if(!b||b.type!=='badge')return '';
+  const url=safeLink(b.imageUrl||''); if(url==='#')return '';
+  return `<img src="${esc(url)}" alt="${esc(b.title||'Значок')}" title="${esc(b.title||'')}" style="width:${size}px;height:${size}px;object-fit:contain">`;
+}
+
+/* ===== ОСОБИСТИЙ КАБІНЕТ ===== */
+function gradeStats(grade){
+  const list=topics.filter(t=>Number(t.grade)===grade);
+  const calc=sub=>{
+    let quizDone=0,quizTotal=0,pracDone=0,pracTotal=0,topicsDone=0;
+    sub.forEach(t=>{
+      const hasQ=(t.quiz||[]).length>0, n=(t.practice||[]).length;
+      const qd=hasQ&&qState(U,t).done;
+      const pd=(t.practice||[]).filter((p,i)=>pState(U,t,i)).length;
+      if(hasQ){quizTotal++;if(qd)quizDone++}
+      pracTotal+=n;pracDone+=pd;
+      if((hasQ||n)&&(!hasQ||qd)&&pd===n)topicsDone++;
+    });
+    const total=quizTotal+pracTotal, done=quizDone+pracDone;
+    return {quizDone,quizTotal,pracDone,pracTotal,topicsDone,topicsTotal:sub.length,percent:total?Math.round(done/total*100):0};
+  };
+  return {list,all:calc(list),bySubject:Object.fromEntries(['algebra','geometry'].map(s=>[s,calc(list.filter(t=>subjOf(t)===s))]))};
+}
+function accountPage(){
+  if(!user){
+    app.innerHTML=`<h2>Мій кабінет</h2><div class="card"><p>Увійди через Google, щоб бачити прогрес і зберігати результати.</p><button class="b" id="accLogin">Увійти через Google</button></div>`;
+    $('#accLogin').onclick=toggleAuth;return;
+  }
+  if(!accGrade){try{accGrade=Number(localStorage.getItem('accGrade'))||0}catch(e){}}
+  if(!accGrade){const first=topics.find(t=>qState(U,t).done||(t.practice||[]).some((p,i)=>pState(U,t,i)));accGrade=first?Number(first.grade):5}
+  const g=accGrade, st=gradeStats(g), A=st.all;
+  const nick=U.nickname||'';
+  const bar=(label,s)=>`<div style="margin-top:8px"><div class="row between"><small>${label}</small><small>${s.percent}%</small></div><div class="progress-line"><span style="width:${s.percent}%"></span></div></div>`;
+  app.innerHTML=`
+    <h2>Мій кабінет</h2>
+
+    <div class="card">
+      <div class="row" style="gap:12px;flex-wrap:nowrap">
+        ${avatarHTML(nick||user.displayName,U.equipped?.frame,64,U.photo)}
+        <div style="min-width:0">
+          <div class="row" style="gap:6px"><b style="overflow-wrap:anywhere">${esc(nick||user.displayName||'Учень')}</b>${badgeHTML(U.equipped?.badge,24)}</div>
+          <small>${esc(user.email||'')}</small>
+        </div>
+      </div>
+      <div class="photo-actions">
+        <button class="b sm o" id="photoBtn" type="button">${U.photo?'Змінити фото':'Завантажити фото'}</button>
+        ${U.photo?'<button class="b sm o" id="photoDel" type="button">Видалити фото</button>':''}
+        <input type="file" id="photoFile" accept="image/*" hidden>
+      </div>
+      <small>Фото бачиш тільки ти — в рейтингу воно не показується.</small>
+      <div class="row between" style="margin-top:12px">
+        <div><h3 style="margin:0">★ ${balanceOf(U)} <small>доступно</small></h3><small>Усього зароблено: ${earnedOf(U)}</small></div>
+        <a class="b sm" href="#shop">Магазин</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Профіль у рейтингу</h3>
+      <div class="field"><label for="nick"><small>Нікнейм (так тебе бачать інші; ім’я та пошта не показуються)</small></label>
+        <input type="text" id="nick" maxlength="20" value="${esc(nick)}" placeholder="Наприклад: MathFox"></div>
+      <label class="check"><input type="checkbox" id="pubOn" ${U.publicOn?'checked':''}> Показувати мене в рейтингу</label>
+      <div class="actions"><button class="b sm" id="saveNick" type="button">Зберегти</button></div>
+    </div>
+
+    <h3>Прогрес за класами</h3>
+    <div class="tabs">${[5,6,7,8,9,10,11].map(x=>`<button type="button" data-g="${x}" class="${x===g?'on':''}">${x} клас</button>`).join('')}</div>
+
+    <div class="stat-grid">
+      <div class="card stat"><strong>${A.quizDone}</strong><span>Квізів пройдено</span></div>
+      <div class="card stat"><strong>${A.pracDone}</strong><span>Практичних завдань</span></div>
+      <div class="card stat"><strong>${A.topicsDone}</strong><span>Тем завершено</span></div>
+    </div>
+
+    <div class="card">
+      <div class="row between"><b>Прогрес ${g} класу</b><b>${A.percent}%</b></div>
+      <div class="progress-line"><span style="width:${A.percent}%"></span></div>
+      <small>Тем: ${A.topicsDone} із ${A.topicsTotal} · Квізів: ${A.quizDone}/${A.quizTotal} · Практика: ${A.pracDone}/${A.pracTotal}</small>
+      ${g>=7?bar('Алгебра',st.bySubject.algebra)+bar('Геометрія',st.bySubject.geometry):''}
+    </div>
+
+    <div id="myTopics"></div>`;
+
+  app.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{
+    accGrade=Number(b.dataset.g);try{localStorage.setItem('accGrade',accGrade)}catch(e){}
+    accountPage();
+  });
+  $('#saveNick').onclick=saveNick;
+  $('#photoBtn').onclick=()=>$('#photoFile').click();
+  $('#photoFile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)savePhoto(f)};
+  if($('#photoDel'))$('#photoDel').onclick=deletePhoto;
+
+  const box=$('#myTopics');
+  box.innerHTML=st.list.length?st.list.map(t=>{
+    const qd=qState(U,t), qn=(t.quiz||[]).length, pn=(t.practice||[]).length;
+    const pd=(t.practice||[]).filter((p,i)=>pState(U,t,i)).length;
+    return `<a class="card topic-link" href="#topic/${encodeURIComponent(t.id)}">
+      <div class="row between"><b>${esc(t.title)}</b><small>${NAMES[subjOf(t)]}</small></div>
+      <small>Квіз: ${qn?(qd.done?`${qRight(t,qd)}/${qn} правильно`:'не пройдено'):'немає'} · Практика: ${pd}/${pn}</small></a>`;
+  }).join(''):'<div class="card empty">У цьому класі поки немає тем.</div>';
+}
+async function saveNick(){
+  const nick=$('#nick').value.trim().replace(/\s+/g,' '), on=$('#pubOn').checked;
+  if(on&&(nick.length<2||nick.length>20)){toast('Нікнейм має містити від 2 до 20 символів.',true);return}
+  try{
+    await fs.setDoc(fs.doc(db,'users',user.uid),{nickname:nick,publicOn:on},{merge:true});
+    U.nickname=nick;U.publicOn=on;
+    if(on)await syncPublic();
+    else{try{await fs.deleteDoc(fs.doc(db,'publicProfiles',user.uid))}catch(e){}}
+    toast('Збережено');accountPage();
+  }catch(e){toast('Не вдалося зберегти: '+e.message,true)}
+}
+
+function resizePhoto(file,size=256){
+  return new Promise((res,rej)=>{
+    if(!file.type.startsWith('image/')){rej(new Error('Це не зображення'));return}
+    const url=URL.createObjectURL(file), img=new Image();
+    img.onload=()=>{
+      const m=Math.min(img.width,img.height), c=document.createElement('canvas');
+      c.width=c.height=size;
+      c.getContext('2d').drawImage(img,(img.width-m)/2,(img.height-m)/2,m,m,0,0,size,size);
+      URL.revokeObjectURL(url);
+      res(c.toDataURL('image/jpeg',0.85));
+    };
+    img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('Не вдалося відкрити фото'))};
+    img.src=url;
+  });
+}
+async function savePhoto(file){
+  try{
+    const photo=await resizePhoto(file);
+    await fs.setDoc(fs.doc(db,'users',user.uid),{photo},{merge:true});
+    U.photo=photo;toast('Фото збережено');accountPage();
+  }catch(e){toast('Не вдалося зберегти фото: '+e.message,true)}
+}
+async function deletePhoto(){
+  try{
+    await fs.setDoc(fs.doc(db,'users',user.uid),{photo:''},{merge:true});
+    U.photo='';toast('Фото видалено');accountPage();
+  }catch(e){toast('Не вдалося видалити фото: '+e.message,true)}
+}
+
+/* ===== МАГАЗИН ===== */
+const TYPE_NAMES={frame:'Рамки',badge:'Значки',theme:'Оформлення',game:'Ігри',material:'Матеріали'};
+const ownedIds=()=>U.inventory||[];
+function itemCard(item){
+  const owned=ownedIds().includes(item.id), type=item.type||'material';
+  const active=U.equipped?.[type]===item.id;
+  const img=safeLink(item.imageUrl||'');
+  let action;
+  if(!owned)action=`<button class="b" data-buy="${esc(item.id)}">${user?'Купити':'Увійти, щоб купити'}</button>`;
+  else if(['frame','badge','theme'].includes(type))action=`<button class="b ${active?'o':''}" data-equip="${esc(item.id)}">${active?'Зняти':'Встановити'}</button>`;
+  else if(safeLink(item.url)!=='#')action=`<a class="b" href="${esc(safeLink(item.url))}" target="_blank" rel="noopener noreferrer">Відкрити</a>`;
+  else action='<small class="tag">Придбано</small>';
+  return `<div class="card shop-card">
+    ${img!=='#'?`<img src="${esc(img)}" alt="${esc(item.title||'')}" loading="lazy">`:''}
+    <b>${esc(item.title||'Товар')}</b>
+    ${item.description?`<p>${esc(item.description)}</p>`:'<p></p>'}
+    ${owned?'':`<div class="price">★ ${Number(item.price)||0}</div>`}
+    ${action}</div>`;
+}
+function shopPage(){
+  if(shopState==='loading'){app.innerHTML='<h2>Магазин</h2><div class="card empty">Завантаження…</div>';return}
+  if(shopState==='error'){
+    app.innerHTML='<h2>Магазин</h2><div class="card"><p>Не вдалося завантажити товари. Перевір з’єднання й спробуй ще раз.</p><button class="b" id="retryShop">Спробувати ще раз</button></div>';
+    $('#retryShop').onclick=async()=>{shopState='loading';shopPage();await loadPublicData();shopPage()};return;
+  }
+  const mine=shopItems.filter(x=>ownedIds().includes(x.id));
+  const types=[...new Set(shopItems.map(x=>x.type||'material'))];
+  app.innerHTML=`
+    <h2>Магазин</h2>
+    <div class="card row between">
+      <div><b>${user?`Баланс: ★ ${balanceOf(U)}`:'Увійди через Google, щоб купувати'}</b>
+      <br><small>Покупка проходить автоматично: зірочки списуються, товар одразу з’являється в інвентарі.</small></div>
+      ${user?'':'<button class="b sm" id="shopLogin">Увійти</button>'}
+    </div>
+    ${user?`<h3>Мій інвентар</h3>${mine.length?`<div class="shop-grid">${mine.map(itemCard).join('')}</div>`:'<div class="card empty">Поки немає придбаних товарів.</div>'}`:''}
+    ${types.length?types.map(ty=>`<h3 style="margin-top:14px">${TYPE_NAMES[ty]||'Інше'}</h3><div class="shop-grid">${shopItems.filter(x=>(x.type||'material')===ty&&!ownedIds().includes(x.id)).map(itemCard).join('')}</div>`).join(''):'<div class="card empty">Товари скоро з’являться.</div>'}`;
+  $('#shopLogin')&&($('#shopLogin').onclick=toggleAuth);
+  app.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>buy(b.dataset.buy));
+  app.querySelectorAll('[data-equip]').forEach(b=>b.onclick=()=>equip(b.dataset.equip));
+}
+let busy=false;
+async function buy(id){
+  if(!user){toggleAuth();return}
+  if(busy)return;
+  const item=goodById(id); if(!item)return;
+  if(ownedIds().includes(id)){toast('Цей товар уже придбано.');return}
+  if(balanceOf(U)<(Number(item.price)||0)){toast('Недостатньо зірочок. Нічого не списано.',true);return}
+  if(!confirm(`Купити «${item.title}» за ${Number(item.price)||0} зірочок?`))return;
+  busy=true;
+  try{
+    const uref=fs.doc(db,'users',user.uid), iref=fs.doc(db,item.source,id);
+    await fs.runTransaction(db,async tx=>{
+      const [us,is]=await Promise.all([tx.get(uref),tx.get(iref)]);
+      if(!is.exists()||is.data().published===false)throw new Error('GONE');
+      const cur=us.data()||{}, price=Math.max(0,Number(is.data().price)||0);   // ціна береться з бази
+      const inv=Array.isArray(cur.inventory)?cur.inventory:[];
+      if(inv.includes(id))throw new Error('OWNED');
+      const earned=earnedOf(cur), spent=Number(cur.shopSpent)||0;
+      if(earned-spent<price)throw new Error('FUNDS');
+      tx.set(uref,{
+        earned,inventory:[...inv,id],shopSpent:spent+price,
+        purchaseLog:[...(cur.purchaseLog||[]),{id,title:is.data().title||'',price,at:Date.now()}]
+      },{merge:true});
+    });
+    await loadUser();updatePoints();
+    toast('Покупку здійснено! Товар в інвентарі.');
+  }catch(e){
+    const m={FUNDS:'Недостатньо зірочок. Нічого не списано.',OWNED:'Цей товар уже придбано.',GONE:'Товар більше недоступний.'}[e.message];
+    toast(m||'Технічна помилка, зірочки не списано. Спробуй пізніше.',true);
+    if(!m)console.error(e);
+  }finally{busy=false;shopPage()}
+}
+async function equip(id){
+  if(busy||!user)return;
+  const item=goodById(id); if(!item||!ownedIds().includes(id))return;
+  busy=true;
+  const type=item.type, val=U.equipped?.[type]===id?'':id;
+  try{
+    const equipped={...(U.equipped||{}),[type]:val};
+    await fs.setDoc(fs.doc(db,'users',user.uid),{equipped},{merge:true});
+    U.equipped=equipped;
+    await syncPublic();
+  }catch(e){toast('Не вдалося змінити: '+e.message,true)}
+  finally{busy=false;shopPage()}
+}
+
+/* ===== РЕЙТИНГ ===== */
+function leaderboardPage(){
+  if(rankState==='loading'){app.innerHTML='<h2>Рейтинг</h2><div class="card empty">Завантаження…</div>';return}
+  const joinHint=user&&!U.publicOn?'<div class="card"><p>Хочеш потрапити в рейтинг? Обери нікнейм і ввімкни участь у кабінеті.</p><a class="b sm" href="#account">Налаштувати</a></div>':'';
+  if(rankState==='error'){
+    app.innerHTML=`<h2>Рейтинг</h2><div class="card"><p>Рейтинг тимчасово недоступний.</p><button class="b" id="retryRank">Спробувати ще раз</button></div>`;
+    $('#retryRank').onclick=async()=>{rankState='loading';leaderboardPage();await loadRank();leaderboardPage()};return;
+  }
+  const sorted=[...rankList].sort((a,b)=>(Number(b.score)||0)-(Number(a.score)||0)).slice(0,50);
+  app.innerHTML=`<h2>Рейтинг</h2><p class="note">За загальною кількістю зароблених зірочок. Показуються лише нікнейми тих, хто сам приєднався.</p>${joinHint}
+    ${sorted.map((e,i)=>`<div class="card rank"><span class="n">${i+1}</span>${avatarHTML(e.nickname,e.frame,44)}
+      <div style="min-width:0;flex:1"><div class="row" style="gap:6px"><b style="overflow-wrap:anywhere">${esc(e.nickname)}</b>${badgeHTML(e.badge,22)}</div></div>
+      <b>★ ${Number(e.score)||0}</b></div>`).join('')||'<div class="card empty">Поки ніхто не приєднався до рейтингу.</div>'}`;
+}
+
+/* ===== НАСТАВНИК ТА ЗАПИС ===== */
+function aboutPage(){
+  const socials=(S.socials||[]).map(s=>`<a class="b o sm" target="_blank" rel="noopener noreferrer" href="${esc(safeLink(s.url))}">${esc(s.name)}</a>`).join('');
+  const cases=(S.cases||[]).map(c=>`<div class="card"><h3>${esc(c.title||'Результат учня')}</h3>
+    ${(c.grade||c.subject)?`<small>${esc([c.grade,c.subject].filter(Boolean).join(' · '))}</small>`:''}
+    ${c.image&&safeLink(c.image)!=='#'?`<figure><img src="${esc(safeLink(c.image))}" alt="Приклад роботи учня" loading="lazy"></figure>`:''}
+    ${c.description?`<p>${rich(c.description)}</p>`:''}${c.result?`<div class="tip"><b>Результат:</b> ${rich(c.result)}</div>`:''}</div>`).join('');
+  const reviews=(S.reviews||[]).map(r=>`<div class="card"><p>«${rich(r.text||'')}»</p><b>${esc(r.name||'Відгук')}</b>${r.detail?`<br><small>${esc(r.detail)}</small>`:''}</div>`).join('');
+  app.innerHTML=`<h2>Твій наставник</h2>
+    <div class="card"><p>${rich(S.about||'')}</p><div class="row">${socials}</div></div>
+    ${cases?'<h3>Результати учнів</h3>'+cases:''}${reviews?'<h3>Відгуки</h3>'+reviews:''}
+    <a class="b" href="#book">Записатися на заняття</a>`;
+}
+function bookPage(){
+  const link=safeLink(S.formUrl||'');
+  app.innerHTML=`<h2>Запис на заняття</h2>${S.formUrl&&link!=='#'
+    ?`<iframe src="${esc(link)}" title="Форма запису"></iframe><p><a href="${esc(link)}" target="_blank" rel="noopener noreferrer">Відкрити форму окремо</a></p>`
+    :`<div class="card"><p>Форму ще не підключено. Напиши мені в Telegram:</p><a class="b" href="https://t.me/easyyy_math" target="_blank" rel="noopener noreferrer">Перейти в Telegram</a></div>`}`;
+}
+
+/* ===== БОКОВЕ МЕНЮ ===== */
+const menu=$('#nv'),menuButton=$('#mn'),menuBackdrop=$('#menuBackdrop');
+function setMenu(open){
+  menu.classList.toggle('open',open);menuBackdrop.classList.toggle('open',open);
+  document.body.classList.toggle('menu-open',open);
+  menuButton.setAttribute('aria-expanded',String(open));
+  menuButton.setAttribute('aria-label',open?'Закрити меню':'Відкрити меню');
+}
+const closeSideMenu=()=>setMenu(false);
+menuButton.onclick=()=>setMenu(!menu.classList.contains('open'));
+$('#closeMenu').onclick=closeSideMenu;menuBackdrop.onclick=closeSideMenu;
+$('#menuAuth').onclick=()=>{closeSideMenu();toggleAuth()};
+menu.querySelectorAll('a').forEach(l=>l.addEventListener('click',closeSideMenu));
+addEventListener('keydown',e=>{if(e.key==='Escape')closeSideMenu()});
+
+/* ===== МАРШРУТИЗАЦІЯ ===== */
+function route(){
+  const parts=location.hash.slice(1).split('/');
+  const name=parts[0]||'home';
+  const a=parts[1]?decodeURIComponent(parts[1]):'', b=parts[2]?decodeURIComponent(parts[2]):'';
+  closeSideMenu();
+  menu.querySelectorAll('a').forEach(l=>l.classList.toggle('on',l.getAttribute('href')==='#'+name));
+  const routes={
+    home,subj:()=>subjectPage(a,b),topic:()=>topicPage(a,b||'theory'),
+    account:accountPage,shop:shopPage,
+    leaderboard:()=>{leaderboardPage();if(rankState!=='ok'&&LIVE&&db)loadRank().then(()=>{if(location.hash==='#leaderboard')leaderboardPage()})},
+    materials:()=>{location.hash='#shop'},about:aboutPage,book:bookPage
+  };
+  (routes[name]||home)();
+  window.scrollTo(0,0);
+  typesetMath(app);
+}
+addEventListener('hashchange',route);
+addEventListener('load',()=>typesetMath(app));
+route();
+
+</script>
+</body>
+</html>
