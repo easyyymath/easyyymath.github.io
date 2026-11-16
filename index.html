@@ -271,13 +271,15 @@ let user=null, U={};            // U — документ користувача
 let db,fs,auth,au;
 let shopState='loading', rankState='loading';   // loading | ok | error
 let accGrade=null;
-const API_URL='https://neeupndspaqztttpogxy.supabase.co/functions/v1/easyyy-math-api-';
+const API_URL='https://neeupndspaqztttpogxy.supabase.co/functions/v1/easyyy-math-api';
 async function apiCall(payload){
   if(!user||!auth)throw new Error('Увійди через Google.');
   const token=await user.getIdToken();
-  const response=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(payload)});
-  let data;try{data=await response.json()}catch{throw new Error('Сервер повернув некоректну відповідь.');}
-  if(!response.ok||!data.success)throw new Error(data.error||'Сервер тимчасово недоступний.');
+  let response;
+  try{response=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(payload)})}
+  catch(e){throw new Error('Немає зв’язку із сервером.')}
+  let data;try{data=await response.json()}catch{throw new Error('Сервер повернув некоректну відповідь ('+response.status+').');}
+  if(!response.ok||!data.success)throw new Error(data.error||data.message||('Сервер: '+response.status));
   return data;
 }
 async function refreshAccount(){
@@ -437,7 +439,6 @@ async function loadUser(){
     const ref=fs.doc(db,'users',user.uid);
     const d=await fs.getDoc(ref); U=d.data()||{};
     const base={name:user.displayName||'Учень',email:user.email||'',last:Date.now()};
-    if(U.earned===undefined)base.earned=legacyEarned(U);   // перенесення вже зароблених зірочок
     await fs.setDoc(ref,base,{merge:true});
     U={...U,...base};
   }catch(e){console.error('Користувач:',e)}
@@ -704,7 +705,7 @@ function bindPractice(t,only){
         const r=await answerPractice(t,i,value);
         if(r?.add)toast(`+${r.add} ★`);
         updatePoints();
-      }catch(e){console.error(e);toast('Не вдалося зберегти. Спробуй ще раз.',true);btn.disabled=input.disabled=false;return}
+      }catch(e){console.error(e);toast('Не вдалося зберегти: '+e.message,true);btn.disabled=input.disabled=false;return}
       card.outerHTML=practiceCard(t,i);
       bindPractice(t,app.querySelector(`[data-pc="${i}"]`));
       typesetMath(app);
