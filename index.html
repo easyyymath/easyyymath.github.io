@@ -555,7 +555,9 @@ function subjectPage(subject,grade){
     <div class="tabs">${grades.map(g=>`<a class="${sel===g?'on':''}" href="#subj/${subject}/${g}">${g} клас</a>`).join('')}</div>
     <div id="subjectTopics"></div>`;
   if(!sel)return;
-  const list=topics.filter(t=>subjOf(t)===subject&&Number(t.grade)===sel);
+  const topicNum=t=>{const m=String(t.title||'').match(/(\d+)/);return m?Number(m[1]):9999};
+const list=topics.filter(t=>subjOf(t)===subject&&Number(t.grade)===sel)
+  .sort((a,b)=>topicNum(a)-topicNum(b)||String(a.title||'').localeCompare(String(b.title||''),'uk'));
   const target=$('#subjectTopics');
   if(!list.length){target.innerHTML='<div class="card empty">У цьому класі поки немає тем. Скоро з’являться.</div>';return}
   const sections=[...new Set(list.map(t=>t.section||'Інші теми'))];
